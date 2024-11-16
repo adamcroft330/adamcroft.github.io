@@ -27,7 +27,6 @@
         .text-soft-white {
             color: rgba(255, 255, 255, 0.92);
         }
-
         .lightbox {
             display: none;
             position: fixed;
@@ -64,9 +63,18 @@
             font-size: 24px;
             cursor: pointer;
             z-index: 1001;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
         }
-
-
+        .close-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body class="bg-dark">
@@ -101,61 +109,56 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Photo 1 -->
-                <div class="bg-darker rounded-lg overflow-hidden">
-                    <img src="/images/Settle-hydro-1.JPG" alt="Engineering Photo 1" class="w-full h-64 object-cover">
+                <div class="bg-darker rounded-lg overflow-hidden photo-container" onclick="openLightbox('/images/Settle-hydro-1.JPG')">
+                    <img src="/images/Settle-hydro-1.JPG" alt="In demand" class="w-full h-64 object-cover">
                     <div class="p-4">
                         <p class="font-mono font-light text-gray-400 text-sm">'In demand'</p>
                     </div>
                 </div>
 
                 <!-- Photo 2 -->
-                <div class="bg-darker rounded-lg overflow-hidden">
-                    <img src="/images/nethermills-forebay.jpg" alt="Engineering Photo 2" class="w-full h-64 object-cover">
+                <div class="bg-darker rounded-lg overflow-hidden photo-container" onclick="openLightbox('/images/nethermills-forebay.jpg')">
+                    <img src="/images/nethermills-forebay.jpg" alt="Hydro turbine commissioning" class="w-full h-64 object-cover">
                     <div class="p-4">
                         <p class="font-mono font-light text-gray-400 text-sm">Hydro turbine commissioning</p>
                     </div>
                 </div>
 
                 <!-- Photo 3 -->
-                <div class="bg-darker rounded-lg overflow-hidden">
-                    <img src="/images/settle-boys.jpg" alt="Engineering Photo 3" class="w-full h-64 object-cover">
+                <div class="bg-darker rounded-lg overflow-hidden photo-container" onclick="openLightbox('/images/settle-boys.jpg')">
+                    <img src="/images/settle-boys.jpg" alt="One sunny lunchtime at the weir" class="w-full h-64 object-cover">
                     <div class="p-4">
                         <p class="font-mono font-light text-gray-400 text-sm">One sunny lunchtime at the weir</p>
                     </div>
                 </div>
-                
+
                 <!-- Photo 4 -->
-                <div class="bg-darker rounded-lg overflow-hidden">
-                    <img src="/images/controlling_plane.jpg" alt="Engineering Photo 3" class="w-full h-64 object-cover">
+                <div class="bg-darker rounded-lg overflow-hidden photo-container" onclick="openLightbox('/images/controlling_plane.jpg')">
+                    <img src="/images/controlling_plane.jpg" alt="The fun part" class="w-full h-64 object-cover">
                     <div class="p-4">
                         <p class="font-mono font-light text-gray-400 text-sm">The fun part</p>
                     </div>
                 </div>
-                
-                
+
                 <!-- Photo 5 -->
-                <div class="bg-darker rounded-lg overflow-hidden">
-                    <img src="/images/evtol-on-wall.jpg" alt="Engineering Photo 3" class="w-full h-64 object-cover">
+                <div class="bg-darker rounded-lg overflow-hidden photo-container" onclick="openLightbox('/images/evtol-on-wall.jpg')">
+                    <img src="/images/evtol-on-wall.jpg" alt="Fixed-wing EVTOL" class="w-full h-64 object-cover">
                     <div class="p-4">
                         <p class="font-mono font-light text-gray-400 text-sm">Fixed-wing EVTOL</p>
                     </div>
                 </div>
-                
 
                 <!-- Photo 6 -->
-                <div class="bg-darker rounded-lg overflow-hidden">
-                    <img src="/images/rod-cutting.HEIC" alt="Engineering Photo 3" class="w-full h-64 object-cover">
+                <div class="bg-darker rounded-lg overflow-hidden photo-container" onclick="openLightbox('/images/rod-cutting.HEIC')">
+                    <img src="/images/rod-cutting.HEIC" alt="Grinding carbon rod" class="w-full h-64 object-cover">
                     <div class="p-4">
                         <p class="font-mono font-light text-gray-400 text-sm">Grinding carbon rod in living room..</p>
                     </div>
                 </div>
-
-
-                <!-- Add more photo containers as needed -->
             </div>
         </div>
     </section>
-   
+
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <span class="close-button" onclick="closeLightbox()">×</span>
@@ -171,19 +174,19 @@
         </div>
     </footer>
 
-        <script>
+    <script>
         function openLightbox(imageSrc) {
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             lightboxImg.src = imageSrc;
             lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
+            document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
+            document.body.style.overflow = '';
         }
 
         // Close lightbox with escape key
