@@ -27,6 +27,46 @@
         .text-soft-white {
             color: rgba(255, 255, 255, 0.92);
         }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .lightbox.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .photo-container {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .photo-container:hover {
+            transform: scale(1.02);
+        }
+        .close-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+
     </style>
 </head>
 <body class="bg-dark">
@@ -115,6 +155,12 @@
             </div>
         </div>
     </section>
+   
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close-button" onclick="closeLightbox()">×</span>
+        <img id="lightbox-img" src="" alt="Full size image">
+    </div>
 
     <!-- Footer -->
     <footer class="bg-dark border-t border-gray-800 text-white py-12">
@@ -124,5 +170,33 @@
             </div>
         </div>
     </footer>
+
+        <script>
+        function openLightbox(imageSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imageSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Close lightbox with escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Prevent click on image from closing lightbox
+        document.getElementById('lightbox-img').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    </script>
 </body>
 </html>
