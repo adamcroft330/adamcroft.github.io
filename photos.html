@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photos | Adam Croft</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        .font-space {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            background-color: #111111;
+        }
+        .bg-dark {
+            background-color: #111111;
+        }
+        .bg-darker {
+            background-color: #0a0a0a;
+        }
+        .text-soft-white {
+            color: rgba(255, 255, 255, 0.92);
+        }
+    </style>
+</head>
+<body class="bg-dark">
+    <!-- Header -->
+    <header class="bg-dark border-b border-gray-800">
+        <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-space font-light text-soft-white tracking-tight">
+                    <a href="/">Adam Croft</a>
+                </h1>
+                <div class="space-x-6">
+                    <a href="/#projects" class="font-mono font-light text-gray-300 hover:text-soft-white transition-colors tracking-tight">Projects</a>
+                    <a href="/photos.html" class="font-mono font-light text-gray-300 hover:text-soft-white transition-colors tracking-tight">Photos</a>
+                    <a href="/#contact" class="font-mono font-light text-gray-300 hover:text-soft-white transition-colors tracking-tight">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Photos Header -->
+    <section class="bg-dark pt-16">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-space font-light text-soft-white tracking-tight mb-4">Photos</h2>
+                <p class="text-xl font-mono font-light text-gray-400">Project highlights and good times~</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Grid -->
+    <section class="bg-dark pb-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Photo 1 -->
+                <div class="bg-darker rounded-lg overflow-hidden">
+                    <img src="/images/Settle-hydro-1.jpg" alt="Engineering Photo 1" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <p class="font-mono font-light text-gray-400 text-sm">Photo description here</p>
+                    </div>
+                </div>
+
+                <!-- Photo 2 -->
+                <div class="bg-darker rounded-lg overflow-hidden">
+                    <img src="/api/placeholder/800/600" alt="Engineering Photo 2" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <p class="font-mono font-light text-gray-400 text-sm">Photo description here</p>
+                    </div>
+                </div>
+
+                <!-- Photo 3 -->
+                <div class="bg-darker rounded-lg overflow-hidden">
+                    <img src="/api/placeholder/800/600" alt="Engineering Photo 3" class="w-full h-64 object-cover">
+                    <div class="p-4">
+                        <p class="font-mono font-light text-gray-400 text-sm">Photo description here</p>
+                    </div>
+                </div>
+
+                <!-- Add more photo containers as needed -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark border-t border-gray-800 text-white py-12">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-400 font-mono font-light">© 2024 Adam Croft. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
