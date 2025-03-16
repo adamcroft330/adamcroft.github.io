@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotic Arm Build and Policy Training | Adam Croft</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        .font-space {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            background-color: #111111;
+        }
+        .bg-dark {
+            background-color: #111111;
+        }
+        .bg-darker {
+            background-color: #0a0a0a;
+        }
+        .text-soft-white {
+            color: rgba(255, 255, 255, 0.92);
+        }
+    </style>
+</head>
+<body class="bg-dark">
+    <!-- Header -->
+    <header class="bg-dark border-b border-gray-800">
+        <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-space font-light text-soft-white tracking-tight">
+                    <a href="/">Adam Croft</a>
+                </h1>
+                <div class="space-x-6">
+                    <a href="/#projects" class="font-mono font-light text-gray-300 hover:text-soft-white transition-colors tracking-tight">Projects</a>
+                    <a href="/photos.html" class="font-mono font-light text-gray-300 hover:text-soft-white transition-colors tracking-tight">Photos</a>
+                    <a href="/#contact" class="font-mono font-light text-gray-300 hover:text-soft-white transition-colors tracking-tight">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Project Header -->
+    <section class="bg-dark pt-16">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-space font-light text-soft-white tracking-tight mb-4">Robotic Arm Build and Policy Training</h2>
+                <p class="text-xl font-mono font-light text-gray-400">Custom robotic arm with reinforcement learning capabilities</p>
+            </div>
+            
+            <div class="bg-darker rounded-lg overflow-hidden border border-gray-800 mb-16">
+                <img src="/api/placeholder/1200/600" alt="Robotic Arm Project" class="w-full h-96 object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Content -->
+    <section class="bg-dark pb-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Overview -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-space font-light text-soft-white mb-4 tracking-tight">Project Overview</h3>
+                <p class="font-mono font-light text-gray-400 mb-4">
+                    This project involves the development of a custom 6-axis robotic arm with integrated reinforcement learning capabilities. The aim was to create an affordable, yet precise robotic arm that could learn manipulation tasks through trial and error, rather than explicit programming.
+                </p>
+                <p class="font-mono font-light text-gray-400 mb-4">
+                    The project combines mechanical engineering, electronics, and machine learning to create a platform for exploring advanced robotics concepts without industrial-grade equipment costs.
+                </p>
+            </div>
+
+            <!-- Technical Specifications -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-space font-light text-soft-white mb-4 tracking-tight">Technical Specifications</h3>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800">
+                    <ul class="font-mono font-light text-gray-400 space-y-2">
+                        <li>• Degrees of Freedom: 6-axis configuration</li>
+                        <li>• Motors: Dynamixel XM430-W350 for primary joints, XM430-W210 for wrist</li>
+                        <li>• End Effector: Custom 3D printed two-finger gripper</li>
+                        <li>• Reach: 60cm maximum extension</li>
+                        <li>• Payload: 500g maximum</li>
+                        <li>• Control System: ROS2 with custom Python interface</li>
+                        <li>• Sensors: Force feedback in gripper, RGB-D camera for perception</li>
+                        <li>• Learning Framework: PyTorch with custom reinforcement learning implementations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Development Process -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-space font-light text-soft-white mb-4 tracking-tight">Development Process</h3>
+                <div class="space-y-4">
+                    <div class="bg-darker rounded-lg p-6 border border-gray-800">
+                        <h4 class="font-space font-light text-soft-white mb-2">Mechanical Design</h4>
+                        <p class="font-mono font-light text-gray-400">
+                            The arm was designed in Fusion 360 with a focus on weight optimization and rigidity. Parts were primarily 3D printed in PETG for strength, with some aluminum components for high-stress areas. The design went through three major iterations, each improving on stability and reducing backlash in the joints.
+                        </p>
+                    </div>
+                    <div class="bg-darker rounded-lg p-6 border border-gray-800">
+                        <h4 class="font-space font-light text-soft-white mb-2">Electronics & Control</h4>
+                        <p class="font-mono font-light text-gray-400">
+                            The control system uses a Raspberry Pi 4 as the main controller, with a custom PCB for power distribution and signal management. The arm is controlled through a ROS2 framework with custom nodes for trajectory planning, inverse kinematics, and sensor integration. A custom Python API allows for high-level control and integration with the reinforcement learning pipeline.
+                        </p>
+                    </div>
+                    <div class="bg-darker rounded-lg p-6 border border-gray-800">
+                        <h4 class="font-space font-light text-soft-white mb-2">Policy Training</h4>
+                        <p class="font-mono font-light text-gray-400">
+                            The reinforcement learning pipeline uses Proximal Policy Optimization (PPO) with a custom reward function. The system was trained on three primary tasks: pick-and-place, object sorting, and simple assembly. Training was conducted in simulation first using PyBullet physics engine, then transferred to the physical robot with domain randomization techniques to bridge the reality gap.
+                        </p>
+                    </div>
+                    <div class="bg-darker rounded-lg p-6 border border-gray-800">
+                        <h4 class="font-space font-light text-soft-white mb-2">Results & Performance</h4>
+                        <p class="font-mono font-light text-gray-400">
+                            After approximately 100 hours of training, the arm achieved a success rate of 85% on pick-and-place tasks with novel objects, 78% on sorting tasks, and 65% on simple assembly tasks. The most significant challenge was adapting to varying lighting conditions and object textures, which required additional data augmentation and domain randomization techniques.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-space font-light text-soft-white mb-4 tracking-tight">Project Gallery</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <img src="/api/placeholder/600/400" alt="Robotic Arm CAD Design" class="rounded-lg">
+                    <img src="/api/placeholder/600/400" alt="Electronics Assembly" class="rounded-lg">
+                    <img src="/api/placeholder/600/400" alt="Training in Progress" class="rounded-lg">
+                    <img src="/api/placeholder/600/400" alt="Final Assembly" class="rounded-lg">
+                </div>
+            </div>
+
+            <!-- Key Learnings -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-space font-light text-soft-white mb-4 tracking-tight">Key Learnings</h3>
+                <p class="font-mono font-light text-gray-400 mb-4">
+                    This project provided valuable insights into the challenges of developing affordable robotic systems with advanced capabilities. Key learnings include:
+                </p>
+                <ul class="font-mono font-light text-gray-400 space-y-2 list-disc pl-5 mb-4">
+                    <li>Mechanical precision is crucial for effective reinforcement learning - even small inconsistencies in joint movement can significantly impact policy performance.</li>
+                    <li>Simulation-to-reality transfer remains challenging, but domain randomization dramatically improves real-world performance.</li>
+                    <li>Dynamixel servos provide an excellent balance of precision and affordability for custom robotics projects.</li>
+                    <li>ROS2's improved real-time capabilities make it significantly better than ROS1 for reinforcement learning applications.</li>
+                    <li>Task decomposition and curriculum learning accelerate training by an order of magnitude compared to end-to-end learning.</li>
+                </ul>
+                <p class="font-mono font-light text-gray-400">
+                    Future work will focus on improving visual perception capabilities and implementing more complex manipulation tasks that require multi-step planning.
+                </p>
+            </div>
+            
+            <!-- Code & Resources -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-space font-light text-soft-white mb-4 tracking-tight">Code & Resources</h3>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800">
+                    <p class="font-mono font-light text-gray-400 mb-4">
+                        The project code and resources are available on GitHub:
+                    </p>
+                    <a href="#" class="font-mono font-light text-blue-400 hover:text-blue-300 transition-colors">github.com/adamcroft/robotic-arm-rl</a>
+                    <p class="font-mono font-light text-gray-400 mt-4">
+                        The repository includes:
+                    </p>
+                    <ul class="font-mono font-light text-gray-400 space-y-2 list-disc pl-5">
+                        <li>CAD files for 3D printing</li>
+                        <li>ROS2 control package</li>
+                        <li>PyTorch reinforcement learning implementation</li>
+                        <li>Simulation environment for training</li>
+                        <li>Documentation and build instructions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark border-t border-gray-800 text-white py-12">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-400 font-mono font-light">© 2024 Adam Croft. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
