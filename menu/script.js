@@ -210,6 +210,7 @@
         if (res.error) throw res.error;
         dishes = res.data || [];
         try { localStorage.setItem(CACHE_KEY, JSON.stringify(dishes)); } catch (e) {}
+        document.body.setAttribute("data-cloud", "ready");
         renderSidebar();
         render();
         return dishes;
@@ -239,6 +240,7 @@
         } catch (e) {
           dishes = [];
         }
+        document.body.setAttribute("data-cloud", "cache");
         showToast("offline");
         renderSidebar();
         render();
