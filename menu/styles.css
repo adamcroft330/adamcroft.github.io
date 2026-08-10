@@ -132,12 +132,105 @@ body.lang-en .title {
 
 /* ---------- layout ---------- */
 
-.main {
+.layout {
   flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 2.2rem;
   width: 100%;
-  max-width: 1080px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.25rem 3rem;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---------- sidebar ---------- */
+
+.sidebar {
+  flex: 0 0 180px;
+  position: sticky;
+  top: 1.6rem;
+  padding: 1.1rem 0.9rem 1.3rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(248, 243, 234, 0.35));
+  border: 1px solid rgba(168, 60, 50, 0.22);
+  border-radius: 12px;
+  box-shadow: 0 10px 26px var(--shadow);
+}
+
+.sidebar-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  color: var(--red-deep);
+  writing-mode: vertical-rl;
+  display: inline-block;
+  padding: 0.4rem 0;
+  border-left: 1px solid var(--gold);
+  border-right: 1px solid var(--gold);
+  opacity: 0.85;
+}
+
+.cuisine-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 1rem 0 1.3rem;
+}
+
+.cuisine-item button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid rgba(139, 111, 92, 0.3);
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-align: left;
+}
+
+.cuisine-item button:hover {
+  color: var(--red-deep);
+  border-color: var(--red);
+  background: rgba(168, 60, 50, 0.05);
+}
+
+.cuisine-item.active button {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--paper);
+  box-shadow: 0 4px 12px rgba(168, 60, 50, 0.35);
+}
+
+.cuisine-count {
+  font-size: 0.66rem;
+  opacity: 0.8;
+  letter-spacing: 0.05em;
+}
+
+.cuisine-item.active .cuisine-count { opacity: 0.85; }
+
+.ai-btn { width: 100%; border-radius: 99px; }
+
+.ai-status {
+  margin-top: 0.65rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
 }
 
 /* ---------- upload panel ---------- */
@@ -302,10 +395,15 @@ body.lang-en .title {
 
 .card-body {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.6rem;
+  flex-direction: column;
+  gap: 0.35rem;
   padding: 0.9rem 1rem 1rem;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
 .card-name {
@@ -316,14 +414,43 @@ body.lang-en .title {
 }
 
 .card-count {
-  flex-shrink: 0;
   font-size: 0.72rem;
   letter-spacing: 0.15em;
   color: var(--gold);
   border: 1px solid rgba(201, 162, 39, 0.6);
   padding: 0.1rem 0.45rem;
   border-radius: 99px;
+  white-space: nowrap;
 }
+
+.cuisine-chip {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--red-deep);
+  border: 1px solid rgba(168, 60, 50, 0.45);
+  padding: 0.1rem 0.45rem;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.card-cuisine {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: none;
+  font-family: inherit;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  background: rgba(248, 243, 234, 0.95);
+  border: 1px solid rgba(201, 162, 39, 0.7);
+  border-radius: 6px;
+  padding: 0.14rem 0.3rem;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.card:hover .card-cuisine { display: block; }
 
 .card-delete {
   position: absolute;
@@ -426,6 +553,19 @@ body.lang-en .title {
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ---------- responsive ---------- */
+
+@media (max-width: 860px) {
+  .layout { flex-direction: column; gap: 1.2rem; }
+  .sidebar {
+    flex: none;
+    position: static;
+    width: 100%;
+  }
+  .sidebar-title { writing-mode: horizontal-tb; border-left: none; border-right: none; padding: 0 0.25rem; }
+  .cuisine-list { flex-direction: row; flex-wrap: wrap; }
+  .cuisine-item button { width: auto; }
+  .card-cuisine { display: block; }
+}
 
 @media (max-width: 560px) {
   .header { padding-top: 2.2rem; }

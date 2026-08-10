@@ -20,28 +20,37 @@
   </div>
 </header>
 
-<main class="main">
-  <section class="upload-panel" id="uploadPanel">
-    <label class="upload-btn" for="fileInput">
-      <span class="upload-plus">✚</span>
-      <span class="upload-text" data-i18n="upload">添 一 道 菜</span>
-    </label>
-    <input type="file" id="fileInput" accept="image/*" hidden>
-    <img id="preview" class="upload-preview" alt="">
-    <input type="text" id="nameInput" class="name-input" data-i18n-placeholder="namePlaceholder" maxlength="30">
-    <button class="add-btn" id="addBtn" data-i18n="add" disabled>入 册</button>
-  </section>
+<div class="layout">
+  <aside class="sidebar">
+    <h2 class="sidebar-title" data-i18n="cuisines">菜 系</h2>
+    <ul class="cuisine-list" id="cuisineList"></ul>
+    <button class="tool-btn ai-btn" id="aiBtn" type="button" data-i18n="aiClassify">AI 分 類</button>
+    <p class="ai-status" id="aiStatus" hidden></p>
+  </aside>
 
-  <section class="menu" id="menu" aria-live="polite">
-    <p class="empty" id="empty" data-i18n="empty">冊 上 尚 无 一 菜 · 静 候 佳 肴</p>
-  </section>
+  <main class="main">
+    <section class="upload-panel" id="uploadPanel">
+      <label class="upload-btn" for="fileInput">
+        <span class="upload-plus">✚</span>
+        <span class="upload-text" data-i18n="upload">添 一 道 菜</span>
+      </label>
+      <input type="file" id="fileInput" accept="image/*" hidden>
+      <img id="preview" class="upload-preview" alt="">
+      <input type="text" id="nameInput" class="name-input" data-i18n-placeholder="namePlaceholder" maxlength="30">
+      <button class="add-btn" id="addBtn" data-i18n="add" disabled>入 册</button>
+    </section>
 
-  <section class="tools">
-    <button class="tool-btn" id="exportBtn" data-i18n="save">存 册</button>
-    <button class="tool-btn" id="importBtn" data-i18n="load">启 册</button>
-    <input type="file" id="importInput" accept=".json,application/json" hidden>
-  </section>
-</main>
+    <section class="menu" id="menu" aria-live="polite">
+      <p class="empty" id="empty" data-i18n="empty">冊 上 尚 无 一 菜 · 静 候 佳 肴</p>
+    </section>
+
+    <section class="tools">
+      <button class="tool-btn" id="exportBtn" data-i18n="save">存 册</button>
+      <button class="tool-btn" id="importBtn" data-i18n="load">启 册</button>
+      <input type="file" id="importInput" accept=".json,application/json" hidden>
+    </section>
+  </main>
+</div>
 
 <footer class="footer">
   <p data-i18n="footer">一 茶 一 饭 · 皆 为 风 月</p>
