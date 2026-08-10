@@ -1,14 +1,45 @@
 # 味 · Menu
 
-Menu site served at `adamcroft.me/menu`. Minimalist, traditional-Chinese-styled gallery: upload a photo and name of a dish and it joins the menu.
+Menu site at `adamcroft.me/menu`. Minimalist, traditional-Chinese-styled gallery: friends and family add dishes (photo + name) from any device — everything syncs live via Supabase.
+
+## Features
 
 - EN / 中文 toggle (top-right)
-- Left sidebar filters by cuisine (Italian, Chinese, Japanese, …)
-- AI classification (CLIP via Transformers.js, runs in-browser, no API key): hit **AI Classify** in the sidebar to tag uncategorized dishes from their photos; dish names are also classified instantly by keyword
-- Hover a card to remove it, or to manually set its cuisine from a dropdown
-- 存 册 (Save) / 启 册 (Load) JSON backups at the bottom
+- Left sidebar filters by cuisine (Italian, Chinese, Japanese, …) with live counts
+- AI classification (CLIP via Transformers.js, in-browser, no API key): **AI Classify** tags uncategorized dishes from their photos; dish names are also classified instantly by keyword
+- Hover a card to remove it, or set its cuisine from a dropdown
+- Realtime: everyone's browser updates instantly (Supabase realtime)
+- Photos compressed to 1280px on upload; stored in Supabase Storage
 
-Local dev: `python3 -m http.server` in this folder.
+## Supabase setup (one-time)
 
-> Images are stored as base64 in localStorage (~5 MB quota ≈ 10–20 photos). Use Save to back up, then clear.
-> AI classification downloads the CLIP model (~150 MB, cached after the first run) from Hugging Face via jsDelivr on first use.
+1. Create a free project at https://supabase.com (name e.g. `food-menu`)
+2. **SQL Editor** → paste and Run:
+
+```sql
+create table public.dishes (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  image_url text not null,
+  cuisine text not null default '',
+  ai text not null default '',
+  created_at timestamptz not null default now()
+);
+
+alter table public.dishes enable row level security;
+
+create policy "public read"   on public.dishes for select using (true);
+create policy "public insert" on public.dishes for insert with check (true);
+create policy "public update" on public.dishes for update using (true);
+create policy "public delete" on public.dishes for delete using (true);
+```
+
+3. **Storage → New bucket**: name `dishes`, **Public bucket: ON**
+4. **Project Settings → API**: copy *Project URL* and *anon public key* into `config.js`
+
+## Local dev
+
+`python3 -m http.server` in this folder. (`config.js` must have the URL + key.)
+
+> Anyone with the site URL can add/remove dishes (no login, by design for friends & family).
+> The AI model (~150 MB) is downloaded from Hugging Face via jsDelivr on first use, then cached.

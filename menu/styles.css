@@ -222,7 +222,27 @@ body.lang-en .title {
 
 .cuisine-item.active .cuisine-count { opacity: 0.85; }
 
-.ai-btn { width: 100%; border-radius: 99px; }
+.ai-btn {
+  width: 100%;
+  padding: 0.5rem 1.3rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid rgba(139, 111, 92, 0.4);
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.ai-btn + .ai-btn { margin-top: 0.5rem; }
+
+.ai-btn:hover {
+  color: var(--red-deep);
+  border-color: var(--red);
+  background: rgba(168, 60, 50, 0.05);
+}
 
 .ai-status {
   margin-top: 0.65rem;
@@ -378,6 +398,7 @@ body.lang-en .title {
 }
 
 .card-frame {
+  position: relative;
   margin: 12px 12px 0;
   border: 1px solid rgba(201, 162, 39, 0.55);
   border-radius: 6px;
@@ -473,6 +494,21 @@ body.lang-en .title {
 
 .card:hover .card-delete { display: flex; }
 
+.card.pending .card-frame::after {
+  content: "···";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  letter-spacing: 0.4em;
+  color: var(--red-deep);
+  background: rgba(248, 243, 234, 0.6);
+}
+
+.card.pending { animation: none; opacity: 0.85; }
+
 .card-delete:hover { transform: scale(1.15); background: var(--red-deep); }
 
 .empty {
@@ -486,36 +522,6 @@ body.lang-en .title {
   border: 1px dashed rgba(139, 111, 92, 0.35);
   border-radius: 10px;
   background: rgba(248, 243, 234, 0.4);
-}
-
-/* ---------- tools ---------- */
-
-.tools {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding-top: 1.6rem;
-  border-top: 1px dashed rgba(139, 111, 92, 0.35);
-}
-
-.tool-btn {
-  padding: 0.5rem 1.3rem;
-  font-family: inherit;
-  font-size: 0.85rem;
-  letter-spacing: 0.3em;
-  color: var(--ink-soft);
-  background: transparent;
-  border: 1px solid rgba(139, 111, 92, 0.4);
-  border-radius: 99px;
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-.tool-btn:hover {
-  color: var(--red-deep);
-  border-color: var(--red);
-  background: rgba(168, 60, 50, 0.05);
 }
 
 /* ---------- footer ---------- */

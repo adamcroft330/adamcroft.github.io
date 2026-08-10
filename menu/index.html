@@ -24,7 +24,8 @@
   <aside class="sidebar">
     <h2 class="sidebar-title" data-i18n="cuisines">菜 系</h2>
     <ul class="cuisine-list" id="cuisineList"></ul>
-    <button class="tool-btn ai-btn" id="aiBtn" type="button" data-i18n="aiClassify">AI 分 類</button>
+    <button class="ai-btn" id="aiBtn" type="button" data-i18n="aiClassify">AI 分 類</button>
+    <button class="ai-btn" id="syncBtn" type="button" data-i18n="syncLocal" hidden>上 傳 本 機 菜 單</button>
     <p class="ai-status" id="aiStatus" hidden></p>
   </aside>
 
@@ -43,12 +44,6 @@
     <section class="menu" id="menu" aria-live="polite">
       <p class="empty" id="empty" data-i18n="empty">冊 上 尚 无 一 菜 · 静 候 佳 肴</p>
     </section>
-
-    <section class="tools">
-      <button class="tool-btn" id="exportBtn" data-i18n="save">存 册</button>
-      <button class="tool-btn" id="importBtn" data-i18n="load">启 册</button>
-      <input type="file" id="importInput" accept=".json,application/json" hidden>
-    </section>
   </main>
 </div>
 
@@ -58,6 +53,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="config.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
