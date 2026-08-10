@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var SUPABASE_URL = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+  var SUPABASE_URL = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
   var CLIP_URL = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3/dist/transformers.min.js";
   var CACHE_KEY = "weixiaoguan_menu_cache";
   var LANG_KEY = "weixiaoguan_lang";
