@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>味 · Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="lang-en">
+
+<header class="header">
+  <button class="lang-toggle" id="langToggle" type="button">中文</button>
+  <div class="header-inner">
+    <div class="seal" aria-hidden="true">味</div>
+    <h1 class="title" data-i18n="title">味 · 小館</h1>
+    <p class="subtitle" data-i18n="subtitle">一 餐 · 一 記</p>
+  </div>
+</header>
+
+<main class="main">
+  <section class="upload-panel" id="uploadPanel">
+    <label class="upload-btn" for="fileInput">
+      <span class="upload-plus">✚</span>
+      <span class="upload-text" data-i18n="upload">添 一 道 菜</span>
+    </label>
+    <input type="file" id="fileInput" accept="image/*" hidden>
+    <img id="preview" class="upload-preview" alt="">
+    <input type="text" id="nameInput" class="name-input" data-i18n-placeholder="namePlaceholder" maxlength="30">
+    <button class="add-btn" id="addBtn" data-i18n="add" disabled>入 册</button>
+  </section>
+
+  <section class="menu" id="menu" aria-live="polite">
+    <p class="empty" id="empty" data-i18n="empty">冊 上 尚 无 一 菜 · 静 候 佳 肴</p>
+  </section>
+
+  <section class="tools">
+    <button class="tool-btn" id="exportBtn" data-i18n="save">存 册</button>
+    <button class="tool-btn" id="importBtn" data-i18n="load">启 册</button>
+    <input type="file" id="importInput" accept=".json,application/json" hidden>
+  </section>
+</main>
+
+<footer class="footer">
+  <p data-i18n="footer">一 茶 一 饭 · 皆 为 风 月</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
