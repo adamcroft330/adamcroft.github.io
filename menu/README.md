@@ -6,7 +6,7 @@ Menu site at `adamcroft.me/menu`. Minimalist, traditional-Chinese-styled gallery
 
 - EN / 中文 toggle (top-right)
 - Left sidebar filters by cuisine (Italian, Chinese, Japanese, …) with live counts
-- AI classification (CLIP via Transformers.js, in-browser, no API key): **AI Classify** tags uncategorized dishes from their photos; dish names are also classified instantly by keyword
+- AI classification (CLIP via Transformers.js, in-browser, no API key): dishes are auto-classified from their photo right after upload (keyword match on the name is applied instantly); the model (~150 MB) downloads on the first upload, then is cached
 - Hover a card to remove it, or set its cuisine from a dropdown
 - Realtime: everyone's browser updates instantly (Supabase realtime)
 - Photos compressed to 1280px on upload; stored in Supabase Storage

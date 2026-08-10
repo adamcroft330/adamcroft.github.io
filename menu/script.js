@@ -53,10 +53,8 @@
       cuisines: "Cuisines",
       all: "All",
       uncategorized: "Uncategorized",
-      aiClassify: "AI Classify",
       aiLoad: "Loading AI model…",
       aiReady: "AI ready",
-      aiNone: "Nothing to classify",
       aiDone: function (n) { return "Classified · " + n + " dishes"; },
       aiProgress: function (x, y) { return "Classifying · " + x + "/" + y; },
       aiUnavailable: "AI is unavailable — try again later",
@@ -87,10 +85,8 @@
       cuisines: "菜 系",
       all: "全 部",
       uncategorized: "未 分 類",
-      aiClassify: "AI 分 類",
       aiLoad: "載 入 模 型 · 請 稍 候",
       aiReady: "AI 已 就 緒",
-      aiNone: "無 需 分 類",
       aiDone: function (n) { return "已 分 類 · " + n + " 道 菜"; },
       aiProgress: function (x, y) { return "分 類 中 · " + x + "/" + y; },
       aiUnavailable: "AI 暂 时 不 可 用 · 請 稍 後 再 試",
@@ -125,7 +121,6 @@
   var toastEl = document.getElementById("toast");
   var langToggle = document.getElementById("langToggle");
   var cuisineList = document.getElementById("cuisineList");
-  var aiBtn = document.getElementById("aiBtn");
   var aiStatus = document.getElementById("aiStatus");
   var syncBtn = document.getElementById("syncBtn");
 
@@ -319,16 +314,7 @@
         renderSidebar();
         render();
         showToast("toastAdded");
-        if (!entry.cuisine && clipPipeline) {
-          classifyImage(entry).then(function () {
-            return supabase
-              .from("dishes")
-              .update({ cuisine: entry.cuisine, ai: "clip" })
-              .eq("id", entry.id);
-          }).then(function (u) {
-            if (u && u.error) throw u.error;
-          }).catch(function () {});
-        }
+        classifyPending();
         return entry;
       })
       .catch(function (e) {
@@ -407,7 +393,6 @@
   }
 
   addBtn.addEventListener("click", addDish);
-  aiBtn.addEventListener("click", classifyAll);
 
   syncBtn.addEventListener("click", function () {
     var legacy = [];
@@ -530,13 +515,12 @@
     });
   }
 
-  function classifyAll() {
-    var todo = dishes.filter(function (d) { return !d.cuisine && !d.pending; });
-    if (!todo.length) {
-      showToast("aiNone");
-      return;
-    }
-    loadClip()
+  function classifyPending() {
+    var todo = dishes.filter(function (d) {
+      return !d.cuisine && !d.pending && d.image && d.image.indexOf("data:") !== 0;
+    });
+    if (!todo.length) return Promise.resolve();
+    return loadClip()
       .then(function () {
         return todo.reduce(function (p, d, i) {
           return p.then(function () {
@@ -556,7 +540,8 @@
       })
       .then(function () {
         setStatus("");
-        showToast("aiDone", todo.length);
+        var n = todo.filter(function (d) { return d.cuisine; }).length;
+        if (n) toastText(t("aiDone", n));
       })
       .catch(function () {
         setStatus("");
