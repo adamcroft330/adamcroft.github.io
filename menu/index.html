@@ -14,7 +14,27 @@
 <header class="header">
   <button class="lang-toggle" id="langToggle" type="button">中文</button>
   <div class="header-inner">
-    <div class="seal" aria-hidden="true">味</div>
+    <div class="seal-row">
+      <div class="seal" aria-hidden="true">味</div>
+      <svg class="illus-frog" viewBox="0 0 120 100" aria-hidden="true">
+        <ellipse cx="60" cy="84" rx="46" ry="12" fill="#b8d8c9"/>
+        <ellipse cx="60" cy="70" rx="34" ry="26" fill="#7fbf8a"/>
+        <ellipse cx="60" cy="76" rx="20" ry="14" fill="#e4f2e6"/>
+        <circle cx="44" cy="38" r="11" fill="#7fbf8a"/>
+        <circle cx="76" cy="38" r="11" fill="#7fbf8a"/>
+        <circle cx="44" cy="37" r="6.5" fill="#fbfefc"/>
+        <circle cx="76" cy="37" r="6.5" fill="#fbfefc"/>
+        <circle cx="44" cy="37" r="3.2" fill="#33423c"/>
+        <circle cx="76" cy="37" r="3.2" fill="#33423c"/>
+        <path d="M48 66 Q 60 74 72 66" stroke="#33423c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="37" cy="66" r="3" fill="#eccd6b" opacity="0.8"/>
+        <circle cx="83" cy="66" r="3" fill="#eccd6b" opacity="0.8"/>
+        <path d="M30 30 Q 26 22 32 18" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M90 30 Q 94 22 88 18" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="32" cy="17" r="2" fill="#33423c"/>
+        <circle cx="88" cy="17" r="2" fill="#33423c"/>
+      </svg>
+    </div>
     <h1 class="title" data-i18n="title">味 · 小館</h1>
     <p class="subtitle" data-i18n="subtitle">一 餐 · 一 記</p>
   </div>
@@ -27,6 +47,22 @@
     <button class="ai-btn" id="aiBtn" type="button" data-i18n="aiClassify">AI 分 類</button>
     <button class="ai-btn" id="syncBtn" type="button" data-i18n="syncLocal" hidden>上 傳 本 機 菜 單</button>
     <p class="ai-status" id="aiStatus" hidden></p>
+    <svg class="illus-witch" viewBox="0 0 100 120" aria-hidden="true">
+      <path d="M50 6 L63 46 L37 46 Z" fill="#5a8fb0"/>
+      <path d="M30 46 Q 50 54 70 46 L74 52 Q 50 60 26 52 Z" fill="#5a8fb0"/>
+      <rect x="38" y="30" width="24" height="6" rx="3" fill="#eccd6b" transform="rotate(-6 50 33)"/>
+      <circle cx="50" cy="62" r="9" fill="#f2d8b8"/>
+      <circle cx="46.5" cy="61" r="1.3" fill="#33423c"/>
+      <circle cx="53.5" cy="61" r="1.3" fill="#33423c"/>
+      <path d="M46 67 Q 50 70 54 67" stroke="#33423c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M38 70 L42 106 L58 106 L62 70 Q 50 78 38 70 Z" fill="#7fbf8a"/>
+      <path d="M39 74 L27 82 M61 74 L73 82" stroke="#7fbf8a" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="27" cy="82" r="4" fill="#f2d8b8"/>
+      <circle cx="73" cy="82" r="4" fill="#f2d8b8"/>
+      <path d="M18 18 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z" fill="#eccd6b"/>
+      <path d="M82 12 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 Z" fill="#7fb2cf"/>
+      <path d="M26 10 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2 Z" fill="#b8d8c9"/>
+    </svg>
   </aside>
 
   <main class="main">
@@ -42,12 +78,79 @@
     </section>
 
     <section class="menu" id="menu" aria-live="polite">
-      <p class="empty" id="empty" data-i18n="empty">冊 上 尚 无 一 菜 · 静 候 佳 肴</p>
+      <div class="empty-wrap" id="emptyWrap">
+        <svg class="illus-scene" viewBox="0 0 360 160" aria-hidden="true">
+          <circle cx="330" cy="26" r="14" fill="#eccd6b" opacity="0.55"/>
+          <circle cx="40" cy="18" r="2.5" fill="#7fb2cf" opacity="0.7"/>
+          <circle cx="96" cy="10" r="2" fill="#7fb2cf" opacity="0.5"/>
+          <circle cx="210" cy="16" r="2.5" fill="#7fb2cf" opacity="0.6"/>
+          <g transform="translate(238 18) scale(0.85)">
+            <ellipse cx="58" cy="34" rx="10" ry="16" fill="#cfe6f2" transform="rotate(18 58 34)"/>
+            <ellipse cx="74" cy="34" rx="10" ry="16" fill="#cfe6f2" transform="rotate(-18 74 34)"/>
+            <ellipse cx="66" cy="62" rx="24" ry="17" fill="#eccd6b"/>
+            <path d="M52 55 Q 60 66 52 70" stroke="#33423c" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M66 48 L66 78" stroke="#33423c" stroke-width="5" stroke-linecap="round"/>
+            <path d="M80 55 Q 72 66 80 70" stroke="#33423c" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <circle cx="44" cy="58" r="9" fill="#eccd6b"/>
+            <circle cx="41.5" cy="57" r="1.4" fill="#33423c"/>
+            <circle cx="47" cy="57" r="1.4" fill="#33423c"/>
+            <path d="M41 50 Q 38 42 34 42 M47 50 Q 50 42 54 42" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="34" cy="41" r="2" fill="#33423c"/>
+            <circle cx="54" cy="41" r="2" fill="#33423c"/>
+            <path d="M90 62 L98 62" stroke="#33423c" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(14 34) scale(0.92)">
+            <path d="M50 6 L63 46 L37 46 Z" fill="#5a8fb0"/>
+            <path d="M30 46 Q 50 54 70 46 L74 52 Q 50 60 26 52 Z" fill="#5a8fb0"/>
+            <rect x="38" y="30" width="24" height="6" rx="3" fill="#eccd6b" transform="rotate(-6 50 33)"/>
+            <circle cx="50" cy="62" r="9" fill="#f2d8b8"/>
+            <circle cx="46.5" cy="61" r="1.3" fill="#33423c"/>
+            <circle cx="53.5" cy="61" r="1.3" fill="#33423c"/>
+            <path d="M46 67 Q 50 70 54 67" stroke="#33423c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M38 70 L42 106 L58 106 L62 70 Q 50 78 38 70 Z" fill="#7fbf8a"/>
+            <path d="M39 74 L27 82 M61 74 L73 82" stroke="#7fbf8a" stroke-width="5" stroke-linecap="round"/>
+            <path d="M0 88 L52 66" stroke="#5a8fb0" stroke-width="5" stroke-linecap="round"/>
+            <path d="M50 60 L66 92" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(96 62) scale(1.05)">
+            <ellipse cx="60" cy="70" rx="34" ry="26" fill="#7fbf8a"/>
+            <ellipse cx="60" cy="76" rx="20" ry="14" fill="#e4f2e6"/>
+            <circle cx="44" cy="38" r="11" fill="#7fbf8a"/>
+            <circle cx="76" cy="38" r="11" fill="#7fbf8a"/>
+            <circle cx="44" cy="37" r="6.5" fill="#fbfefc"/>
+            <circle cx="76" cy="37" r="6.5" fill="#fbfefc"/>
+            <circle cx="44" cy="37" r="3.2" fill="#33423c"/>
+            <circle cx="76" cy="37" r="3.2" fill="#33423c"/>
+            <path d="M48 66 Q 60 74 72 66" stroke="#33423c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="37" cy="66" r="3" fill="#eccd6b" opacity="0.8"/>
+            <circle cx="83" cy="66" r="3" fill="#eccd6b" opacity="0.8"/>
+          </g>
+          <ellipse cx="180" cy="140" rx="160" ry="16" fill="#cfe6f2" opacity="0.85"/>
+          <ellipse cx="130" cy="144" rx="26" ry="6" fill="#b8d8c9"/>
+          <ellipse cx="238" cy="142" rx="20" ry="5" fill="#b8d8c9"/>
+        </svg>
+        <p class="empty" id="empty" data-i18n="empty">冊 上 尚 无 一 菜 · 静 候 佳 肴</p>
+      </div>
     </section>
   </main>
 </div>
 
 <footer class="footer">
+  <svg class="illus-bee" viewBox="0 0 120 100" aria-hidden="true">
+    <ellipse cx="58" cy="34" rx="10" ry="16" fill="#cfe6f2" transform="rotate(18 58 34)"/>
+    <ellipse cx="74" cy="34" rx="10" ry="16" fill="#cfe6f2" transform="rotate(-18 74 34)"/>
+    <ellipse cx="66" cy="62" rx="24" ry="17" fill="#eccd6b"/>
+    <path d="M52 55 Q 60 66 52 70" stroke="#33423c" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M66 48 L66 78" stroke="#33423c" stroke-width="5" stroke-linecap="round"/>
+    <path d="M80 55 Q 72 66 80 70" stroke="#33423c" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <circle cx="44" cy="58" r="9" fill="#eccd6b"/>
+    <circle cx="41.5" cy="57" r="1.4" fill="#33423c"/>
+    <circle cx="47" cy="57" r="1.4" fill="#33423c"/>
+    <path d="M41 50 Q 38 42 34 42 M47 50 Q 50 42 54 42" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="34" cy="41" r="2" fill="#33423c"/>
+    <circle cx="54" cy="41" r="2" fill="#33423c"/>
+    <path d="M96 26 Q 106 32 100 42" stroke="#7fb2cf" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+  </svg>
   <p data-i18n="footer">一 茶 一 饭 · 皆 为 风 月</p>
 </footer>
 

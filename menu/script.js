@@ -150,14 +150,17 @@
     return id;
   }
 
-  function showToast(key) {
-    var msg = t(key);
-    toastEl.textContent = msg;
+  function toastText(text) {
+    toastEl.textContent = text;
     toastEl.classList.add("show");
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(function () {
+    clearTimeout(toastText._t);
+    toastText._t = setTimeout(function () {
       toastEl.classList.remove("show");
     }, 2400);
+  }
+
+  function showToast(key) {
+    toastText(t(key));
   }
 
   function setStatus(msg) {
@@ -262,14 +265,18 @@
     return new Promise(function (resolve) {
       var img = new Image();
       img.onload = function () {
-        var scale = Math.min(1, maxSize / Math.max(img.width, img.height));
-        var w = Math.round(img.width * scale);
-        var h = Math.round(img.height * scale);
-        var canvas = document.createElement("canvas");
-        canvas.width = w;
-        canvas.height = h;
-        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL("image/jpeg", 0.82));
+        try {
+          var scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+          var w = Math.round(img.width * scale);
+          var h = Math.round(img.height * scale);
+          var canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL("image/jpeg", 0.82));
+        } catch (e) {
+          resolve(dataUrl);
+        }
       };
       img.onerror = function () { resolve(dataUrl); };
       img.src = dataUrl;
@@ -324,13 +331,15 @@
         }
         return entry;
       })
-      .catch(function () {
+      .catch(function (e) {
         entry.pending = false;
         var idx = dishes.indexOf(entry);
         if (idx !== -1) dishes.splice(idx, 1);
         renderSidebar();
         render();
-        showToast("uploadFail");
+        console.error("upload failed:", e);
+        var detail = e && e.message && e.message.length < 60 ? " " + e.message : "";
+        toastText(t("uploadFail") + detail);
         throw new Error("upload failed");
       });
   }
@@ -595,8 +604,20 @@
     });
   }
 
+  var renderedIds = {};
+
+  function tiltFor(id) {
+    var s = String(id);
+    var h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 10000;
+    return (((h % 240) / 100) - 1.2).toFixed(2) + "deg";
+  }
+
   function render() {
+    var wrap = document.getElementById("emptyWrap");
     menuEl.innerHTML = "";
+    menuEl.appendChild(wrap);
+    var nextIds = {};
 
     var filtered = filter === "all" ? dishes
       : filter === "uncategorized" ? dishes.filter(function (d) { return !d.cuisine; })
@@ -604,18 +625,19 @@
 
     if (!dishes.length) {
       emptyEl.textContent = t("empty");
-      emptyEl.style.display = "block";
+      wrap.style.display = "block";
     } else if (!filtered.length) {
       emptyEl.textContent = t("emptyFilter");
-      emptyEl.style.display = "block";
+      wrap.style.display = "block";
     } else {
-      emptyEl.style.display = "none";
+      wrap.style.display = "none";
     }
 
     filtered.forEach(function (dish, i) {
+      nextIds[dish.id] = true;
       var card = document.createElement("article");
-      card.className = "card" + (dish.pending ? " pending" : "");
-      card.style.setProperty("--tilt", (Math.random() * 2 - 1).toFixed(2) + "deg");
+      card.className = "card" + (dish.pending ? " pending" : "") + (renderedIds[dish.id] ? "" : " new-anim");
+      card.style.setProperty("--tilt", tiltFor(dish.id));
 
       var frame = document.createElement("div");
       frame.className = "card-frame";
@@ -697,6 +719,8 @@
       card.appendChild(del);
       menuEl.appendChild(card);
     });
+
+    renderedIds = nextIds;
   }
 
   langToggle.addEventListener("click", function () {
