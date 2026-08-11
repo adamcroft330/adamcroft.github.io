@@ -3,155 +3,247 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>味 · Menu</title>
+<title>Garden Cottage Kitchen · Menu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Karla:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body class="lang-en">
+<body>
 
-<header class="header">
-  <button class="lang-toggle" id="langToggle" type="button">中文</button>
-  <div class="header-inner">
-    <div class="seal-row">
-      <div class="seal" aria-hidden="true">味</div>
-      <svg class="illus-frog" viewBox="0 0 120 100" aria-hidden="true">
-        <ellipse cx="60" cy="84" rx="46" ry="12" fill="#b8d8c9"/>
-        <ellipse cx="60" cy="70" rx="34" ry="26" fill="#7fbf8a"/>
-        <ellipse cx="60" cy="76" rx="20" ry="14" fill="#e4f2e6"/>
-        <circle cx="44" cy="38" r="11" fill="#7fbf8a"/>
-        <circle cx="76" cy="38" r="11" fill="#7fbf8a"/>
-        <circle cx="44" cy="37" r="6.5" fill="#fbfefc"/>
-        <circle cx="76" cy="37" r="6.5" fill="#fbfefc"/>
-        <circle cx="44" cy="37" r="3.2" fill="#33423c"/>
-        <circle cx="76" cy="37" r="3.2" fill="#33423c"/>
-        <path d="M48 66 Q 60 74 72 66" stroke="#33423c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <circle cx="37" cy="66" r="3" fill="#eccd6b" opacity="0.8"/>
-        <circle cx="83" cy="66" r="3" fill="#eccd6b" opacity="0.8"/>
-        <path d="M30 30 Q 26 22 32 18" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M90 30 Q 94 22 88 18" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <circle cx="32" cy="17" r="2" fill="#33423c"/>
-        <circle cx="88" cy="17" r="2" fill="#33423c"/>
-      </svg>
-    </div>
-    <h1 class="title" data-i18n="title">味 · 小館</h1>
-    <p class="subtitle" data-i18n="subtitle">一 餐 · 一 記</p>
+<div class="stage">
+  <div class="stage-head">
+    <span class="stage-brand">Garden Cottage Kitchen</span>
+    <button class="lang-toggle" id="langToggle" type="button">中文</button>
   </div>
-</header>
 
-<div class="layout">
-  <aside class="sidebar">
-    <h2 class="sidebar-title" data-i18n="cuisines">菜 系</h2>
-    <ul class="cuisine-list" id="cuisineList"></ul>
-    <button class="ai-btn" id="syncBtn" type="button" data-i18n="syncLocal" hidden>上 傳 本 機 菜 單</button>
-    <p class="ai-status" id="aiStatus" hidden></p>
-    <svg class="illus-witch" viewBox="0 0 100 120" aria-hidden="true">
-      <path d="M50 6 L63 46 L37 46 Z" fill="#5a8fb0"/>
-      <path d="M30 46 Q 50 54 70 46 L74 52 Q 50 60 26 52 Z" fill="#5a8fb0"/>
-      <rect x="38" y="30" width="24" height="6" rx="3" fill="#eccd6b" transform="rotate(-6 50 33)"/>
-      <circle cx="50" cy="62" r="9" fill="#f2d8b8"/>
-      <circle cx="46.5" cy="61" r="1.3" fill="#33423c"/>
-      <circle cx="53.5" cy="61" r="1.3" fill="#33423c"/>
-      <path d="M46 67 Q 50 70 54 67" stroke="#33423c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <path d="M38 70 L42 106 L58 106 L62 70 Q 50 78 38 70 Z" fill="#7fbf8a"/>
-      <path d="M39 74 L27 82 M61 74 L73 82" stroke="#7fbf8a" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="27" cy="82" r="4" fill="#f2d8b8"/>
-      <circle cx="73" cy="82" r="4" fill="#f2d8b8"/>
-      <path d="M18 18 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z" fill="#eccd6b"/>
-      <path d="M82 12 l1.5 4 4 1.5 -4 1.5 -1.5 4 -1.5 -4 -4 -1.5 4 -1.5 Z" fill="#7fb2cf"/>
-      <path d="M26 10 l1.2 3 3 1.2 -3 1.2 -1.2 3 -1.2 -3 -3 -1.2 3 -1.2 Z" fill="#b8d8c9"/>
-    </svg>
-  </aside>
-
-  <main class="main">
-    <section class="upload-panel" id="uploadPanel">
-      <label class="upload-btn" for="fileInput">
-        <span class="upload-plus">✚</span>
-        <span class="upload-text" data-i18n="upload">添 一 道 菜</span>
-      </label>
-      <input type="file" id="fileInput" accept="image/*" hidden>
-      <img id="preview" class="upload-preview" alt="">
-      <input type="text" id="nameInput" class="name-input" data-i18n-placeholder="namePlaceholder" maxlength="30">
-      <button class="add-btn" id="addBtn" data-i18n="add" disabled>入 册</button>
-    </section>
-
-    <section class="menu" id="menu" aria-live="polite">
-      <div class="empty-wrap" id="emptyWrap">
-        <svg class="illus-scene" viewBox="0 0 360 160" aria-hidden="true">
-          <circle cx="330" cy="26" r="14" fill="#eccd6b" opacity="0.55"/>
-          <circle cx="40" cy="18" r="2.5" fill="#7fb2cf" opacity="0.7"/>
-          <circle cx="96" cy="10" r="2" fill="#7fb2cf" opacity="0.5"/>
-          <circle cx="210" cy="16" r="2.5" fill="#7fb2cf" opacity="0.6"/>
-          <g transform="translate(238 18) scale(0.85)">
-            <ellipse cx="58" cy="34" rx="10" ry="16" fill="#cfe6f2" transform="rotate(18 58 34)"/>
-            <ellipse cx="74" cy="34" rx="10" ry="16" fill="#cfe6f2" transform="rotate(-18 74 34)"/>
-            <ellipse cx="66" cy="62" rx="24" ry="17" fill="#eccd6b"/>
-            <path d="M52 55 Q 60 66 52 70" stroke="#33423c" stroke-width="5" fill="none" stroke-linecap="round"/>
-            <path d="M66 48 L66 78" stroke="#33423c" stroke-width="5" stroke-linecap="round"/>
-            <path d="M80 55 Q 72 66 80 70" stroke="#33423c" stroke-width="5" fill="none" stroke-linecap="round"/>
-            <circle cx="44" cy="58" r="9" fill="#eccd6b"/>
-            <circle cx="41.5" cy="57" r="1.4" fill="#33423c"/>
-            <circle cx="47" cy="57" r="1.4" fill="#33423c"/>
-            <path d="M41 50 Q 38 42 34 42 M47 50 Q 50 42 54 42" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <circle cx="34" cy="41" r="2" fill="#33423c"/>
-            <circle cx="54" cy="41" r="2" fill="#33423c"/>
-            <path d="M90 62 L98 62" stroke="#33423c" stroke-width="3" stroke-linecap="round"/>
-          </g>
-          <g transform="translate(14 34) scale(0.92)">
-            <path d="M50 6 L63 46 L37 46 Z" fill="#5a8fb0"/>
-            <path d="M30 46 Q 50 54 70 46 L74 52 Q 50 60 26 52 Z" fill="#5a8fb0"/>
-            <rect x="38" y="30" width="24" height="6" rx="3" fill="#eccd6b" transform="rotate(-6 50 33)"/>
-            <circle cx="50" cy="62" r="9" fill="#f2d8b8"/>
-            <circle cx="46.5" cy="61" r="1.3" fill="#33423c"/>
-            <circle cx="53.5" cy="61" r="1.3" fill="#33423c"/>
-            <path d="M46 67 Q 50 70 54 67" stroke="#33423c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <path d="M38 70 L42 106 L58 106 L62 70 Q 50 78 38 70 Z" fill="#7fbf8a"/>
-            <path d="M39 74 L27 82 M61 74 L73 82" stroke="#7fbf8a" stroke-width="5" stroke-linecap="round"/>
-            <path d="M0 88 L52 66" stroke="#5a8fb0" stroke-width="5" stroke-linecap="round"/>
-            <path d="M50 60 L66 92" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
-          </g>
-          <g transform="translate(96 62) scale(1.05)">
-            <ellipse cx="60" cy="70" rx="34" ry="26" fill="#7fbf8a"/>
-            <ellipse cx="60" cy="76" rx="20" ry="14" fill="#e4f2e6"/>
-            <circle cx="44" cy="38" r="11" fill="#7fbf8a"/>
-            <circle cx="76" cy="38" r="11" fill="#7fbf8a"/>
-            <circle cx="44" cy="37" r="6.5" fill="#fbfefc"/>
-            <circle cx="76" cy="37" r="6.5" fill="#fbfefc"/>
-            <circle cx="44" cy="37" r="3.2" fill="#33423c"/>
-            <circle cx="76" cy="37" r="3.2" fill="#33423c"/>
-            <path d="M48 66 Q 60 74 72 66" stroke="#33423c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <circle cx="37" cy="66" r="3" fill="#eccd6b" opacity="0.8"/>
-            <circle cx="83" cy="66" r="3" fill="#eccd6b" opacity="0.8"/>
-          </g>
-          <ellipse cx="180" cy="140" rx="160" ry="16" fill="#cfe6f2" opacity="0.85"/>
-          <ellipse cx="130" cy="144" rx="26" ry="6" fill="#b8d8c9"/>
-          <ellipse cx="238" cy="142" rx="20" ry="5" fill="#b8d8c9"/>
-        </svg>
-        <p class="empty" id="empty" data-i18n="empty">冊 上 尚 无 一 菜 · 静 候 佳 肴</p>
+  <div class="phones">
+    <!-- ================= HOME ================= -->
+    <div class="phone" id="phoneHome">
+      <div class="statusbar">
+        <span class="sb-time">9:41</span>
+        <span class="sb-icons" aria-hidden="true">
+          <svg viewBox="0 0 24 12" width="16" height="8"><path d="M1 8h2v3H1zM5 5h2v6H5zM9 2h2v9H9zM13 1h2v10h-2z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 24 12" width="14" height="8"><rect x="1" y="1" width="20" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="3" width="14" height="6" rx="1" fill="currentColor"/></svg>
+        </span>
       </div>
-    </section>
-  </main>
+
+      <div class="screen home">
+        <div class="home-banner">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=70" alt="" onerror="this.style.display='none'">
+          <div class="banner-overlay"></div>
+          <div class="banner-copy">
+            <span class="banner-eyebrow" data-i18n="homeEyebrow">The Garden Cottage</span>
+            <h2 class="banner-title" data-i18n="homeTitle">What shall we eat when you visit?</h2>
+            <p class="banner-sub" data-i18n="homeSub">Add the dishes you fancy — we'll take the hint</p>
+          </div>
+          <button class="share-btn" id="shareBtn" type="button">
+            <span class="share-plus">✚</span>
+            <span data-i18n="shareDish">Add a Dish</span>
+          </button>
+        </div>
+
+        <div class="entry-row">
+          <button class="entry-card" type="button" data-entry="dinein">
+            <span class="entry-icon">🍽</span>
+            <span class="entry-name" data-i18n="dineIn">Dine In</span>
+          </button>
+          <button class="entry-card" type="button" data-entry="takeaway">
+            <span class="entry-icon">🥡</span>
+            <span class="entry-name" data-i18n="takeaway">Picnic</span>
+          </button>
+          <button class="entry-card" type="button" data-entry="delivery">
+            <span class="entry-icon">🛵</span>
+            <span class="entry-name" data-i18n="delivery">Delivered</span>
+          </button>
+        </div>
+
+        <div class="member-card">
+          <div class="member-copy">
+            <span class="member-eyebrow" data-i18n="memberEyebrow">The Cottage Circle</span>
+            <p class="member-title" data-i18n="memberTitle">The family guest book</p>
+            <p class="member-sub" data-i18n="memberSub">Everyone's wishlist, all in one place</p>
+          </div>
+          <button class="recharge-btn" id="wishBtn" type="button" data-i18n="openWishlist">Wishlist</button>
+        </div>
+
+        <p class="ai-status" id="aiStatus" hidden></p>
+        <button class="ai-btn" id="syncBtn" type="button" data-i18n="syncLocal" hidden>上 傳 本 機 菜 單</button>
+      </div>
+
+      <nav class="tabbar">
+        <button class="tab active" type="button" data-nav="home">
+          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          <span data-i18n="tabHome">Home</span>
+        </button>
+        <button class="tab" type="button" data-nav="order">
+          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm2 5h8M8 13h8M8 17h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <span data-i18n="tabOrder">Menu</span>
+        </button>
+        <button class="tab" type="button" data-nav="orders">
+          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M7 3h10l1.5 3H5.5L7 3zm-1 6h12l-1 11a1.5 1.5 0 0 1-1.5 1.4h-7A1.5 1.5 0 0 1 7 20L6 9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          <span data-i18n="tabOrders">Wishes</span>
+        </button>
+        <button class="tab" type="button" data-nav="mine">
+          <svg viewBox="0 0 24 24" width="21" height="21"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20c1.5-3.5 4-5 7.5-5s6 1.5 7.5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <span data-i18n="tabMine">Mine</span>
+        </button>
+      </nav>
+      <button class="float-recharge" id="floatWish" type="button" data-i18n="openWishlistShort">Wishlist</button>
+    </div>
+
+    <!-- ================= MENU ================= -->
+    <div class="phone" id="phoneOrder">
+      <div class="statusbar">
+        <span class="sb-time">9:41</span>
+        <span class="sb-icons" aria-hidden="true">
+          <svg viewBox="0 0 24 12" width="16" height="8"><path d="M1 8h2v3H1zM5 5h2v6H5zM9 2h2v9H9zM13 1h2v10h-2z" fill="currentColor"/></svg>
+          <svg viewBox="0 0 24 12" width="14" height="8"><rect x="1" y="1" width="20" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="3" width="14" height="6" rx="1" fill="currentColor"/></svg>
+        </span>
+      </div>
+
+      <div class="screen order">
+        <header class="store-bar">
+          <div class="store-copy">
+            <h1 class="store-name" data-i18n="storeName">Garden Cottage Kitchen</h1>
+            <p class="store-loc" data-i18n="storeLoc">Willow Lane · The Village</p>
+          </div>
+          <div class="store-actions">
+            <button class="icon-btn" id="addDishBtn" type="button" aria-label="Add a dish">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 8h3l1.6-2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="13.5" r="3.4" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+            </button>
+            <button class="icon-btn" id="searchBtn" type="button" aria-label="Search">
+              <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </button>
+            <button class="icon-btn" id="memberBtn" type="button" aria-label="Member">
+              <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20c1.5-3.5 4-5 7.5-5s6 1.5 7.5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </button>
+            <button class="icon-btn cart-btn" id="cartBtn" type="button" aria-label="Wishlist">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 20s-7-4.5-9.5-8.5A4.6 4.6 0 0 1 12 6.8a4.6 4.6 0 0 1 9.5 4.7C19 15.5 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+              <span class="cart-badge" id="cartBadge" hidden>0</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="search-row" id="searchRow" hidden>
+          <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="searchPlaceholder" maxlength="40">
+        </div>
+
+        <div class="carousel" id="carousel">
+          <div class="carousel-track" id="carouselTrack"></div>
+          <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+
+        <button class="coupon-bar" id="couponBtn" type="button">
+          <span class="coupon-ticket">✂</span>
+          <span class="coupon-text" data-i18n="couponText">New here? Add your name once, then wish away</span>
+          <span class="coupon-claim" id="couponClaim" data-i18n="couponClaim">Name</span>
+        </button>
+
+        <div class="order-body">
+          <aside class="cat-sidebar" id="catSidebar"></aside>
+          <section class="food-list" id="foodList"></section>
+        </div>
+
+        <div class="order-foot" id="orderFoot" hidden>
+          <button class="view-cart" id="viewCartBtn" type="button">
+            <span data-i18n="viewWishlist">View Wishlist</span>
+            <span class="view-cart-total" id="viewCartTotal">0 dishes</span>
+          </button>
+        </div>
+      </div>
+
+      <nav class="tabbar">
+        <button class="tab" type="button" data-nav="home">
+          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          <span data-i18n="tabHome">Home</span>
+        </button>
+        <button class="tab active" type="button" data-nav="order">
+          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm2 5h8M8 13h8M8 17h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <span data-i18n="tabOrder">Menu</span>
+        </button>
+        <button class="tab" type="button" data-nav="orders">
+          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M7 3h10l1.5 3H5.5L7 3zm-1 6h12l-1 11a1.5 1.5 0 0 1-1.5 1.4h-7A1.5 1.5 0 0 1 7 20L6 9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          <span data-i18n="tabOrders">Wishes</span>
+        </button>
+        <button class="tab" type="button" data-nav="mine">
+          <svg viewBox="0 0 24 24" width="21" height="21"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20c1.5-3.5 4-5 7.5-5s6 1.5 7.5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <span data-i18n="tabMine">Mine</span>
+        </button>
+      </nav>
+      <button class="fab" id="fabAdd" type="button" aria-label="Add a dish"><span>✚</span></button>
+    </div>
+  </div>
+
+  <p class="stage-note" data-i18n="stageNote">Grown, cooked &amp; shared from our little cottage garden</p>
 </div>
 
-<footer class="footer">
-  <svg class="illus-bee" viewBox="0 0 120 100" aria-hidden="true">
-    <ellipse cx="58" cy="34" rx="10" ry="16" fill="#cfe6f2" transform="rotate(18 58 34)"/>
-    <ellipse cx="74" cy="34" rx="10" ry="16" fill="#cfe6f2" transform="rotate(-18 74 34)"/>
-    <ellipse cx="66" cy="62" rx="24" ry="17" fill="#eccd6b"/>
-    <path d="M52 55 Q 60 66 52 70" stroke="#33423c" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <path d="M66 48 L66 78" stroke="#33423c" stroke-width="5" stroke-linecap="round"/>
-    <path d="M80 55 Q 72 66 80 70" stroke="#33423c" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <circle cx="44" cy="58" r="9" fill="#eccd6b"/>
-    <circle cx="41.5" cy="57" r="1.4" fill="#33423c"/>
-    <circle cx="47" cy="57" r="1.4" fill="#33423c"/>
-    <path d="M41 50 Q 38 42 34 42 M47 50 Q 50 42 54 42" stroke="#33423c" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <circle cx="34" cy="41" r="2" fill="#33423c"/>
-    <circle cx="54" cy="41" r="2" fill="#33423c"/>
-    <path d="M96 26 Q 106 32 100 42" stroke="#7fb2cf" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
-  </svg>
-  <p data-i18n="footer">一 茶 一 饭 · 皆 为 风 月</p>
-</footer>
+<!-- ============ SHEETS ============ -->
+
+<div class="sheet-mask" id="mask" hidden></div>
+
+<div class="sheet" id="nameSheet" hidden>
+  <div class="sheet-grip"></div>
+  <h3 class="sheet-title" data-i18n="nameTitle">Who's wishing today?</h3>
+  <p class="sheet-note" data-i18n="nameNote">Your name stays on this device, so the kitchen knows whose wishes are whose.</p>
+  <input type="text" id="nameInput2" class="dish-input" data-i18n-placeholder="namePlaceholder" maxlength="20">
+  <button class="sheet-add" id="nameSaveBtn" type="button" data-i18n="nameSave">Save</button>
+</div>
+
+<div class="sheet" id="shareSheet" hidden>
+  <div class="sheet-grip"></div>
+  <h3 class="sheet-title" data-i18n="shareTitle">Add a dish to the garden menu</h3>
+  <label class="photo-pick" id="photoPick">
+    <span class="photo-plus" id="photoPlus">✚</span>
+    <img id="preview" class="photo-preview" alt="" hidden>
+    <span class="photo-hint" id="photoHint" data-i18n="photoHint">Tap to choose a photo</span>
+  </label>
+  <input type="file" id="fileInput" accept="image/*" hidden>
+  <input type="text" id="nameInput" class="dish-input" data-i18n-placeholder="dishNamePlaceholder" maxlength="30">
+  <div class="cuisine-pick">
+    <span class="cuisine-pick-label" data-i18n="cuisineLabel">Cuisine</span>
+    <select id="cuisineSelect" class="cuisine-select">
+      <option value="">Auto · AI</option>
+    </select>
+  </div>
+  <button class="sheet-add" id="addBtn" type="button" data-i18n="addToMenu" disabled>Add to Menu</button>
+</div>
+
+<div class="sheet" id="specSheet" hidden>
+  <div class="sheet-grip"></div>
+  <div class="spec-head">
+    <img id="specImg" class="spec-img" alt="">
+    <div>
+      <h3 class="spec-name" id="specName"></h3>
+      <span class="spec-chip" id="specChip"></span>
+    </div>
+  </div>
+  <p class="spec-label" data-i18n="portionLabel">Portion</p>
+  <div class="size-row" id="sizeRow">
+    <button class="size-btn active" type="button" data-size="classic"><span data-i18n="sizeClassic">Classic</span></button>
+    <button class="size-btn" type="button" data-size="generous"><span data-i18n="sizeGenerous">Generous</span></button>
+  </div>
+  <div class="qty-row">
+    <span class="spec-label" data-i18n="qtyLabel">How many does it feed?</span>
+    <div class="stepper">
+      <button class="step-btn" id="qtyMinus" type="button">−</button>
+      <span class="qty-num" id="qtyNum">1</span>
+      <button class="step-btn" id="qtyPlus" type="button">+</button>
+    </div>
+  </div>
+  <button class="sheet-add" id="addToOrderBtn" type="button" data-i18n="addToWishlist">Add to Wishlist</button>
+</div>
+
+<div class="sheet" id="cartSheet" hidden>
+  <div class="sheet-grip"></div>
+  <h3 class="sheet-title" data-i18n="cartTitle">The Wishlist</h3>
+  <ul class="cart-list" id="cartList"></ul>
+  <div class="cart-foot">
+    <span class="cart-total-label" data-i18n="cartTotal">Everyone's wishes</span>
+    <span class="cart-total" id="cartTotal">0</span>
+  </div>
+  <button class="sheet-add" id="checkoutBtn" type="button" data-i18n="shareList">Share the List</button>
+</div>
 
 <div class="toast" id="toast"></div>
 
