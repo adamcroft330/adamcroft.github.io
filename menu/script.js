@@ -99,7 +99,7 @@
   var el = {};
   ["langToggle", "catSidebar", "foodList", "fabAdd", "mask", "shareSheet", "photoPick",
    "photoPlus", "preview", "photoHint", "fileInput", "nameInput", "cuisineSelect",
-   "addBtn", "toast"].forEach(function (id) {
+   "addBtn", "toast", "filterSelect"].forEach(function (id) {
     el[id] = document.getElementById(id);
   });
 
@@ -212,9 +212,11 @@
       counts[""]++;
       if (counts[d.cuisine] != null) counts[d.cuisine]++;
     });
-    var cats = [{ id: "", label: t("catAll") }].concat(CUISINES.map(function (c) {
+    var all = [{ id: "", label: t("catAll") }];
+    var nonEmpty = CUISINES.filter(function (c) { return counts[c.id] > 0; }).map(function (c) {
       return { id: c.id, label: c[lang] || c.en };
-    }));
+    });
+    var cats = all.concat(nonEmpty);
     el.catSidebar.innerHTML = "";
     cats.forEach(function (c) {
       var btn = document.createElement("button");
@@ -227,6 +229,18 @@
         renderFood();
       });
       el.catSidebar.appendChild(btn);
+    });
+    renderMobileFilter(cats, counts);
+  }
+
+  function renderMobileFilter(cats, counts) {
+    el.filterSelect.innerHTML = "";
+    cats.forEach(function (c) {
+      var o = document.createElement("option");
+      o.value = c.id;
+      o.textContent = c.label + " (" + counts[c.id] + ")";
+      if (filter === c.id) o.selected = true;
+      el.filterSelect.appendChild(o);
     });
   }
 
@@ -607,6 +621,12 @@
   el.nameInput.addEventListener("keydown", function (e) { if (e.key === "Enter") addDish(); });
 
   el.addBtn.addEventListener("click", addDish);
+
+  el.filterSelect.addEventListener("change", function () {
+    filter = el.filterSelect.value;
+    renderSidebar();
+    renderFood();
+  });
 
   fillCuisineSelect();
   applyLang();

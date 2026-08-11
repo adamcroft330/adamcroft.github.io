@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Witch &amp; Frog's Kitchen · Menu</title>
+    <title>Witch &amp; Frog's Kitchen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Karla:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -28,7 +28,12 @@
 
   <div class="layout">
   <aside class="cat-sidebar" id="catSidebar"></aside>
-  <section class="food-list" id="foodList"></section>
+  <div class="main-col">
+    <div class="mobile-filter" id="mobileFilter">
+      <select id="filterSelect"></select>
+    </div>
+    <section class="food-list" id="foodList"></section>
+  </div>
 </div>
 
   <button class="fab" id="fabAdd" type="button" aria-label="Add a dish"><span>✚</span></button>
