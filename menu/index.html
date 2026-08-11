@@ -11,184 +11,23 @@
 </head>
 <body>
 
-<div class="stage">
-  <div class="stage-head">
-    <span class="stage-brand">Garden Cottage Kitchen</span>
+<header class="site-head">
+  <div class="head-inner">
+    <span class="head-brand">Garden Cottage Kitchen</span>
     <button class="lang-toggle" id="langToggle" type="button">中文</button>
   </div>
+</header>
 
-  <div class="phones">
-    <!-- ================= HOME ================= -->
-    <div class="phone" id="phoneHome">
-      <div class="statusbar">
-        <span class="sb-time">9:41</span>
-        <span class="sb-icons" aria-hidden="true">
-          <svg viewBox="0 0 24 12" width="16" height="8"><path d="M1 8h2v3H1zM5 5h2v6H5zM9 2h2v9H9zM13 1h2v10h-2z" fill="currentColor"/></svg>
-          <svg viewBox="0 0 24 12" width="14" height="8"><rect x="1" y="1" width="20" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="3" width="14" height="6" rx="1" fill="currentColor"/></svg>
-        </span>
-      </div>
-
-      <div class="screen home">
-        <div class="home-banner">
-          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=70" alt="" onerror="this.style.display='none'">
-          <div class="banner-overlay"></div>
-          <div class="banner-copy">
-            <span class="banner-eyebrow" data-i18n="homeEyebrow">The Garden Cottage</span>
-            <h2 class="banner-title" data-i18n="homeTitle">What shall we eat when you visit?</h2>
-            <p class="banner-sub" data-i18n="homeSub">Add the dishes you fancy — we'll take the hint</p>
-          </div>
-          <button class="share-btn" id="shareBtn" type="button">
-            <span class="share-plus">✚</span>
-            <span data-i18n="shareDish">Add a Dish</span>
-          </button>
-        </div>
-
-        <div class="entry-row">
-          <button class="entry-card" type="button" data-entry="dinein">
-            <span class="entry-icon">🍽</span>
-            <span class="entry-name" data-i18n="dineIn">Dine In</span>
-          </button>
-          <button class="entry-card" type="button" data-entry="takeaway">
-            <span class="entry-icon">🥡</span>
-            <span class="entry-name" data-i18n="takeaway">Picnic</span>
-          </button>
-          <button class="entry-card" type="button" data-entry="delivery">
-            <span class="entry-icon">🛵</span>
-            <span class="entry-name" data-i18n="delivery">Delivered</span>
-          </button>
-        </div>
-
-        <div class="member-card">
-          <div class="member-copy">
-            <span class="member-eyebrow" data-i18n="memberEyebrow">The Cottage Circle</span>
-            <p class="member-title" data-i18n="memberTitle">The family guest book</p>
-            <p class="member-sub" data-i18n="memberSub">Everyone's wishlist, all in one place</p>
-          </div>
-          <button class="recharge-btn" id="wishBtn" type="button" data-i18n="openWishlist">Wishlist</button>
-        </div>
-
-        <p class="ai-status" id="aiStatus" hidden></p>
-        <button class="ai-btn" id="syncBtn" type="button" data-i18n="syncLocal" hidden>上 傳 本 機 菜 單</button>
-      </div>
-
-      <nav class="tabbar">
-        <button class="tab active" type="button" data-nav="home">
-          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-          <span data-i18n="tabHome">Home</span>
-        </button>
-        <button class="tab" type="button" data-nav="order">
-          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm2 5h8M8 13h8M8 17h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <span data-i18n="tabOrder">Menu</span>
-        </button>
-        <button class="tab" type="button" data-nav="orders">
-          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M7 3h10l1.5 3H5.5L7 3zm-1 6h12l-1 11a1.5 1.5 0 0 1-1.5 1.4h-7A1.5 1.5 0 0 1 7 20L6 9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-          <span data-i18n="tabOrders">Wishes</span>
-        </button>
-        <button class="tab" type="button" data-nav="mine">
-          <svg viewBox="0 0 24 24" width="21" height="21"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20c1.5-3.5 4-5 7.5-5s6 1.5 7.5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <span data-i18n="tabMine">Mine</span>
-        </button>
-      </nav>
-      <button class="float-recharge" id="floatWish" type="button" data-i18n="openWishlistShort">Wishlist</button>
-    </div>
-
-    <!-- ================= MENU ================= -->
-    <div class="phone" id="phoneOrder">
-      <div class="statusbar">
-        <span class="sb-time">9:41</span>
-        <span class="sb-icons" aria-hidden="true">
-          <svg viewBox="0 0 24 12" width="16" height="8"><path d="M1 8h2v3H1zM5 5h2v6H5zM9 2h2v9H9zM13 1h2v10h-2z" fill="currentColor"/></svg>
-          <svg viewBox="0 0 24 12" width="14" height="8"><rect x="1" y="1" width="20" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="3" width="14" height="6" rx="1" fill="currentColor"/></svg>
-        </span>
-      </div>
-
-      <div class="screen order">
-        <header class="store-bar">
-          <div class="store-copy">
-            <h1 class="store-name" data-i18n="storeName">Garden Cottage Kitchen</h1>
-            <p class="store-loc" data-i18n="storeLoc">Willow Lane · The Village</p>
-          </div>
-          <div class="store-actions">
-            <button class="icon-btn" id="addDishBtn" type="button" aria-label="Add a dish">
-              <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 8h3l1.6-2h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="13.5" r="3.4" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
-            </button>
-            <button class="icon-btn" id="searchBtn" type="button" aria-label="Search">
-              <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-            </button>
-            <button class="icon-btn" id="memberBtn" type="button" aria-label="Member">
-              <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20c1.5-3.5 4-5 7.5-5s6 1.5 7.5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-            </button>
-            <button class="icon-btn cart-btn" id="cartBtn" type="button" aria-label="Wishlist">
-              <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 20s-7-4.5-9.5-8.5A4.6 4.6 0 0 1 12 6.8a4.6 4.6 0 0 1 9.5 4.7C19 15.5 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-              <span class="cart-badge" id="cartBadge" hidden>0</span>
-            </button>
-          </div>
-        </header>
-
-        <div class="search-row" id="searchRow" hidden>
-          <input type="text" id="searchInput" class="search-input" data-i18n-placeholder="searchPlaceholder" maxlength="40">
-        </div>
-
-        <div class="carousel" id="carousel">
-          <div class="carousel-track" id="carouselTrack"></div>
-          <div class="carousel-dots" id="carouselDots"></div>
-        </div>
-
-        <button class="coupon-bar" id="couponBtn" type="button">
-          <span class="coupon-ticket">✂</span>
-          <span class="coupon-text" data-i18n="couponText">New here? Add your name once, then wish away</span>
-          <span class="coupon-claim" id="couponClaim" data-i18n="couponClaim">Name</span>
-        </button>
-
-        <div class="order-body">
-          <aside class="cat-sidebar" id="catSidebar"></aside>
-          <section class="food-list" id="foodList"></section>
-        </div>
-
-        <div class="order-foot" id="orderFoot" hidden>
-          <button class="view-cart" id="viewCartBtn" type="button">
-            <span data-i18n="viewWishlist">View Wishlist</span>
-            <span class="view-cart-total" id="viewCartTotal">0 dishes</span>
-          </button>
-        </div>
-      </div>
-
-      <nav class="tabbar">
-        <button class="tab" type="button" data-nav="home">
-          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-          <span data-i18n="tabHome">Home</span>
-        </button>
-        <button class="tab active" type="button" data-nav="order">
-          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm2 5h8M8 13h8M8 17h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <span data-i18n="tabOrder">Menu</span>
-        </button>
-        <button class="tab" type="button" data-nav="orders">
-          <svg viewBox="0 0 24 24" width="21" height="21"><path d="M7 3h10l1.5 3H5.5L7 3zm-1 6h12l-1 11a1.5 1.5 0 0 1-1.5 1.4h-7A1.5 1.5 0 0 1 7 20L6 9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-          <span data-i18n="tabOrders">Wishes</span>
-        </button>
-        <button class="tab" type="button" data-nav="mine">
-          <svg viewBox="0 0 24 24" width="21" height="21"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20c1.5-3.5 4-5 7.5-5s6 1.5 7.5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <span data-i18n="tabMine">Mine</span>
-        </button>
-      </nav>
-      <button class="fab" id="fabAdd" type="button" aria-label="Add a dish"><span>✚</span></button>
-    </div>
-  </div>
-
-  <p class="stage-note" data-i18n="stageNote">Grown, cooked &amp; shared from our little cottage garden</p>
+<div class="layout">
+  <aside class="cat-sidebar" id="catSidebar"></aside>
+  <section class="food-list" id="foodList"></section>
 </div>
+
+<button class="fab" id="fabAdd" type="button" aria-label="Add a dish"><span>✚</span></button>
 
 <!-- ============ SHEETS ============ -->
 
 <div class="sheet-mask" id="mask" hidden></div>
-
-<div class="sheet" id="nameSheet" hidden>
-  <div class="sheet-grip"></div>
-  <h3 class="sheet-title" data-i18n="nameTitle">Who's wishing today?</h3>
-  <p class="sheet-note" data-i18n="nameNote">Your name stays on this device, so the kitchen knows whose wishes are whose.</p>
-  <input type="text" id="nameInput2" class="dish-input" data-i18n-placeholder="namePlaceholder" maxlength="20">
-  <button class="sheet-add" id="nameSaveBtn" type="button" data-i18n="nameSave">Save</button>
-</div>
 
 <div class="sheet" id="shareSheet" hidden>
   <div class="sheet-grip"></div>
@@ -207,42 +46,6 @@
     </select>
   </div>
   <button class="sheet-add" id="addBtn" type="button" data-i18n="addToMenu" disabled>Add to Menu</button>
-</div>
-
-<div class="sheet" id="specSheet" hidden>
-  <div class="sheet-grip"></div>
-  <div class="spec-head">
-    <img id="specImg" class="spec-img" alt="">
-    <div>
-      <h3 class="spec-name" id="specName"></h3>
-      <span class="spec-chip" id="specChip"></span>
-    </div>
-  </div>
-  <p class="spec-label" data-i18n="portionLabel">Portion</p>
-  <div class="size-row" id="sizeRow">
-    <button class="size-btn active" type="button" data-size="classic"><span data-i18n="sizeClassic">Classic</span></button>
-    <button class="size-btn" type="button" data-size="generous"><span data-i18n="sizeGenerous">Generous</span></button>
-  </div>
-  <div class="qty-row">
-    <span class="spec-label" data-i18n="qtyLabel">How many does it feed?</span>
-    <div class="stepper">
-      <button class="step-btn" id="qtyMinus" type="button">−</button>
-      <span class="qty-num" id="qtyNum">1</span>
-      <button class="step-btn" id="qtyPlus" type="button">+</button>
-    </div>
-  </div>
-  <button class="sheet-add" id="addToOrderBtn" type="button" data-i18n="addToWishlist">Add to Wishlist</button>
-</div>
-
-<div class="sheet" id="cartSheet" hidden>
-  <div class="sheet-grip"></div>
-  <h3 class="sheet-title" data-i18n="cartTitle">The Wishlist</h3>
-  <ul class="cart-list" id="cartList"></ul>
-  <div class="cart-foot">
-    <span class="cart-total-label" data-i18n="cartTotal">Everyone's wishes</span>
-    <span class="cart-total" id="cartTotal">0</span>
-  </div>
-  <button class="sheet-add" id="checkoutBtn" type="button" data-i18n="shareList">Share the List</button>
 </div>
 
 <div class="toast" id="toast"></div>
