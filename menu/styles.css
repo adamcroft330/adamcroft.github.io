@@ -152,9 +152,11 @@ button { font-family: inherit; cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.6rem;
-  background: var(--cream-2);
+  font-size: 3.2rem;
+  background: repeating-linear-gradient(45deg, var(--cream-2) 0, var(--cream-2) 16px, var(--khaki) 16px, var(--khaki) 17px);
+  color: var(--ink-soft);
   overflow: hidden;
+  opacity: 0.85;
 }
 
 .dish-img {
@@ -165,6 +167,7 @@ button { font-family: inherit; cursor: pointer; }
   height: 100%;
   object-fit: cover;
   display: block;
+  background: var(--cream-2);
 }
 
 .dish-copy { padding: 12px 14px; }

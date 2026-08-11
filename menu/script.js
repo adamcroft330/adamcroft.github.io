@@ -358,8 +358,10 @@
   }
 
   function addDish() {
+    el.addBtn.disabled = true;
+    el.addBtn.textContent = t("uploading");
     var name = el.nameInput.value.trim();
-    if (!pendingImage || !name) return;
+    if (!pendingImage || !name) { el.addBtn.disabled = false; el.addBtn.textContent = t("addToMenu"); return; }
     var manual = el.cuisineSelect.value;
     var kw = classifyByName(name);
     var entry = {
@@ -372,22 +374,22 @@
       created_at: new Date().toISOString()
     };
     dishes.unshift(entry);
-    renderSidebar();
-    renderFood();
+    try { renderSidebar(); } catch (e) {}
+    try { renderFood(); } catch (e) {}
     toastText(t("uploading"));
     closeSheet(el.shareSheet);
     resetShareSheet();
     if (!configured) {
       var i = dishes.indexOf(entry);
       if (i !== -1) dishes.splice(i, 1);
-      renderFood();
+      try { renderFood(); } catch (e) {}
       showToast("setupNeeded");
       return;
     }
-    uploadAndAdd(entry);
+    uploadAndAdd(entry, function ok() { el.addBtn.disabled = false; el.addBtn.textContent = t("addToMenu"); }, function fail() { el.addBtn.disabled = false; el.addBtn.textContent = t("addToMenu"); });
   }
 
-  function uploadAndAdd(entry) {
+  function uploadAndAdd(entry, done, fail) {
     compressImage(entry.image, 1280)
       .then(function (small) {
         entry.image = small;
@@ -415,19 +417,21 @@
         if (i !== -1) dishes[i] = entry;
         else dishes.unshift(entry);
         try { localStorage.setItem(CACHE_KEY, JSON.stringify(dishes)); } catch (e) {}
-        renderSidebar();
-        renderFood();
+        try { renderSidebar(); } catch (e) {}
+        try { renderFood(); } catch (e) {}
         toastText(t("toastAdded"));
+        if (done) done();
         classifyPending(entry);
         return entry;
       })
       .catch(function (e) {
         var i = dishes.indexOf(entry);
         if (i !== -1) dishes.splice(i, 1);
-        renderFood();
+        try { renderFood(); } catch (e) {}
         console.error("upload failed:", e);
         var detail = e && e.message && e.message.length < 60 ? " " + e.message : "";
         toastText(t("toastAddedFail") + detail);
+        if (fail) fail();
       });
   }
 
@@ -439,16 +443,32 @@
           var scale = Math.min(1, maxSize / Math.max(img.width, img.height));
           var w = Math.round(img.width * scale);
           var h = Math.round(img.height * scale);
+          if (w < 1) w = 1;
+          if (h < 1) h = 1;
           var canvas = document.createElement("canvas");
           canvas.width = w;
           canvas.height = h;
           canvas.getContext("2d").drawImage(img, 0, 0, w, h);
           resolve(canvas.toDataURL("image/jpeg", 0.82));
-        } catch (e) { resolve(dataUrl); }
+        } catch (e) { resolve(makeFallbackImage(maxSize)); }
       };
-      img.onerror = function () { resolve(dataUrl); };
+      img.onerror = function () { resolve(makeFallbackImage(maxSize)); };
       img.src = dataUrl;
     });
+  }
+
+  function makeFallbackImage(size) {
+    var c = document.createElement("canvas");
+    c.width = size;
+    c.height = Math.round(size * 0.75);
+    var ctx = c.getContext("2d");
+    ctx.fillStyle = "#e5dccb";
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillStyle = "#8b7a66";
+    ctx.font = Math.round(size * 0.12) + "px serif";
+    ctx.textAlign = "center";
+    ctx.fillText("✦", c.width / 2, c.height / 2 + Math.round(size * 0.04));
+    return c.toDataURL("image/jpeg", 0.85);
   }
 
   function dataUrlToBlob(dataUrl) {
