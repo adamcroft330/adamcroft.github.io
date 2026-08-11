@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Garden Cottage Kitchen · Menu</title>
+    <title>Witch &amp; Frog's Kitchen · Menu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Karla:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -13,17 +13,34 @@
 
 <header class="site-head">
   <div class="head-inner">
-    <span class="head-brand">Garden Cottage Kitchen</span>
+    <span class="head-brand">Witch &amp; Frog's Kitchen</span>
     <button class="lang-toggle" id="langToggle" type="button">中文</button>
   </div>
 </header>
 
-<div class="layout">
+  <div class="charm-bar">
+    <svg class="charm-icon" viewBox="0 0 40 36" width="28" height="25"><path d="M20 2L4 30h32L20 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M11 20a7 3 0 0018 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 31l3-5M28 31l-3-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span class="charm-divider"><svg viewBox="0 0 12 12" width="10" height="10"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="1" cy="6" r="1.2" fill="currentColor"/><circle cx="11" cy="6" r="1.2" fill="currentColor"/></svg></span>
+    <svg class="charm-icon frog" viewBox="0 0 44 32" width="32" height="23"><ellipse cx="22" cy="20" rx="18" ry="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="14" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="30" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="14" cy="12" r="2.5" fill="currentColor"/><circle cx="30" cy="12" r="2.5" fill="currentColor"/><path d="M10 28l4-7M34 28l-4-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M1 18s2-3 5-3M43 18s-2-3-5-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <span class="charm-divider"><svg viewBox="0 0 12 12" width="10" height="10"><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="1" cy="6" r="1.2" fill="currentColor"/><circle cx="11" cy="6" r="1.2" fill="currentColor"/></svg></span>
+    <svg class="charm-icon bee" viewBox="0 0 44 34" width="30" height="23"><ellipse cx="22" cy="18" rx="14" ry="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 18l-4 4M36 18l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 22l2-4M40 22l-2-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="8" x2="14" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="22" y1="8" x2="22" y2="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="28" y1="8" x2="30" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="13" x2="4" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="34" y1="13" x2="40" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </div>
+
+  <div class="layout">
   <aside class="cat-sidebar" id="catSidebar"></aside>
   <section class="food-list" id="foodList"></section>
 </div>
 
-<button class="fab" id="fabAdd" type="button" aria-label="Add a dish"><span>✚</span></button>
+  <button class="fab" id="fabAdd" type="button" aria-label="Add a dish"><span>✚</span></button>
+
+<div class="foot-charm">
+  <svg viewBox="0 0 240 16" width="240" height="16" aria-hidden="true">
+    <path d="M0 8 Q30 0 60 8 Q90 16 120 8 Q150 0 180 8 Q210 16 240 8" fill="none" stroke="var(--khaki)" stroke-width="1.2"/>
+    <circle cx="60" cy="8" r="2" fill="var(--terracotta)" opacity="0.5"/>
+    <circle cx="120" cy="8" r="2" fill="var(--terracotta)" opacity="0.5"/>
+    <circle cx="180" cy="8" r="2" fill="var(--terracotta)" opacity="0.5"/>
+  </svg>
+</div>
 
 <!-- ============ SHEETS ============ -->
 

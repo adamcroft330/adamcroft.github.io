@@ -40,7 +40,7 @@
 
   var I18N = {
     en: {
-      storeName: "Garden Cottage Kitchen",
+      storeName: "Witch & Frog's Kitchen",
       catAll: "All",
       dishNamePlaceholder: "Dish name",
       cuisineLabel: "Cuisine",
@@ -66,7 +66,7 @@
       deleteAsk: "Remove this dish from the menu?"
     },
     zh: {
-      storeName: "花園小屋廚房",
+      storeName: "巫婆與青蛙的廚房",
       catAll: "全部",
       dishNamePlaceholder: "菜名",
       cuisineLabel: "菜系",
