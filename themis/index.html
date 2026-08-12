@@ -67,26 +67,26 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 
 const PARTS=[
-{file:'models/frame_v3.stl',name:'Chimera4 LR Frame',w:'61g',c:0x606060},
-{file:'models/esc_v3.stl',name:'4-in-1 35A ESC',w:'7g',c:0xD4A017},
-{file:'models/pixhawk_v3.stl',name:'Pixhawk 6C Mini',w:'42g',c:0x2E7D32},
-{file:'models/cm5_v3.stl',name:'CM5 + Waveshare Nano B',w:'30g',c:0x1565C0},
-{file:'models/hailo_v3.stl',name:'Hailo-8L + PCIe Adapter',w:'10g',c:0x1B5E20},
-{file:'models/cam_v3.stl',name:'Mightycam',w:'10g',c:0x212121},
-{file:'models/sensors_v3.stl',name:'Sensors (ToF+UWB+ELRS)',w:'8g',c:0x8E24AA},
-{file:'models/motor_v3.stl',name:'1806 Motor x4',w:'82g',c:0x9E9E9E},
-{file:'models/prop_v3.stl',name:'4" Propeller x4',w:'12g',c:0x424242},
-{file:'models/guard_v3.stl',name:'TPU Prop Guard x4',w:'20g',c:0xE65100},
-{file:'models/battery_v3.stl',name:'4S 1100mAh LiPo',w:'100g',c:0xB71C1C},
-{file:'models/pm06_v3.stl',name:'PM06 Power Module',w:'12g',c:0xE53935},
-{file:'models/ubec_v3.stl',name:'5V/5A UBEC',w:'5g',c:0x212121},
+{file:'models/frame.stl',name:'Chimera4 LR Frame',w:'61g',c:0x606060},
+{file:'models/esc.stl',name:'4-in-1 35A ESC',w:'7g',c:0xD4A017},
+{file:'models/pixhawk.stl',name:'Pixhawk 6C Mini',w:'42g',c:0x2E7D32},
+{file:'models/cm5.stl',name:'CM5 + Waveshare Nano B',w:'30g',c:0x1565C0},
+{file:'models/hailo.stl',name:'Hailo-8L + PCIe Adapter',w:'10g',c:0x1B5E20},
+{file:'models/cam.stl',name:'Mightycam',w:'10g',c:0x212121},
+{file:'models/sensors.stl',name:'Sensors (ToF+UWB+ELRS)',w:'8g',c:0x8E24AA},
+{file:'models/motor.stl',name:'1806 Motor x4',w:'82g',c:0x9E9E9E},
+{file:'models/prop.stl',name:'4" Propeller x4',w:'12g',c:0x424242},
+{file:'models/guard.stl',name:'TPU Prop Guard x4',w:'20g',c:0xE65100},
+{file:'models/battery.stl',name:'4S 1100mAh LiPo',w:'100g',c:0xB71C1C},
+{file:'models/pm06.stl',name:'PM06 Power Module',w:'12g',c:0xE53935},
+{file:'models/ubec.stl',name:'5V/5A UBEC',w:'5g',c:0x212121},
 ];
 
 const container=document.getElementById('c');
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x0a0a0a);
 
-const camera=new THREE.PerspectiveCamera(35,container.clientWidth/container.clientHeight,1,2000);
-camera.position.set(240,170,280);
+const camera=new THREE.PerspectiveCamera(30,container.clientWidth/container.clientHeight,1,2000);
+camera.position.set(260,140,260);
 
 const renderer=new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(container.clientWidth,container.clientHeight);
@@ -96,7 +96,7 @@ renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.
 container.appendChild(renderer.domElement);
 
 const controls=new OrbitControls(camera,renderer.domElement);
-controls.target.set(0,40,0);controls.enableDamping=true;controls.dampingFactor=0.08;
+controls.target.set(0,15,0);controls.enableDamping=true;controls.dampingFactor=0.08;
 controls.minDistance=80;controls.maxDistance=600;controls.update();
 
 scene.add(new THREE.AmbientLight(0x404060,0.6));
@@ -109,7 +109,7 @@ const grid=new THREE.GridHelper(500,30,0x333333,0x222222);grid.position.y=-30;sc
 
 const bbox=new THREE.BoxGeometry(250,250,250);
 const bframe=new THREE.LineSegments(new THREE.EdgesGeometry(bbox),new THREE.LineBasicMaterial({color:0xff3333,transparent:true,opacity:0.15}));
-bframe.position.set(0,95,0);scene.add(bframe);
+bframe.position.set(0,15,0);scene.add(bframe);
 
 const loader=new STLLoader();
 const meshes=[];
