@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Themis Control-Stack Quad | Drone Build</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'JetBrains Mono', monospace; font-weight: 300; background: #0a0a0a; color: rgba(255,255,255,0.92); margin: 0; overflow: hidden; }
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        #sidebar { position: fixed; top: 0; right: 0; width: 340px; height: 100%; z-index: 10; background: rgba(10,10,10,0.92); border-left: 1px solid rgba(255,255,255,0.08); overflow-y: auto; padding: 20px; }
+        #header { position: fixed; top: 0; left: 0; z-index: 5; padding: 16px 24px; background: linear-gradient(to bottom, rgba(10,10,10,0.95) 60%, transparent); width: calc(100% - 340px); }
+        #info-overlay { position: fixed; bottom: 20px; left: 20px; z-index: 5; background: rgba(0,0,0,0.7); padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #888; }
+        .part-item { padding: 8px 12px; margin: 2px 0; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s; border: 1px solid transparent; }
+        .part-item:hover { background: rgba(255,255,255,0.05); }
+        .part-item.active { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+        .color-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.15); }
+        .part-name { font-size: 13px; flex: 1; }
+        .part-weight { font-size: 11px; color: #666; }
+        #back-link { position: fixed; top: 16px; left: 16px; z-index: 20; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 6px; color: #aaa; text-decoration: none; font-size: 13px; transition: all 0.15s; }
+        #back-link:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 12px 0; }
+        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px 10px; text-align: center; }
+        .stat-value { font-size: 16px; font-weight: 400; color: #fff; }
+        .stat-label { font-size: 10px; color: #666; margin-top: 2px; }
+        @media (max-width: 768px) {
+            #sidebar { width: 100%; height: 50%; top: auto; bottom: 0; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding: 12px; }
+            #header { width: 100%; }
+            #back-link { top: auto; bottom: calc(50% + 16px); left: 16px; }
+            #info-overlay { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <a id="back-link" href="/">← Back</a>
+
+    <div id="header">
+        <h1 class="text-xl font-space font-light" style="color: rgba(255,255,255,0.92);">Themis Control-Stack Quad</h1>
+        <p class="text-xs" style="color: #666; margin-top: 2px;">
+            <span id="part-count"></span> components · <span id="total-weight"></span>g AUW · TWR <span id="twr"></span>:1 · 250×250×250mm bounding box
+        </p>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div id="sidebar">
+        <div class="stats-grid">
+            <div class="stat-box"><div class="stat-value">$690</div><div class="stat-label">EST. TOTAL</div></div>
+            <div class="stat-box"><div class="stat-value">2.73:1</div><div class="stat-label">TWR</div></div>
+            <div class="stat-box"><div class="stat-value">238×238×110mm</div><div class="stat-label">ENVELOPE</div></div>
+            <div class="stat-box"><div class="stat-value" id="sidebar-weight">454g</div><div class="stat-label">AUW</div></div>
+        </div>
+
+        <div style="margin: 14px 0 10px; font-size: 11px; color: #555; display: flex; justify-content: space-between;">
+            <span>Parts (<span id="visible-count">0</span>/<span id="total-count">0</span> visible)</span>
+            <span style="cursor:pointer;" onclick="toggleAll()" id="toggle-all-btn">Hide All</span>
+        </div>
+
+        <div id="parts-list"></div>
+    </div>
+
+    <div id="info-overlay">
+        <span>Drag to orbit · Scroll to zoom · Click parts to highlight</span>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+        // ── Part definitions ──
+        const PARTS = [
+            { file: 'frame.stl',      name: 'Chimera4 LR Frame',          weight: '61g',   color: 0x606060, desc: '178mm wheelbase, 136.8×114.8mm center plate, 4mm carbon fiber' },
+            { file: 'esc.stl',        name: '4-in-1 35A ESC',             weight: '7g',    color: 0xD4A017, desc: 'BLHeli_S, 35A continuous, 20×20mm mount' },
+            { file: 'pixhawk.stl',    name: 'Pixhawk 6C Mini',           weight: '42g',   color: 0x2E7D32, desc: 'PX4 flight controller, 54×39×17mm, MAVLink' },
+            { file: 'cm5.stl',        name: 'CM5 + Waveshare Nano B',    weight: '30g',   color: 0x1565C0, desc: 'BCM2712 quad A76 @ 2.4GHz, 55×41mm carrier, 5V/3A' },
+            { file: 'hailo.stl',      name: 'Hailo-8L + PCIe Adapter',   weight: '10g',   color: 0x1B5E20, desc: '13 TOPS AI accelerator, M.2 2230, tethered via PCIe FFC' },
+            { file: 'mightycam.stl',  name: 'Mightycam',                 weight: '10g',   color: 0x212121, desc: '33×30mm VIO camera, OV9281 global shutter, 160° FOV, USB' },
+            { file: 'sensors.stl',    name: 'Sensors (ToF + UWB + ELRS)',weight: '8g',    color: 0x8E24AA, desc: 'VL53L1X (altitude), DWM3000 (inter-drone), ELRS (kill switch)' },
+            { file: 'motor.stl',      name: '1806 Motor ×4',             weight: '82g',   color: 0x9E9E9E, desc: 'EMAX MT1806 2280KV, 310g thrust each, 12mm mount + 9mm adapter' },
+            { file: 'prop.stl',       name: '4" Propeller ×4',           weight: '12g',   color: 0x424242, desc: 'HQProp 4×4.3×3 (4045), standard (non-bullnose), 4S' },
+            { file: 'guard.stl',      name: 'TPU Prop Guard ×4',         weight: '20g',   color: 0xE65100, desc: '3D-printed TPU rings, 112mm OD, 10mm height, crash protection' },
+            { file: 'battery.stl',    name: '4S 1100mAh LiPo',           weight: '100g',  color: 0xB71C1C, desc: '1100mAh, 75C, XT60, ~5-7 min flight, mounted under frame' },
+            { file: 'pm06.stl',       name: 'PM06 Power Module',         weight: '12g',   color: 0xE53935, desc: '5V/2.5A output, powers Pixhawk from battery' },
+            { file: 'ubec.stl',       name: '5V/5A UBEC',                weight: '5g',    color: 0x212121, desc: '5V/5A step-down, powers CM5+ARK stack from battery' },
+        ];
+
+        // ── Setup scene ──
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a0a);
+
+        const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 1, 2000);
+        camera.position.set(250, 180, 300);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        container.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.target.set(0, 40, 0);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.minDistance = 80;
+        controls.maxDistance = 600;
+        controls.update();
+
+        // ── Lighting ──
+        const ambientLight = new THREE.AmbientLight(0x404060, 0.6);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
+        dirLight.position.set(200, 300, 200);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        const fillLight = new THREE.DirectionalLight(0x8888ff, 0.8);
+        fillLight.position.set(-150, 100, -200);
+        scene.add(fillLight);
+
+        const rimLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        rimLight.position.set(0, -100, 200);
+        scene.add(rimLight);
+
+        const hemiLight = new THREE.HemisphereLight(0x8888ff, 0x444422, 0.5);
+        scene.add(hemiLight);
+
+        // ── Grid ──
+        const gridHelper = new THREE.GridHelper(500, 30, 0x333333, 0x222222);
+        gridHelper.position.y = -30;
+        scene.add(gridHelper);
+
+        // ── Bounding box outline ──
+        const bboxGeo = new THREE.BoxGeometry(250, 250, 250);
+        const bboxMat = new THREE.LineBasicMaterial({ color: 0xff3333, transparent: true, opacity: 0.15 });
+        const bboxWire = new THREE.LineSegments(new THREE.EdgesGeometry(bboxGeo), bboxMat);
+        bboxWire.position.set(0, 95, 0);
+        scene.add(bboxWire);
+
+        // ── Load STLs ──
+        const loader = new STLLoader();
+        const meshes = [];
+        let loaded = 0;
+
+        PARTS.forEach((part, idx) => {
+            loader.load(`models/${part.file}`, (geometry) => {
+                geometry.computeVertexNormals();
+                const mat = new THREE.MeshPhysicalMaterial({
+                    color: part.color,
+                    metalness: 0.1,
+                    roughness: 0.6,
+                    clearcoat: 0.05,
+                    envMapIntensity: 0.4,
+                });
+                const mesh = new THREE.Mesh(geometry, mat);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                mesh.userData = { partIndex: idx, visible: true };
+
+                // Center the geometry
+                geometry.computeBoundingBox();
+                const bb = geometry.boundingBox;
+                const ctr = new THREE.Vector3();
+                bb.getCenter(ctr);
+                mesh.position.sub(ctr);
+
+                scene.add(mesh);
+                meshes[idx] = mesh;
+                loaded++;
+
+                // Update UI
+                document.getElementById('part-count').textContent = PARTS.length;
+                document.getElementById('total-weight').textContent = '454';
+                document.getElementById('twr').textContent = '2.73';
+                updateUI();
+            });
+        });
+
+        // ── Raycaster for clicking ──
+        const raycaster = new THREE.Raycaster();
+        const pointer = new THREE.Vector2();
+        let selectedIdx = -1;
+
+        renderer.domElement.addEventListener('click', (event) => {
+            const rect = renderer.domElement.getBoundingClientRect();
+            pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+            raycaster.setFromCamera(pointer, camera);
+            const intersects = raycaster.intersectObjects(scene.children);
+
+            if (intersects.length > 0) {
+                const hit = intersects[0].object;
+                if (hit.userData && hit.userData.partIndex !== undefined) {
+                    highlightPart(hit.userData.partIndex);
+                }
+            }
+        });
+
+        function highlightPart(idx) {
+            // Reset all
+            meshes.forEach((m, i) => {
+                if (m) {
+                    m.material.emissive.setHex(0x000000);
+                    m.material.emissiveIntensity = 0;
+                }
+            });
+            document.querySelectorAll('.part-item').forEach(el => el.classList.remove('active'));
+
+            if (idx >= 0 && meshes[idx]) {
+                meshes[idx].material.emissive.setHex(0x4444ff);
+                meshes[idx].material.emissiveIntensity = 0.15;
+                const item = document.querySelector(`[data-part-index="${idx}"]`);
+                if (item) {
+                    item.classList.add('active');
+                    item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                }
+                selectedIdx = idx;
+            } else {
+                selectedIdx = -1;
+            }
+        }
+
+        // ── Toggle part visibility ──
+        window.togglePart = function(idx) {
+            const mesh = meshes[idx];
+            if (!mesh) return;
+            mesh.visible = !mesh.visible;
+            mesh.userData.visible = mesh.visible;
+            const item = document.querySelector(`[data-part-index="${idx}"]`);
+            if (item) {
+                item.style.opacity = mesh.visible ? '1' : '0.3';
+            }
+            updateUI();
+        };
+
+        window.toggleAll = function() {
+            const anyVisible = meshes.some(m => m && m.userData.visible);
+            meshes.forEach(m => {
+                if (m) {
+                    m.visible = !anyVisible;
+                    m.userData.visible = !anyVisible;
+                }
+            });
+            document.querySelectorAll('.part-item').forEach(el => {
+                el.style.opacity = anyVisible ? '0.3' : '1';
+            });
+            document.getElementById('toggle-all-btn').textContent = anyVisible ? 'Show All' : 'Hide All';
+            updateUI();
+        };
+
+        function updateUI() {
+            const visible = meshes.filter(m => m && m.userData.visible).length;
+            const total = meshes.filter(m => m).length;
+            document.getElementById('visible-count').textContent = visible;
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('toggle-all-btn').textContent = 
+                visible === total ? 'Hide All' : 'Show All';
+        }
+
+        // ── Build parts list UI ──
+        function buildPartsList() {
+            const list = document.getElementById('parts-list');
+            PARTS.forEach((part, idx) => {
+                const div = document.createElement('div');
+                div.className = 'part-item';
+                div.setAttribute('data-part-index', idx);
+                div.innerHTML = `
+                    <span class="color-dot" style="background:#${part.color.toString(16).padStart(6,'0')}"></span>
+                    <span class="part-name">${part.name}</span>
+                    <span class="part-weight">${part.weight}</span>
+                `;
+                div.onclick = () => {
+                    highlightPart(idx);
+                    togglePart(idx);
+                };
+                list.appendChild(div);
+            });
+            document.getElementById('total-count').textContent = PARTS.length;
+            document.getElementById('visible-count').textContent = PARTS.length;
+        }
+        buildPartsList();
+
+        // ── Resize ──
+        window.addEventListener('resize', () => {
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        });
+
+        // ── Animate ──
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
