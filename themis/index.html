@@ -1,319 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Themis Control-Stack Quad | Drone Build</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'JetBrains Mono', monospace; font-weight: 300; background: #0a0a0a; color: rgba(255,255,255,0.92); margin: 0; overflow: hidden; }
-        .font-space { font-family: 'Space Grotesk', sans-serif; }
-        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
-        #sidebar { position: fixed; top: 0; right: 0; width: 340px; height: 100%; z-index: 10; background: rgba(10,10,10,0.92); border-left: 1px solid rgba(255,255,255,0.08); overflow-y: auto; padding: 20px; }
-        #header { position: fixed; top: 0; left: 0; z-index: 5; padding: 16px 24px; background: linear-gradient(to bottom, rgba(10,10,10,0.95) 60%, transparent); width: calc(100% - 340px); }
-        #info-overlay { position: fixed; bottom: 20px; left: 20px; z-index: 5; background: rgba(0,0,0,0.7); padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #888; }
-        .part-item { padding: 8px 12px; margin: 2px 0; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.15s; border: 1px solid transparent; }
-        .part-item:hover { background: rgba(255,255,255,0.05); }
-        .part-item.active { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
-        .color-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.15); }
-        .part-name { font-size: 13px; flex: 1; }
-        .part-weight { font-size: 11px; color: #666; }
-        #back-link { position: fixed; top: 16px; left: 16px; z-index: 20; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 6px; color: #aaa; text-decoration: none; font-size: 13px; transition: all 0.15s; }
-        #back-link:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 12px 0; }
-        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px 10px; text-align: center; }
-        .stat-value { font-size: 16px; font-weight: 400; color: #fff; }
-        .stat-label { font-size: 10px; color: #666; margin-top: 2px; }
-        @media (max-width: 768px) {
-            #sidebar { width: 100%; height: 50%; top: auto; bottom: 0; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding: 12px; }
-            #header { width: 100%; }
-            #back-link { top: auto; bottom: calc(50% + 16px); left: 16px; }
-            #info-overlay { display: none; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Themis Control-Stack Quad</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+body{font-family:'JetBrains Mono',monospace;font-weight:300;background:#0a0a0a;color:rgba(255,255,255,0.92);margin:0;overflow:hidden;font-size:14px}
+#c{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+#s{position:fixed;top:0;right:0;width:320px;height:100%;z-index:10;background:rgba(10,10,10,0.95);border-left:1px solid rgba(255,255,255,0.08);overflow-y:auto;padding:16px}
+#h{position:fixed;top:0;left:0;z-index:5;padding:12px 20px;background:linear-gradient(to bottom,rgba(10,10,10,0.95) 60%,transparent);width:calc(100% - 320px)}
+.p{padding:6px 10px;margin:1px 0;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:8px;border:1px solid transparent;font-size:12px}
+.p:hover{background:rgba(255,255,255,0.05)}
+.p.a{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15)}
+.cd{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,0.15)}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:10px 0}
+.sb{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:6px 8px;text-align:center}
+.sv{font-size:14px;font-weight:400;color:#fff}
+.sl{font-size:9px;color:#666;margin-top:1px}
+#lo{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:#0a0a0a;flex-direction:column;gap:12px}
+#sp{width:32px;height:32px;border:2px solid rgba(255,255,255,0.1);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#er{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:30;background:rgba(200,50,50,0.85);padding:6px 14px;border-radius:4px;font-size:11px;display:none}
+@media(max-width:768px){
+#s{width:100%;height:45%;top:auto;bottom:0;border-left:none;border-top:1px solid rgba(255,255,255,0.08);padding:10px}
+#h{width:100%}
+}
+</style>
 </head>
 <body>
-    <a id="back-link" href="/">← Back</a>
+<div id="lo"><div id="sp"></div><div style="font-size:12px;color:#666">Loading 3D models…</div></div>
+<div id="er"></div>
+<a href="/" style="position:fixed;top:12px;left:12px;z-index:20;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:4px;color:#aaa;text-decoration:none;font-size:12px">← Back</a>
+<div id="h">
+<div style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:300">Themis Control-Stack Quad</div>
+<div style="font-size:11px;color:#666;margin-top:2px"><span id="pc">0</span> components · <span id="tw">454</span>g AUW · TWR 2.73:1 · 250mm cube</div>
+</div>
+<div id="c"></div>
+<div id="s">
+<div class="sg">
+<div class="sb"><div class="sv">$690</div><div class="sl">EST. BOM</div></div>
+<div class="sb"><div class="sv">2.73:1</div><div class="sl">TWR</div></div>
+<div class="sb"><div class="sv">238×110mm</div><div class="sl">ENVELOPE</div></div>
+<div class="sb"><div class="sv">454g</div><div class="sl">AUW</div></div>
+</div>
+<div style="font-size:10px;color:#555;display:flex;justify-content:space-between;margin:10px 0 6px">
+<span>Parts (<span id="vc">0</span>/<span id="tc">0</span>)</span>
+<span style="cursor:pointer" onclick="ta()" id="tab">Hide All</span>
+</div>
+<div id="pl"></div>
+</div>
 
-    <div id="header">
-        <h1 class="text-xl font-space font-light" style="color: rgba(255,255,255,0.92);">Themis Control-Stack Quad</h1>
-        <p class="text-xs" style="color: #666; margin-top: 2px;">
-            <span id="part-count"></span> components · <span id="total-weight"></span>g AUW · TWR <span id="twr"></span>:1 · 250×250×250mm bounding box
-        </p>
-    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// STL Loader for r128
+THREE.STLLoader=function(m){this.manager=m||THREE.DefaultLoadingManager};
+THREE.STLLoader.prototype={constructor:THREE.STLLoader,
+load:function(u,ok,pr,er){var t=this;new THREE.FileLoader(this.manager).setResponseType('arraybuffer').load(u,function(d){ok(t.parse(d))},pr,er)},
+parse:function(d){var r=new DataView(d),fs=(32/8*3)+((32/8*3)*3)+(16/8),nf=r.getUint32(80,1),ex=80+(32/8)+(nf*fs);
+if(ex===r.byteLength)return this.parseBinary(d);
+var s=[0x73,0x6f,0x6c,0x69,0x64],bin=0;for(var i=0;i<5;i++)if(r.getUint8(i)!==s[i])bin=1;
+return bin?this.parseBinary(d):this.parseASCII(function(d){var s='',a=new Uint8Array(d);for(var i=0;i<d.byteLength;i++)s+=String.fromCharCode(a[i]);return s}(d));},
+parseBinary:function(d){var r=new DataView(d),nf=r.getUint32(80,1),v=[],n=[],ii=[],fi=0;
+for(var i=0;i<nf;i++){var st=84+i*50,nx=r.getFloat32(st,1),ny=r.getFloat32(st+4,1),nz=r.getFloat32(st+8,1);
+for(var j=0;j<3;j++){var sv=st+12+j*12;v.push(r.getFloat32(sv,1),r.getFloat32(sv+4,1),r.getFloat32(sv+8,1));n.push(nx,ny,nz)}
+ii.push(fi,fi+1,fi+2);fi+=3}
+var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(n,3));g.setIndex(ii);return g},
+parseASCII:function(d){var ls=d.split('\n'),v=[],n=[],ii=[],fi=0;
+for(var i=0;i<ls.length;i++){var l=ls[i].trim();
+if(l.indexOf('facet normal')===0){var p=l.split(' '),nx=parseFloat(p[2]),ny=parseFloat(p[3]),nz=parseFloat(p[4]);
+for(var j=0;j<3;j++){i++;while(i<ls.length&&ls[i].trim().indexOf('vertex')!==0)i++;if(i>=ls.length)break;
+var vp=ls[i].trim().split(' ');v.push(parseFloat(vp[1]),parseFloat(vp[2]),parseFloat(vp[3]));n.push(nx,ny,nz)}
+ii.push(fi,fi+1,fi+2);fi+=3}}
+var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(n,3));g.setIndex(ii);return g}};
+</script>
+<script>
+const PARTS=[
+{file:'models/frame.stl',name:'Chimera4 LR Frame',w:'61g',c:0x606060},
+{file:'models/esc.stl',name:'4-in-1 35A ESC',w:'7g',c:0xD4A017},
+{file:'models/pixhawk.stl',name:'Pixhawk 6C Mini',w:'42g',c:0x2E7D32},
+{file:'models/cm5.stl',name:'CM5 + Waveshare Nano B',w:'30g',c:0x1565C0},
+{file:'models/hailo.stl',name:'Hailo-8L + PCIe Adapter',w:'10g',c:0x1B5E20},
+{file:'models/mightycam.stl',name:'Mightycam',w:'10g',c:0x212121},
+{file:'models/sensors.stl',name:'Sensors (ToF+UWB+ELRS)',w:'8g',c:0x8E24AA},
+{file:'models/motor.stl',name:'1806 Motor x4',w:'82g',c:0x9E9E9E},
+{file:'models/prop.stl',name:'4" Propeller x4',w:'12g',c:0x424242},
+{file:'models/guard.stl',name:'TPU Prop Guard x4',w:'20g',c:0xE65100},
+{file:'models/battery.stl',name:'4S 1100mAh LiPo',w:'100g',c:0xB71C1C},
+{file:'models/pm06.stl',name:'PM06 Power Module',w:'12g',c:0xE53935},
+{file:'models/ubec.stl',name:'5V/5A UBEC',w:'5g',c:0x212121},
+];
 
-    <div id="canvas-container"></div>
+const c=document.getElementById('c');
+const sc=new THREE.Scene();sc.background=new THREE.Color(0x0a0a0a);
+const cam=new THREE.PerspectiveCamera(35,c.clientWidth/c.clientHeight,1,2000);cam.position.set(240,170,280);
+const r=new THREE.WebGLRenderer({antialias:1});r.setSize(c.clientWidth,c.clientHeight);r.setPixelRatio(Math.min(window.devicePixelRatio,2));r.shadowMap.enabled=1;r.shadowMap.type=THREE.PCFSoftShadowMap;r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.2;c.appendChild(r.domElement);
+var ct=new THREE.OrbitControls(cam,r.domElement);ct.target.set(0,40,0);ct.enableDamping=1;ct.dampingFactor=.08;ct.minDistance=80;ct.maxDistance=600;ct.update();
+sc.add(new THREE.AmbientLight(0x404060,.6));
+var dl=new THREE.DirectionalLight(0xffffff,2.5);dl.position.set(200,300,200);dl.castShadow=1;sc.add(dl);
+var fl=new THREE.DirectionalLight(0x8888ff,.8);fl.position.set(-150,100,-200);sc.add(fl);
+sc.add(new THREE.DirectionalLight(0xffffff,.5).position.set(0,-100,200));
+sc.add(new THREE.HemisphereLight(0x8888ff,0x444422,.5));
+var g=new THREE.GridHelper(500,30,0x333333,0x222222);g.position.y=-30;sc.add(g);
+var bg=new THREE.BoxGeometry(250,250,250);var bw=new THREE.LineSegments(new THREE.EdgesGeometry(bg),new THREE.LineBasicMaterial({color:0xff3333,transparent:1,opacity:.15}));bw.position.set(0,95,0);sc.add(bw);
 
-    <div id="sidebar">
-        <div class="stats-grid">
-            <div class="stat-box"><div class="stat-value">$690</div><div class="stat-label">EST. TOTAL</div></div>
-            <div class="stat-box"><div class="stat-value">2.73:1</div><div class="stat-label">TWR</div></div>
-            <div class="stat-box"><div class="stat-value">238×238×110mm</div><div class="stat-label">ENVELOPE</div></div>
-            <div class="stat-box"><div class="stat-value" id="sidebar-weight">454g</div><div class="stat-label">AUW</div></div>
-        </div>
+var ld=new THREE.STLLoader(),ms=[],lc=0;
+function se(m){var e=document.getElementById('er');e.textContent=m;e.style.display='block';setTimeout(function(){e.style.display='none'},8000)}
 
-        <div style="margin: 14px 0 10px; font-size: 11px; color: #555; display: flex; justify-content: space-between;">
-            <span>Parts (<span id="visible-count">0</span>/<span id="total-count">0</span> visible)</span>
-            <span style="cursor:pointer;" onclick="toggleAll()" id="toggle-all-btn">Hide All</span>
-        </div>
+PARTS.forEach(function(p,i){
+ld.load(p.file,function(g){
+g.computeVertexNormals();
+var m=new THREE.Mesh(g,new THREE.MeshPhongMaterial({color:p.c,shininess:40,specular:0x222222}));
+m.castShadow=1;m.receiveShadow=1;m.userData={idx:i,v:1};
+g.computeBoundingBox();var bb=g.boundingBox;var ct2=new THREE.Vector3();bb.getCenter(ct2);m.position.sub(ct2);
+sc.add(m);ms[i]=m;lc++;
+document.getElementById('pc').textContent=PARTS.length;ui();
+if(lc===PARTS.length)document.getElementById('lo').style.display='none';
+},null,function(){se('Failed: '+p.file);lc++;if(lc===PARTS.length)document.getElementById('lo').style.display='none'});
+});
 
-        <div id="parts-list"></div>
-    </div>
+var rc=new THREE.Raycaster(),pt=new THREE.Vector2(),si=-1;
+r.domElement.addEventListener('click',function(e){
+var rect=r.domElement.getBoundingClientRect();
+pt.x=((e.clientX-rect.left)/rect.width)*2-1;pt.y=-((e.clientY-rect.top)/rect.height)*2+1;
+rc.setFromCamera(pt,cam);var hi=rc.intersectObjects(sc.children);
+if(hi.length>0&&hi[0].object.userData&&hi[0].object.userData.idx!==undefined){hl(hi[0].object.userData.idx);return}
+hl(-1);
+});
 
-    <div id="info-overlay">
-        <span>Drag to orbit · Scroll to zoom · Click parts to highlight</span>
-    </div>
+function hl(i){
+ms.forEach(function(m){if(m)m.material.emissive&&m.material.emissive.setHex(0)});
+document.querySelectorAll('.p').forEach(function(e){e.classList.remove('a')});
+if(i>=0&&ms[i]){ms[i].material.emissive.setHex(0x4444ff);var it=document.querySelector('[data-i="'+i+'"]');if(it){it.classList.add('a');it.scrollIntoView({block:'nearest',behavior:'smooth'})}si=i}else si=-1;
+}
 
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
-        }
-    </script>
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+window.tp=function(i){var m=ms[i];if(!m)return;m.visible=!m.visible;m.userData.v=m.visible;
+var it=document.querySelector('[data-i="'+i+'"]');if(it)it.style.opacity=m.visible?1:.3;ui()};
+window.ta=function(){var av=0;ms.forEach(function(m){if(m&&m.userData.v)av=1});
+ms.forEach(function(m){if(m){m.visible=!av;m.userData.v=!av}});
+document.querySelectorAll('.p').forEach(function(e){e.style.opacity=av?.3:1});
+document.getElementById('tab').textContent=av?'Show All':'Hide All';ui()};
+function ui(){var v=ms.filter(function(m){return m&&m.userData.v}).length,t=ms.filter(function(m){return m}).length;
+document.getElementById('vc').textContent=v;document.getElementById('tc').textContent=t;
+document.getElementById('tab').textContent=v===t?'Hide All':'Show All'}
 
-        // ── Part definitions ──
-        const PARTS = [
-            { file: 'frame.stl',      name: 'Chimera4 LR Frame',          weight: '61g',   color: 0x606060, desc: '178mm wheelbase, 136.8×114.8mm center plate, 4mm carbon fiber' },
-            { file: 'esc.stl',        name: '4-in-1 35A ESC',             weight: '7g',    color: 0xD4A017, desc: 'BLHeli_S, 35A continuous, 20×20mm mount' },
-            { file: 'pixhawk.stl',    name: 'Pixhawk 6C Mini',           weight: '42g',   color: 0x2E7D32, desc: 'PX4 flight controller, 54×39×17mm, MAVLink' },
-            { file: 'cm5.stl',        name: 'CM5 + Waveshare Nano B',    weight: '30g',   color: 0x1565C0, desc: 'BCM2712 quad A76 @ 2.4GHz, 55×41mm carrier, 5V/3A' },
-            { file: 'hailo.stl',      name: 'Hailo-8L + PCIe Adapter',   weight: '10g',   color: 0x1B5E20, desc: '13 TOPS AI accelerator, M.2 2230, tethered via PCIe FFC' },
-            { file: 'mightycam.stl',  name: 'Mightycam',                 weight: '10g',   color: 0x212121, desc: '33×30mm VIO camera, OV9281 global shutter, 160° FOV, USB' },
-            { file: 'sensors.stl',    name: 'Sensors (ToF + UWB + ELRS)',weight: '8g',    color: 0x8E24AA, desc: 'VL53L1X (altitude), DWM3000 (inter-drone), ELRS (kill switch)' },
-            { file: 'motor.stl',      name: '1806 Motor ×4',             weight: '82g',   color: 0x9E9E9E, desc: 'EMAX MT1806 2280KV, 310g thrust each, 12mm mount + 9mm adapter' },
-            { file: 'prop.stl',       name: '4" Propeller ×4',           weight: '12g',   color: 0x424242, desc: 'HQProp 4×4.3×3 (4045), standard (non-bullnose), 4S' },
-            { file: 'guard.stl',      name: 'TPU Prop Guard ×4',         weight: '20g',   color: 0xE65100, desc: '3D-printed TPU rings, 112mm OD, 10mm height, crash protection' },
-            { file: 'battery.stl',    name: '4S 1100mAh LiPo',           weight: '100g',  color: 0xB71C1C, desc: '1100mAh, 75C, XT60, ~5-7 min flight, mounted under frame' },
-            { file: 'pm06.stl',       name: 'PM06 Power Module',         weight: '12g',   color: 0xE53935, desc: '5V/2.5A output, powers Pixhawk from battery' },
-            { file: 'ubec.stl',       name: '5V/5A UBEC',                weight: '5g',    color: 0x212121, desc: '5V/5A step-down, powers CM5+ARK stack from battery' },
-        ];
-
-        // ── Setup scene ──
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a0a0a);
-
-        const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 1, 2000);
-        camera.position.set(250, 180, 300);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.2;
-        container.appendChild(renderer.domElement);
-
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.target.set(0, 40, 0);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.08;
-        controls.minDistance = 80;
-        controls.maxDistance = 600;
-        controls.update();
-
-        // ── Lighting ──
-        const ambientLight = new THREE.AmbientLight(0x404060, 0.6);
-        scene.add(ambientLight);
-
-        const dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
-        dirLight.position.set(200, 300, 200);
-        dirLight.castShadow = true;
-        scene.add(dirLight);
-
-        const fillLight = new THREE.DirectionalLight(0x8888ff, 0.8);
-        fillLight.position.set(-150, 100, -200);
-        scene.add(fillLight);
-
-        const rimLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        rimLight.position.set(0, -100, 200);
-        scene.add(rimLight);
-
-        const hemiLight = new THREE.HemisphereLight(0x8888ff, 0x444422, 0.5);
-        scene.add(hemiLight);
-
-        // ── Grid ──
-        const gridHelper = new THREE.GridHelper(500, 30, 0x333333, 0x222222);
-        gridHelper.position.y = -30;
-        scene.add(gridHelper);
-
-        // ── Bounding box outline ──
-        const bboxGeo = new THREE.BoxGeometry(250, 250, 250);
-        const bboxMat = new THREE.LineBasicMaterial({ color: 0xff3333, transparent: true, opacity: 0.15 });
-        const bboxWire = new THREE.LineSegments(new THREE.EdgesGeometry(bboxGeo), bboxMat);
-        bboxWire.position.set(0, 95, 0);
-        scene.add(bboxWire);
-
-        // ── Load STLs ──
-        const loader = new STLLoader();
-        const meshes = [];
-        let loaded = 0;
-
-        PARTS.forEach((part, idx) => {
-            loader.load(`models/${part.file}`, (geometry) => {
-                geometry.computeVertexNormals();
-                const mat = new THREE.MeshPhysicalMaterial({
-                    color: part.color,
-                    metalness: 0.1,
-                    roughness: 0.6,
-                    clearcoat: 0.05,
-                    envMapIntensity: 0.4,
-                });
-                const mesh = new THREE.Mesh(geometry, mat);
-                mesh.castShadow = true;
-                mesh.receiveShadow = true;
-                mesh.userData = { partIndex: idx, visible: true };
-
-                // Center the geometry
-                geometry.computeBoundingBox();
-                const bb = geometry.boundingBox;
-                const ctr = new THREE.Vector3();
-                bb.getCenter(ctr);
-                mesh.position.sub(ctr);
-
-                scene.add(mesh);
-                meshes[idx] = mesh;
-                loaded++;
-
-                // Update UI
-                document.getElementById('part-count').textContent = PARTS.length;
-                document.getElementById('total-weight').textContent = '454';
-                document.getElementById('twr').textContent = '2.73';
-                updateUI();
-            });
-        });
-
-        // ── Raycaster for clicking ──
-        const raycaster = new THREE.Raycaster();
-        const pointer = new THREE.Vector2();
-        let selectedIdx = -1;
-
-        renderer.domElement.addEventListener('click', (event) => {
-            const rect = renderer.domElement.getBoundingClientRect();
-            pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-            pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-            raycaster.setFromCamera(pointer, camera);
-            const intersects = raycaster.intersectObjects(scene.children);
-
-            if (intersects.length > 0) {
-                const hit = intersects[0].object;
-                if (hit.userData && hit.userData.partIndex !== undefined) {
-                    highlightPart(hit.userData.partIndex);
-                }
-            }
-        });
-
-        function highlightPart(idx) {
-            // Reset all
-            meshes.forEach((m, i) => {
-                if (m) {
-                    m.material.emissive.setHex(0x000000);
-                    m.material.emissiveIntensity = 0;
-                }
-            });
-            document.querySelectorAll('.part-item').forEach(el => el.classList.remove('active'));
-
-            if (idx >= 0 && meshes[idx]) {
-                meshes[idx].material.emissive.setHex(0x4444ff);
-                meshes[idx].material.emissiveIntensity = 0.15;
-                const item = document.querySelector(`[data-part-index="${idx}"]`);
-                if (item) {
-                    item.classList.add('active');
-                    item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-                }
-                selectedIdx = idx;
-            } else {
-                selectedIdx = -1;
-            }
-        }
-
-        // ── Toggle part visibility ──
-        window.togglePart = function(idx) {
-            const mesh = meshes[idx];
-            if (!mesh) return;
-            mesh.visible = !mesh.visible;
-            mesh.userData.visible = mesh.visible;
-            const item = document.querySelector(`[data-part-index="${idx}"]`);
-            if (item) {
-                item.style.opacity = mesh.visible ? '1' : '0.3';
-            }
-            updateUI();
-        };
-
-        window.toggleAll = function() {
-            const anyVisible = meshes.some(m => m && m.userData.visible);
-            meshes.forEach(m => {
-                if (m) {
-                    m.visible = !anyVisible;
-                    m.userData.visible = !anyVisible;
-                }
-            });
-            document.querySelectorAll('.part-item').forEach(el => {
-                el.style.opacity = anyVisible ? '0.3' : '1';
-            });
-            document.getElementById('toggle-all-btn').textContent = anyVisible ? 'Show All' : 'Hide All';
-            updateUI();
-        };
-
-        function updateUI() {
-            const visible = meshes.filter(m => m && m.userData.visible).length;
-            const total = meshes.filter(m => m).length;
-            document.getElementById('visible-count').textContent = visible;
-            document.getElementById('total-count').textContent = total;
-            document.getElementById('toggle-all-btn').textContent = 
-                visible === total ? 'Hide All' : 'Show All';
-        }
-
-        // ── Build parts list UI ──
-        function buildPartsList() {
-            const list = document.getElementById('parts-list');
-            PARTS.forEach((part, idx) => {
-                const div = document.createElement('div');
-                div.className = 'part-item';
-                div.setAttribute('data-part-index', idx);
-                div.innerHTML = `
-                    <span class="color-dot" style="background:#${part.color.toString(16).padStart(6,'0')}"></span>
-                    <span class="part-name">${part.name}</span>
-                    <span class="part-weight">${part.weight}</span>
-                `;
-                div.onclick = () => {
-                    highlightPart(idx);
-                    togglePart(idx);
-                };
-                list.appendChild(div);
-            });
-            document.getElementById('total-count').textContent = PARTS.length;
-            document.getElementById('visible-count').textContent = PARTS.length;
-        }
-        buildPartsList();
-
-        // ── Resize ──
-        window.addEventListener('resize', () => {
-            const w = container.clientWidth;
-            const h = container.clientHeight;
-            camera.aspect = w / h;
-            camera.updateProjectionMatrix();
-            renderer.setSize(w, h);
-        });
-
-        // ── Animate ──
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
-    </script>
+// Build parts list
+var pl=document.getElementById('pl');
+PARTS.forEach(function(p,i){
+var d=document.createElement('div');d.className='p';d.setAttribute('data-i',i);
+d.innerHTML='<span class="cd" style="background:#'+p.c.toString(16).padStart(6,'0')+'"></span><span style="flex:1;font-size:12px">'+p.name+'</span><span style="font-size:10px;color:#666">'+p.w+'</span>';
+d.onclick=function(){hl(i);tp(i)};
+pl.appendChild(d);
+});
+document.getElementById('tc').textContent=PARTS.length;document.getElementById('vc').textContent=PARTS.length;
+</script>
 </body>
 </html>
