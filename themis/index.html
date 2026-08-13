@@ -121,7 +121,6 @@ geom.computeVertexNormals();
 const mat=new THREE.MeshPhysicalMaterial({color:p.c,metalness:0.1,roughness:0.5,clearcoat:0.05});
 const mesh=new THREE.Mesh(geom,mat);
 mesh.castShadow=true;mesh.receiveShadow=true;mesh.userData={idx:i,vis:true};
-geom.computeBoundingBox();const bb=geom.boundingBox;const ctr=new THREE.Vector3();bb.getCenter(ctr);mesh.position.sub(ctr);
 scene.add(mesh);meshes[i]=mesh;loaded++;
 document.getElementById('pc').textContent=PARTS.length;updateUI();
 if(loaded===PARTS.length)document.getElementById('lo').style.display='none';
