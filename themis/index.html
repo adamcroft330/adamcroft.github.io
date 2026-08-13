@@ -94,12 +94,12 @@ const controls=new OrbitControls(camera,renderer.domElement);
 controls.target.set(0,12,0);controls.enableDamping=true;controls.dampingFactor=0.08;
 controls.minDistance=80;controls.maxDistance=600;controls.update();
 
-scene.add(new THREE.AmbientLight(0x8888aa,1.2));
-const dl=new THREE.DirectionalLight(0xffffff,4.0);dl.position.set(150,250,200);dl.castShadow=true;scene.add(dl);
-const fl=new THREE.DirectionalLight(0x88bbff,1.5);fl.position.set(-200,100,-150);scene.add(fl);
-const rl=new THREE.DirectionalLight(0xffffff,0.8);rl.position.set(0,-120,200);scene.add(rl);
-const bl=new THREE.DirectionalLight(0xaaccff,0.6);bl.position.set(0,-100,0);scene.add(bl);
-scene.add(new THREE.HemisphereLight(0x8888ff,0x88aa66,0.8));
+scene.add(new THREE.AmbientLight(0xffffff,1.8));
+const dl=new THREE.DirectionalLight(0xffffff,1.5);dl.position.set(150,200,150);scene.add(dl);
+const d2=new THREE.DirectionalLight(0xffffff,1.5);d2.position.set(-150,100,-150);scene.add(d2);
+const d3=new THREE.DirectionalLight(0xffffff,1.5);d3.position.set(-150,200,150);scene.add(d3);
+const d4=new THREE.DirectionalLight(0xffffff,1.5);d4.position.set(150,100,-150);scene.add(d4);
+const d5=new THREE.DirectionalLight(0xffffff,1.0);d5.position.set(0,-100,0);scene.add(d5);
 
 const grid=new THREE.GridHelper(500,30,0x444444,0x333333);grid.position.y=-30;scene.add(grid);
 
