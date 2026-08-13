@@ -36,16 +36,16 @@ body{font-family:'JetBrains Mono',monospace;font-weight:300;background:#0a0a0a;c
 <a href="/" style="position:fixed;top:12px;left:12px;z-index:20;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:4px;color:#aaa;text-decoration:none;font-size:12px">← Back</a>
 <div id="h">
 <div style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:300">Themis Control-Stack Quad</div>
-<div style="font-size:11px;color:#666;margin-top:2px"><span id="pc">0</span> components · 454g AUW · TWR 2.73:1 · 250mm cube</div>
+    <div style="font-size:11px;color:#666;margin-top:2px"><span id="pc">0</span> components · 381g AUW · TWR 3.25:1 · 250mm cube</div>
 </div>
 <div id="c"></div>
 <div id="s">
-<div class="sg">
-<div class="sb"><div class="sv">$690</div><div class="sl">EST. BOM</div></div>
-<div class="sb"><div class="sv">2.73:1</div><div class="sl">TWR</div></div>
-<div class="sb"><div class="sv">238×110mm</div><div class="sl">ENVELOPE</div></div>
-<div class="sb"><div class="sv">454g</div><div class="sl">AUW</div></div>
-</div>
+        <div class="sg">
+            <div class="sb"><div class="sv">$690</div><div class="sl">EST. BOM</div></div>
+            <div class="sb"><div class="sv">3.25:1</div><div class="sl">TWR</div></div>
+            <div class="sb"><div class="sv">250×110mm</div><div class="sl">ENVELOPE</div></div>
+            <div class="sb"><div class="sv">381g</div><div class="sl">AUW</div></div>
+        </div>
 <div style="font-size:10px;color:#555;display:flex;justify-content:space-between;margin:10px 0 6px">
 <span>Parts (<span id="vc">0</span>/<span id="tc">0</span>)</span>
 <span style="cursor:pointer;color:#888" onclick="ta()" id="tab">Hide All</span>
@@ -67,19 +67,14 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 
 const PARTS=[
-{file:'models/frame.stl',name:'Chimera4 LR Frame',w:'61g',c:0x606060},
+{file:'models/plate.stl',name:'Custom Frame Plate (PETG)',w:'55g',c:0x606060},
 {file:'models/esc.stl',name:'4-in-1 35A ESC',w:'7g',c:0xD4A017},
 {file:'models/pixhawk.stl',name:'Pixhawk 6C Mini',w:'42g',c:0x2E7D32},
 {file:'models/cm5.stl',name:'CM5 + Waveshare Nano B',w:'30g',c:0x1565C0},
-{file:'models/hailo.stl',name:'Hailo-8L + PCIe Adapter',w:'10g',c:0x1B5E20},
 {file:'models/cam.stl',name:'Mightycam',w:'10g',c:0x212121},
-{file:'models/sensors.stl',name:'Sensors (ToF+UWB+ELRS)',w:'8g',c:0x8E24AA},
 {file:'models/motor.stl',name:'1806 Motor x4',w:'82g',c:0x9E9E9E},
 {file:'models/prop.stl',name:'4" Propeller x4',w:'12g',c:0x424242},
 {file:'models/guard.stl',name:'TPU Prop Guard x4',w:'20g',c:0xE65100},
-{file:'models/battery.stl',name:'4S 1100mAh LiPo',w:'100g',c:0xB71C1C},
-{file:'models/pm06.stl',name:'PM06 Power Module',w:'12g',c:0xE53935},
-{file:'models/ubec.stl',name:'5V/5A UBEC',w:'5g',c:0x212121},
 ];
 
 const container=document.getElementById('c');
@@ -96,7 +91,7 @@ renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.
 container.appendChild(renderer.domElement);
 
 const controls=new OrbitControls(camera,renderer.domElement);
-controls.target.set(0,15,0);controls.enableDamping=true;controls.dampingFactor=0.08;
+controls.target.set(0,12,0);controls.enableDamping=true;controls.dampingFactor=0.08;
 controls.minDistance=80;controls.maxDistance=600;controls.update();
 
 scene.add(new THREE.AmbientLight(0x404060,0.6));
@@ -109,7 +104,7 @@ const grid=new THREE.GridHelper(500,30,0x333333,0x222222);grid.position.y=-30;sc
 
 const bbox=new THREE.BoxGeometry(250,250,250);
 const bframe=new THREE.LineSegments(new THREE.EdgesGeometry(bbox),new THREE.LineBasicMaterial({color:0xff3333,transparent:true,opacity:0.15}));
-bframe.position.set(0,15,0);scene.add(bframe);
+bframe.position.set(0,12,0);scene.add(bframe);
 
 const loader=new STLLoader();
 const meshes=[];
