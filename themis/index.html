@@ -24,11 +24,7 @@ body{font-family:'JetBrains Mono',monospace;font-weight:300;background:#0a0a0a;c
 #sp{width:32px;height:32px;border:2px solid rgba(255,255,255,0.1);border-top-color:#fff;border-radius:50%;animation:s .8s linear infinite}
 @keyframes s{to{transform:rotate(360deg)}}
 #er{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:30;background:rgba(200,50,50,0.85);padding:6px 14px;border-radius:4px;font-size:11px;display:none;white-space:nowrap}
-#ruler{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:40;pointer-events:none;display:none;width:320px}
-#ruler .bar{position:relative;height:16px}
-#ruler .tick{position:absolute;bottom:0;width:1px;background:#aaa}
-#ruler .tick.m{background:#eee;height:7px}
-#ruler .lbl{position:absolute;bottom:-14px;transform:translateX(-50%);color:#aaa;font-size:9px;font-family:'JetBrains Mono',monospace;white-space:nowrap}
+/* ruler replaced by 3D in-scene ruler */
 @media(max-width:768px){
 #s{width:100%;height:40%;top:auto;bottom:0;border-left:none;border-top:1px solid rgba(255,255,255,0.08);padding:10px}
 #h{width:100%}
@@ -38,7 +34,6 @@ body{font-family:'JetBrains Mono',monospace;font-weight:300;background:#0a0a0a;c
 <body>
 <div id="lo"><div id="sp"></div><div style="font-size:12px;color:#666">Loading 3D models…</div></div>
     <div id="er"></div>
-    <div id="ruler"><div class="bar" id="ruler-bar"></div></div>
     <a href="/" style="position:fixed;top:12px;left:12px;z-index:20;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:4px;color:#aaa;text-decoration:none;font-size:12px">← Back</a>
 <div id="h">
 <div style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:300">Themis Control-Stack Quad</div>
@@ -187,26 +182,23 @@ pl.appendChild(d);
 });
 document.getElementById('tc').textContent=PARTS.length;document.getElementById('vc').textContent=PARTS.length;
 
-// Static CSS scale ruler — reference bar, not dynamically scaled
-const rulerEl=document.getElementById('ruler');
-const rulerBar=document.getElementById('ruler-bar');
-rulerBar.innerHTML='';
-for(let mm=0; mm<=250; mm+=12.5){
-    const t=document.createElement('div');
-    t.className='tick'+(mm%50===0?' m':'');
-    t.style.left=(mm/250*100)+'%';
-    t.style.height=mm%50===0?7:(mm%25===0?5:3)+'px';
-    t.style.width=mm%50===0?2:1;
-    rulerBar.appendChild(t);
-}
-for(let mm=0; mm<=250; mm+=50){
-    const l=document.createElement('div');
-    l.className='lbl';
-    l.style.left=(mm/250*100)+'%';
-    l.textContent=mm;
-    rulerBar.appendChild(l);
-}
-rulerEl.style.display='block';
+// 3D scale ruler (in-scene, positioned at front face of bounding box)
+(function buildRuler3d(){
+    const verts=[]; const steps=250/12.5; // 20 divisions
+    const barY=12, barZ=125; // front face of 250mm cube at drone mid-height
+    // Horizontal bar
+    verts.push(-125,barY,barZ, 125,barY,barZ);
+    // Ticks every 12.5mm
+    for(let mm=0; mm<=250; mm+=12.5){
+        const x=-125+mm;
+        const h=mm%50===0?12:(mm%25===0?8:5);
+        verts.push(x,barY-h/2,barZ, x,barY+h/2,barZ);
+    }
+    const geo=new THREE.BufferGeometry();
+    geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
+    const mat=new THREE.LineBasicMaterial({color:0x88aacc,transparent:true,opacity:0.6});
+    scene.add(new THREE.LineSegments(geo,mat));
+})();
 
 function anim(){requestAnimationFrame(anim);controls.update();renderer.render(scene,camera)}
 anim();
