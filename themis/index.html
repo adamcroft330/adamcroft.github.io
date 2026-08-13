@@ -24,6 +24,11 @@ body{font-family:'JetBrains Mono',monospace;font-weight:300;background:#0a0a0a;c
 #sp{width:32px;height:32px;border:2px solid rgba(255,255,255,0.1);border-top-color:#fff;border-radius:50%;animation:s .8s linear infinite}
 @keyframes s{to{transform:rotate(360deg)}}
 #er{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:30;background:rgba(200,50,50,0.85);padding:6px 14px;border-radius:4px;font-size:11px;display:none;white-space:nowrap}
+#ruler{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:40;pointer-events:none;display:none}
+#ruler .bar{position:relative;height:16px}
+#ruler .tick{position:absolute;bottom:0;width:1px;background:#aaa}
+#ruler .tick.m{background:#eee;height:7px}
+#ruler .lbl{position:absolute;bottom:-14px;transform:translateX(-50%);color:#aaa;font-size:9px;font-family:'JetBrains Mono',monospace;white-space:nowrap}
 @media(max-width:768px){
 #s{width:100%;height:40%;top:auto;bottom:0;border-left:none;border-top:1px solid rgba(255,255,255,0.08);padding:10px}
 #h{width:100%}
@@ -32,8 +37,9 @@ body{font-family:'JetBrains Mono',monospace;font-weight:300;background:#0a0a0a;c
 </head>
 <body>
 <div id="lo"><div id="sp"></div><div style="font-size:12px;color:#666">Loading 3D models…</div></div>
-<div id="er"></div>
-<a href="/" style="position:fixed;top:12px;left:12px;z-index:20;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:4px;color:#aaa;text-decoration:none;font-size:12px">← Back</a>
+    <div id="er"></div>
+    <div id="ruler"><div class="bar" id="ruler-bar"></div></div>
+    <a href="/" style="position:fixed;top:12px;left:12px;z-index:20;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:4px;color:#aaa;text-decoration:none;font-size:12px">← Back</a>
 <div id="h">
 <div style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:300">Themis Control-Stack Quad</div>
     <div style="font-size:11px;color:#666;margin-top:2px"><span id="pc">0</span> components · 381g AUW · TWR 3.25:1 · 250mm cube</div>
@@ -103,24 +109,7 @@ const d5=new THREE.DirectionalLight(0xffffff,1.0);d5.position.set(0,-100,0);scen
 
 const grid=new THREE.GridHelper(500,30,0x444444,0x333333);grid.position.y=-30;scene.add(grid);
 
-// Scale ruler along X axis at bottom
-function addRuler() {
-    const rulerMat = new THREE.LineBasicMaterial({color:0x888888, transparent:true, opacity:0.5});
-    const tickMat = new THREE.LineBasicMaterial({color:0xaaaaaa, transparent:true, opacity:0.7});
-    for (let x = -125; x <= 125; x += 50) {
-        const geo = new THREE.BufferGeometry();
-        const verts = new Float32Array([x, -35, 0, x, -28, 0]);
-        geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
-        const line = new THREE.Line(geo, x % 100 === 0 ? tickMat : rulerMat);
-        scene.add(line);
-    }
-    // Main axis line
-    const axisGeo = new THREE.BufferGeometry();
-    const axisVerts = new Float32Array([-125, -28, 0, 125, -28, 0]);
-    axisGeo.setAttribute('position', new THREE.BufferAttribute(axisVerts, 3));
-    scene.add(new THREE.Line(axisGeo, new THREE.LineBasicMaterial({color:0x888888, transparent:true, opacity:0.3})));
-}
-addRuler();
+// Screen-anchored ruler removed — replaced by HTML overlay below
 
 const bbox=new THREE.BoxGeometry(250,250,250);
 const bframe=new THREE.LineSegments(new THREE.EdgesGeometry(bbox),new THREE.LineBasicMaterial({color:0xff3333,transparent:true,opacity:0.15}));
@@ -198,8 +187,57 @@ pl.appendChild(d);
 });
 document.getElementById('tc').textContent=PARTS.length;document.getElementById('vc').textContent=PARTS.length;
 
+// Build screen-anchored scale ruler (projects world 250mm bbox edge to screen px)
+const rulerEl=document.getElementById('ruler');
+const rulerBar=document.getElementById('ruler-bar');
+function buildRuler(spanPx){
+    // Rebuild ticks: 0..250mm at 12.5mm minor, 25mm mid, 50mm major
+    rulerBar.innerHTML='';
+    const majorW=3, minorW=1;
+    for(let mm=0; mm<=250; mm+=12.5){
+        const frac=mm/250;
+        const t=document.createElement('div');
+        t.className='tick'+(mm%50===0?' m':'');
+        t.style.left=(frac*100)+'%';
+        t.style.height=mm%50===0?7:(mm%25===0?5:3)+'px';
+        t.style.width=mm%50===0?2:1;
+        rulerBar.appendChild(t);
+    }
+    // Labels every 50mm
+    for(let mm=0; mm<=250; mm+=50){
+        const l=document.createElement('div');
+        l.className='lbl';
+        l.style.left=(mm/250*100)+'%';
+        l.textContent=mm;
+        rulerBar.appendChild(l);
+    }
+}
+buildRuler(0);
+// World-space endpoints of the 250mm bbox at its center height (y=12)
+const wrpA=new THREE.Vector3(-125,12,0);
+const wrpB=new THREE.Vector3(125,12,0);
+
+function updateRuler(){
+    const vA=wrpA.clone().project(camera);
+    const vB=wrpB.clone().project(camera);
+    if(vA.z>-1&&vB.z>-1){
+        const sx=(vA.x+1)/2*container.clientWidth;
+        const sxe=(vB.x+1)/2*container.clientWidth;
+        const span=Math.abs(sxe-sx);
+        if(span>10&&span<container.clientWidth){
+            rulerEl.style.display='block';
+            rulerBar.style.width=span+'px';
+            rulerEl.style.transform='translateX(-50%)';
+        }else{
+            rulerEl.style.display='none';
+        }
+    }else{
+        rulerEl.style.display='none';
+    }
+}
+
 // Animate
-function anim(){requestAnimationFrame(anim);controls.update();renderer.render(scene,camera)}
+function anim(){requestAnimationFrame(anim);controls.update();updateRuler();renderer.render(scene,camera)}
 anim();
 </script>
 </body>
