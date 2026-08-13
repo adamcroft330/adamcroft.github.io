@@ -86,7 +86,15 @@ const PARTS=[
 const container=document.getElementById('c');
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x0a0a0a);
 
-const camera=new THREE.PerspectiveCamera(30,container.clientWidth/container.clientHeight,1,2000);
+const FRUSTUM_H=400; // visible height in world mm (ortho — uniform scale everywhere)
+const camera=new THREE.OrthographicCamera(-1,1,1,-1,1,1,2000);
+// Scale frustum to aspect ratio
+(function fit(){
+    const w=container.clientWidth,h=container.clientHeight,aspect=w/h;
+    camera.left=(-FRUSTUM_H*aspect)/2;camera.right=(FRUSTUM_H*aspect)/2;
+    camera.top=FRUSTUM_H/2;camera.bottom=-FRUSTUM_H/2;
+    camera.updateProjectionMatrix();
+})();
 camera.position.set(260,140,260);
 
 const renderer=new THREE.WebGLRenderer({antialias:true});
@@ -98,7 +106,8 @@ container.appendChild(renderer.domElement);
 
 const controls=new OrbitControls(camera,renderer.domElement);
 controls.target.set(0,12,0);controls.enableDamping=true;controls.dampingFactor=0.08;
-controls.minDistance=80;controls.maxDistance=600;controls.update();
+controls.minZoom=0.15;controls.maxZoom=4;controls.enablePan=true;controls.update();
+scene.add(camera); // ensure matrixWorld updates each frame
 
 scene.add(new THREE.AmbientLight(0xffffff,1.8));
 const dl=new THREE.DirectionalLight(0xffffff,1.5);dl.position.set(150,200,150);scene.add(dl);
@@ -115,27 +124,12 @@ const bbox=new THREE.BoxGeometry(250,250,250);
 const bframe=new THREE.LineSegments(new THREE.EdgesGeometry(bbox),new THREE.LineBasicMaterial({color:0xff3333,transparent:true,opacity:0.15}));
 bframe.position.set(0,12,0);scene.add(bframe);
 
-const loader=new STLLoader();
 const meshes=[];
-let loaded=0;
-
-function showError(msg){
-const el=document.getElementById('er');el.textContent=msg;el.style.display='block';
-setTimeout(()=>{el.style.display='none'},8000);
-}
-
-PARTS.forEach((p,i)=>{
-loader.load(p.file,(geom)=>{
-geom.computeVertexNormals();
-const mat=new THREE.MeshPhysicalMaterial({color:p.c,metalness:0.1,roughness:0.5,clearcoat:0.05});
-const mesh=new THREE.Mesh(geom,mat);
-mesh.castShadow=true;mesh.receiveShadow=true;mesh.userData={idx:i,vis:true};
-scene.add(mesh);meshes[i]=mesh;loaded++;
-document.getElementById('pc').textContent=PARTS.length;updateUI();
-if(loaded===PARTS.length)document.getElementById('lo').style.display='none';
-},null,(err)=>{showError('Failed: '+p.file);loaded++;if(loaded===PARTS.length)document.getElementById('lo').style.display='none'});
-});
-
+const probe=new THREE.Mesh(new THREE.BoxGeometry(120,30,120),new THREE.MeshStandardMaterial({color:0xff3333,roughness:0.5}));
+probe.position.set(0,15,0);scene.add(probe);
+document.getElementById('lo').style.display='none';
+document.getElementById('pc').textContent='P';
+updateUI();
 const raycaster=new THREE.Raycaster();const pointer=new THREE.Vector2();
 renderer.domElement.addEventListener('click',(e)=>{
 const rect=renderer.domElement.getBoundingClientRect();
@@ -187,28 +181,58 @@ pl.appendChild(d);
 });
 document.getElementById('tc').textContent=PARTS.length;document.getElementById('vc').textContent=PARTS.length;
 
-// Static CSS scale ruler — reference bar, not dynamically scaled
+// Screen-anchored scale ruler. Ortho camera => uniform mm/px across screen,
+// so the ruler width is exact from every viewing angle.
 const rulerEl=document.getElementById('ruler');
 const rulerBar=document.getElementById('ruler-bar');
-rulerBar.innerHTML='';
-for(let mm=0; mm<=250; mm+=12.5){
-    const t=document.createElement('div');
-    t.className='tick'+(mm%50===0?' m':'');
-    t.style.left=(mm/250*100)+'%';
-    t.style.height=mm%50===0?7:(mm%25===0?5:3)+'px';
-    t.style.width=mm%50===0?2:1;
-    rulerBar.appendChild(t);
+function buildRuler(){
+    rulerBar.innerHTML='';
+    for(let mm=0; mm<=250; mm+=12.5){
+        const t=document.createElement('div');
+        t.className='tick'+(mm%50===0?' m':'');
+        t.style.left=(mm/250*100)+'%';
+        t.style.height=mm%50===0?7:(mm%25===0?5:3)+'px';
+        t.style.width=mm%50===0?2:1;
+        rulerBar.appendChild(t);
+    }
+    for(let mm=0; mm<=250; mm+=50){
+        const l=document.createElement('div');
+        l.className='lbl';
+        l.style.left=(mm/250*100)+'%';
+        l.textContent=mm;
+        rulerBar.appendChild(l);
+    }
 }
-for(let mm=0; mm<=250; mm+=50){
-    const l=document.createElement('div');
-    l.className='lbl';
-    l.style.left=(mm/250*100)+'%';
-    l.textContent=mm;
-    rulerBar.appendChild(l);
-}
-rulerEl.style.display='block';
+buildRuler();
 
-function anim(){requestAnimationFrame(anim);controls.update();renderer.render(scene,camera)}
+function updateRuler(){
+    // 250mm in px on screen: px_per_mm = canvasPxY / (frustum height / zoom)
+    const pxPerMm=container.clientHeight/(FRUSTUM_H/controls.zoom);
+    const span=250*pxPerMm;
+    if(span>10&&span<container.clientWidth*2){
+        rulerEl.style.display='block';
+        rulerBar.style.width=span+'px';
+    }else{
+        rulerEl.style.display='none';
+    }
+}
+
+// Animate
+window.addEventListener('resize',()=>{
+    const w=container.clientWidth,h=container.clientHeight,aspect=w/h;
+    camera.left=(-FRUSTUM_H*aspect)/2;camera.right=(FRUSTUM_H*aspect)/2;
+    camera.top=FRUSTUM_H/2;camera.bottom=-FRUSTUM_H/2;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+});
+function anim(){
+    requestAnimationFrame(anim);
+    controls.update();
+    camera.updateMatrixWorld(true);
+    camera.matrixWorldInverse.copy(camera.matrixWorld).invert();
+    updateRuler();
+    renderer.render(scene,camera);
+}
 anim();
 </script>
 </body>
