@@ -9,12 +9,42 @@
     <style>
         .font-space { font-family: 'Space Grotesk', sans-serif; }
         body { font-family: 'JetBrains Mono', monospace; font-weight: 300; background-color: #111111; color: rgba(255,255,255,0.92); }
+        .bg-dark { background-color: #111111; }
         .bg-darker { background-color: #0a0a0a; }
+        .text-soft-white { color: rgba(255,255,255,0.92); }
+        .tape { color: #4aa829; }
+        #viewer { position: relative; height: 70vh; min-height: 420px; max-height: 760px; background: #0a0a0a; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+        #viewer canvas { display: block; width: 100% !important; height: 100% !important; }
+        #vlegend { position: absolute; left: 12px; bottom: 10px; font-size: 10px; color: #777; display: flex; gap: 14px; flex-wrap: wrap; pointer-events: none; }
+        #vlegend span::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; background: var(--c); }
+        #vhint { position: absolute; right: 12px; top: 10px; font-size: 10px; color: #555; pointer-events: none; }
+        .ctl { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; color: #ddd; padding: 6px 10px; font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+        .ctl:focus { outline: none; border-color: rgba(255,255,255,0.35); }
+        .btn { cursor: pointer; transition: border-color .15s, background .15s; }
+        .btn:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.08); }
+        .btn.primary { border-color: #4aa829; color: #8fe06a; }
+        .stat { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; padding: 8px 10px; }
+        .stat .v { font-size: 15px; color: #fff; white-space: nowrap; }
+        .stat .l { font-size: 9px; color: #666; margin-top: 2px; letter-spacing: .05em; }
+        #elist { max-height: 300px; overflow-y: auto; font-size: 12px; }
+        #elist div { padding: 3px 8px; border-radius: 3px; cursor: pointer; display: flex; gap: 8px; color: #999; }
+        #elist div:hover { background: rgba(255,255,255,0.05); color: #eee; }
+        #elist div.ob { color: #ccc; }
+        #elist div .n { color: #555; width: 22px; flex-shrink: 0; text-align: right; }
+        #elist div .tag { align-self: flex-start; font-size: 9px; padding: 1px 5px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.12); color: #888; margin-left: auto; white-space: nowrap; }
+        table.spec td, table.spec th { vertical-align: top; }
+        code { font-size: 11px; color: #bbb; background: rgba(255,255,255,0.05); padding: 1px 5px; border-radius: 3px; }
+        .card { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 20px; }
+        .card h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 300; color: #fff; margin-bottom: 6px; }
+        .card p { font-size: 12px; color: #9a9a9a; line-height: 1.6; }
+        .card .dims { font-size: 11px; color: #777; margin-top: 8px; }
+        .dl { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #aaa; border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 6px 10px; text-decoration: none; }
+        .dl:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
     </style>
 </head>
 <body>
     <header class="bg-dark border-b border-gray-800">
-        <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl font-space font-light text-soft-white tracking-tight">
                     <a href="/" class="text-gray-300 hover:text-soft-white transition-colors">Adam Croft</a>
@@ -28,123 +58,445 @@
     </header>
 
     <section class="bg-dark">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <p class="text-xs text-gray-500 mb-4 font-mono">PHYSICAL BUILD · UNDER CONSTRUCTION</p>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
+            <p class="text-xs text-gray-500 mb-4 font-mono">2026 TOMORROW TRIALS · COMPETITION COURSE · ADDENDUM SPEC</p>
             <h2 class="text-4xl font-space font-light text-soft-white tracking-tight">Track Model</h2>
-            <p class="mt-4 max-w-2xl text-gray-400 font-mono font-light leading-relaxed">
-                A physical tape-and-obstacle track for end-to-end hardware testing: the drone sees the
-                tape with its camera, the pipeline plans and fights the swarm, and the airframe navigates
-                tunnels and blocks — exactly what the sim models.
+            <p class="mt-4 max-w-3xl text-gray-400 font-mono font-light leading-relaxed">
+                A generated 3D model of the competition course: a <span class="tape">green-tape</span> corridor 900&nbsp;mm wide with
+                gentle bends, 90° turns, three kinds of 900→600&nbsp;mm narrowing and an overhead hurdle, from start box to
+                finish box. Every seed is a different course that satisfies the same spec, so the swarm can be tuned against
+                many layouts before race day. Same generator, same seeds, in the sim and in CAD.
             </p>
-            <div class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-700 text-xs text-gray-400 font-mono">
-                <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span> layout + components in progress
+        </div>
+    </section>
+
+    <!-- ======================== VIEWER ======================== -->
+    <section class="bg-dark pb-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <label class="text-xs text-gray-500">seed</label>
+                <input id="seed" class="ctl w-24" type="number" min="0" step="1" value="1337">
+                <button id="regen" class="ctl btn primary">Regenerate</button>
+                <button id="random" class="ctl btn">Random course</button>
+                <span class="text-xs text-gray-600 ml-2">room</span>
+                <input id="roomW" class="ctl w-16" type="number" min="4" step="0.5" value="15" title="room width (m)">
+                <span class="text-xs text-gray-600">×</span>
+                <input id="roomD" class="ctl w-16" type="number" min="4" step="0.5" value="10" title="room depth (m)">
+                <span class="text-xs text-gray-600">m</span>
+                <span class="flex-1"></span>
+                <label class="text-xs text-gray-500 flex items-center gap-1"><input id="tPath" type="checkbox" checked> flight path</label>
+                <label class="text-xs text-gray-500 flex items-center gap-1"><input id="tDrones" type="checkbox" checked> drones</label>
+                <label class="text-xs text-gray-500 flex items-center gap-1"><input id="tLabels" type="checkbox" checked> labels</label>
+                <button id="dlJson" class="ctl btn">↓ JSON</button>
+                <button id="dlStl" class="ctl btn">↓ STL</button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                <div class="lg:col-span-3">
+                    <div id="viewer">
+                        <div id="vhint">drag · orbit &nbsp; scroll · zoom &nbsp; right-drag · pan</div>
+                        <div id="vlegend">
+                            <span style="--c:#4aa829">tape</span>
+                            <span style="--c:#60a5fa">flight path (target height)</span>
+                            <span style="--c:#2f6fb3">drones, 250 mm, box formation</span>
+                            <span style="--c:#bdbdbd">hurdle</span>
+                        </div>
+                    </div>
+                    <div id="vmsg" class="text-xs text-yellow-500 mt-2 h-4"></div>
+                </div>
+                <div>
+                    <div class="grid grid-cols-2 gap-2 mb-3">
+                        <div class="stat"><div class="v" id="sLen">–</div><div class="l">COURSE LENGTH</div></div>
+                        <div class="stat"><div class="v" id="sTape">–</div><div class="l">TAPE</div></div>
+                        <div class="stat"><div class="v" id="sExt" style="font-size:13px">–</div><div class="l">FOOTPRINT (M)</div></div>
+                        <div class="stat"><div class="v" id="sObs">–</div><div class="l">OBSTACLES</div></div>
+                    </div>
+                    <div class="text-xs text-gray-600 mb-1 flex justify-between"><span>Elements (start → finish)</span><span id="sAtt"></span></div>
+                    <div id="elist" class="bg-darker rounded border border-gray-800 py-1"></div>
+                    <p class="text-xs text-gray-600 mt-2">Click an element to look at it. Share a course with <code id="shareUrl">?seed=1337</code>.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="py-12 bg-dark">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-2xl font-space font-light text-soft-white mb-6 tracking-tight">Course spec (draft)</h3>
+    <!-- ======================== SPEC ======================== -->
+    <section class="py-12 bg-dark border-t border-gray-900">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-space font-light text-soft-white mb-2 tracking-tight">Course spec (competition addendum)</h3>
+            <p class="text-sm text-gray-500 mb-6">Fixed by the brief. The addendum supersedes the obstacle list in the main brief; only these elements are modelled.</p>
             <div class="overflow-x-auto">
-                <table class="w-full text-sm font-mono">
+                <table class="spec w-full text-sm font-mono">
                     <thead>
                         <tr class="border-b border-gray-800 text-left text-gray-500">
-                            <th class="py-3 pr-6 font-light">Element</th>
-                            <th class="py-3 pr-6 font-light">Source (racing-sim)</th>
-                            <th class="py-3 pr-6 font-light">Model track</th>
-                            <th class="py-3 font-light">Notes</th>
+                            <th class="py-3 pr-6 font-light">Item</th>
+                            <th class="py-3 pr-6 font-light">Spec</th>
+                            <th class="py-3 font-light">In the model</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-400">
-                        <tr class="border-b border-gray-900">
-                            <td class="py-3 pr-6">Track size</td>
-                            <td class="py-3 pr-6">radius 45 m</td>
-                            <td class="py-3 pr-6">~4.5–6 m overall</td>
-                            <td class="py-3">1:10 scale of the sim course</td>
-                        </tr>
-                        <tr class="border-b border-gray-900">
-                            <td class="py-3 pr-6">Half-lane</td>
-                            <td class="py-3 pr-6">5 m (10 m lane)</td>
-                            <td class="py-3 pr-6">0.5 m half-lane</td>
-                            <td class="py-3">1 m wide tape corridor</td>
-                        </tr>
-                        <tr class="border-b border-gray-900">
-                            <td class="py-3 pr-6">Vertices</td>
-                            <td class="py-3 pr-6">7 (5–12)</td>
-                            <td class="py-3 pr-6">5–7</td>
-                            <td class="py-3">polygon corners → straights & turns</td>
-                        </tr>
-                        <tr class="border-b border-gray-900">
-                            <td class="py-3 pr-6">Turn radii</td>
-                            <td class="py-3 pr-6">4–12 m</td>
-                            <td class="py-3 pr-6">0.4–1.2 m</td>
-                            <td class="py-3">filleted corners</td>
-                        </tr>
-                        <tr class="border-b border-gray-900">
-                            <td class="py-3 pr-6">Obstacles</td>
-                            <td class="py-3 pr-6">8 · tunnel + block</td>
-                            <td class="py-3 pr-6">4–8 total</td>
-                            <td class="py-3">1 tunnel + blocks on straights/turns</td>
-                        </tr>
-                        <tr class="border-b border-gray-900">
-                            <td class="py-3 pr-6">Tunnel</td>
-                            <td class="py-3 pr-6">chute, forces single file</td>
-                            <td class="py-3 pr-6">~1 m long, 1.4 m wide</td>
-                            <td class="py-3">side rails + ceiling, tape through</td>
-                        </tr>
-                        <tr class="border-b border-gray-900">
-                            <td class="py-3 pr-6">Blocks</td>
-                            <td class="py-3 pr-6">solid, detour</td>
-                            <td class="py-3 pr-6">0.3 × 0.3 × 0.15 m foam</td>
-                            <td class="py-3">offset lateral spread ±0.16 m</td>
-                        </tr>
-                        <tr class="border-b border-gray-900">
-                            <td class="py-3 pr-6">Guidance</td>
-                            <td class="py-3 pr-6">tape perception</td>
-                            <td class="py-3 pr-6">50 mm colored tape edges</td>
-                            <td class="py-3">contrast against floor for OpenCV</td>
-                        </tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Track marking</td><td class="py-3 pr-6">Green decorators tape on the floor; drones stay inside or are penalised</td><td class="py-3">50 mm tape, widths measured tape centre to tape centre</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Default width</td><td class="py-3 pr-6">900 mm</td><td class="py-3">900 mm</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Gentle bend</td><td class="py-3 pr-6">Up to 45°, several, both directions</td><td class="py-3">15–45° kinks in 5° steps; ≥1 left and ≥1 right, plus 0–3 extra</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">90° turn</td><td class="py-3 pr-6">Both directions, several</td><td class="py-3">Sharp 90° corners; ≥1 left and ≥1 right, plus 0–2 extra</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Narrowing</td><td class="py-3 pr-6">900 → 600 mm at 45°; right-hand, left-hand and both-sides variants; straight while narrowed</td><td class="py-3">All three in every course; 300 mm (single side) or 150 mm (both) tapers, 1.2–2.4 m narrowed run</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Overhead hurdle</td><td class="py-3 pr-6">Ramp with a green down-arrow guides the drones under a barrier; the inverse ramp guides them back up</td><td class="py-3">Hanging wedge + floor hill, 400 mm each at 45°, 0.8–1.2 m level run between — see below</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Flight height</td><td class="py-3 pr-6">1000 mm ± 200 mm; hard max 1500 mm (kill switch)</td><td class="py-3">Blue flight-path line at 1000 mm, dipping to 600 mm under the hurdle</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Min clearance</td><td class="py-3 pr-6">200 mm per drone through any opening</td><td class="py-3">Hurdle opening 900 mm floor-to-barrier; ≥175 mm around a 250 mm drone at 600 mm</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Formation</td><td class="py-3 pr-6">Box: 300–600 mm centre-to-centre per axis. Diamond: 400–600 wide × 600–800 long. Deviations ≤ 2 s</td><td class="py-3">Four 250 mm drones shown at 450 mm box spacing in the start box; a 600 mm corridor forces ≤350 mm lateral spacing</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Start / finish box</td><td class="py-3 pr-6">Sized to hold the full swarm formation</td><td class="py-3">900 × 1200 mm tape rectangles butted onto the corridor ends</td></tr>
+                        <tr class="border-b border-gray-900"><td class="py-3 pr-6">Drone</td><td class="py-3 pr-6">≤ 250 × 250 × 250 mm incl. guards, ≤ 1.5 kg, 4S LiPo, prop guards, kill switch, fully autonomous</td><td class="py-3">Our build: 248 mm envelope, ~400 g — see <a href="/themis/cad/" class="underline">Drone CAD</a></td></tr>
                     </tbody>
                 </table>
             </div>
-            <p class="mt-4 text-xs text-gray-600 font-mono">
-                Draft only — derived from racing-sim course defaults (seed 1337 · radius 45m · half-lane 5m · 7 vertices · fillets 4–12m · 8 obstacles). Final layout TBD.
+        </div>
+    </section>
+
+    <!-- ======================== OBSTACLES ======================== -->
+    <section class="py-12 bg-dark border-t border-gray-900">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-space font-light text-soft-white mb-6 tracking-tight">Obstacle catalogue</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-1">01 · BOTH DIRECTIONS</p>
+                    <h4>Gentle bend</h4>
+                    <p>A kink in the corridor of up to 45° (Figure 2). The tape edges are mitred at the corner, so the outer edge is longer than the inner one. The formation can usually hold its box shape through these; the planner mainly needs curvature-aware speed.</p>
+                    <div class="dims">angle 15–45° · both edges mitred · width stays 900 mm</div>
+                </div>
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-1">02 · BOTH DIRECTIONS</p>
+                    <h4>90° turn</h4>
+                    <p>A sharp right-angle corner. The inner tape corner sits 450 mm from the spine vertex; the outer corner 636 mm. At 450 mm box spacing the outer pair of drones sweeps a much longer path than the inner pair, so formation-hold vs. speed is the trade here.</p>
+                    <div class="dims">angle ±90° · inner corner 450 mm · outer corner 636 mm from vertex</div>
+                </div>
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-1">03 · THREE VARIANTS</p>
+                    <h4>Narrowing 900 → 600 mm</h4>
+                    <p>Right-hand, left-hand or both-sides tapers at 45°, then a straight run at 600 mm, then the mirror taper back out. The single-side variants shift the corridor centre by 150 mm; the swarm has to squeeze from up to 600 mm lateral spacing down to 350 mm (600 − 250).</p>
+                    <div class="dims">taper 300 mm (one side) / 150 mm (both) · narrowed run 1.2–2.4 m · total 2.3–3.0 m</div>
+                </div>
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-1">04 · ELEVATION</p>
+                    <h4>Overhead hurdle</h4>
+                    <p>A hanging wedge whose underside slopes down from 1300 to 900 mm carries a white board with a green <b>down</b> arrow; its vertical rear face is the barrier. The drones descend to 600 mm, fly a short level run, then climb over a floor hill (250 → 650 mm, green <b>up</b> arrow) back to 1000 mm.</p>
+                    <div class="dims">400 + 800–1200 + 400 mm · barrier edge 900 mm · target 600 mm under · gantry to 1500 mm</div>
+                </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <div>
+                    <h4 class="font-space font-light text-soft-white mb-2">Hurdle interpretation (Figure 3)</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        The brief's elevation figure draws the flight arrows passing <em>under</em> the first ramp and <em>over</em> the second,
+                        with the barrier edge on the 600 mm line. A 250 mm drone centred at 600 mm reaches 725 mm, so the model lifts the
+                        barrier's lower edge to 900 mm (175 mm clear) and caps the hill at 650 mm (225 mm below a drone at 1000 mm). These
+                        heights are parameters in both the generator and the OpenSCAD library and will be replaced by the venue's numbers.
+                    </p>
+                </div>
+                <svg viewBox="0 0 640 220" class="w-full" font-family="JetBrains Mono, monospace" font-size="10">
+                    <line x1="20" y1="200" x2="620" y2="200" stroke="#444"/>
+                    <text x="24" y="196" fill="#555">floor</text>
+                    <line x1="20" y1="40" x2="620" y2="40" stroke="#333" stroke-dasharray="3 3"/><text x="24" y="36" fill="#555">1500 ceiling</text>
+                    <line x1="20" y1="93" x2="620" y2="93" stroke="#2a2a2a" stroke-dasharray="3 3"/><text x="24" y="90" fill="#444">1000 default</text>
+                    <polygon points="200,61 243,104 243,40 200,40" fill="#3a3a3a" stroke="#888"/>
+                    <line x1="243" y1="104" x2="243" y2="40" stroke="#bbb" stroke-width="2"/>
+                    <line x1="200" y1="40" x2="200" y2="200" stroke="#666"/><line x1="243" y1="40" x2="243" y2="200" stroke="#666"/>
+                    <text x="150" y="60" fill="#888">1300</text><text x="250" y="108" fill="#888">900 barrier edge</text>
+                    <polygon points="380,173 423,130 423,200 380,200" fill="#3a3a3a" stroke="#888"/>
+                    <text x="430" y="134" fill="#888">650</text><text x="350" y="177" fill="#888">250</text>
+                    <polyline points="60,93 200,93 243,136 380,136 423,93 600,93" fill="none" stroke="#60a5fa" stroke-width="2"/>
+                    <rect x="300" y="122" width="27" height="27" fill="#2f6fb3" fill-opacity=".5" stroke="#60a5fa"/>
+                    <text x="290" y="165" fill="#60a5fa">600 mm under</text>
+                    <text x="470" y="88" fill="#60a5fa">back to 1000</text>
+                    <text x="205" y="30" fill="#4aa829">↓ arrow board</text>
+                    <text x="385" y="125" fill="#4aa829">↑</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== GENERATOR ======================== -->
+    <section class="py-12 bg-dark border-t border-gray-900">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-space font-light text-soft-white mb-6 tracking-tight">Course generator</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-2">01 · SEQUENCE</p>
+                    <h4>Required set + extras</h4>
+                    <p>Every course contains a left and a right gentle bend, a left and a right 90° turn, all three narrowings and one hurdle, plus 0–3 extra bends and 0–2 extra turns. The order is shuffled and elements are joined by 1.0–2.5 m straights.</p>
+                </div>
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-2">02 · LAYOUT</p>
+                    <h4>Room-aware corner choice</h4>
+                    <p>Each corner's direction is chosen with a one-element look-ahead: keep the next section ≥600 mm clear of everything already laid and grow the footprint least, with a 25 % chance of a random feasible pick. Both directions of each type are guaranteed.</p>
+                </div>
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-2">03 · VALIDATE</p>
+                    <h4>Fit and clearance</h4>
+                    <p>The tape footprint must fit the room in either orientation and no two non-adjacent sections may come within 600 mm. Failed layouts are redrawn from the same seeded stream, so a seed always gives the same course.</p>
+                </div>
+            </div>
+            <p class="mt-6 text-sm text-gray-500 leading-relaxed">
+                Source: <code>CAD/track/course_gen.js</code> (Node + browser, no dependencies) · <code>build.mjs</code> writes
+                <code>course.json</code>, an OpenSCAD data file and renders <code>tape.stl</code>, <code>hurdles.stl</code>,
+                <code>course.stl</code> plus previews · <code>track_lib.scad</code> holds the geometry modules. The JSON carries a
+                100 mm-sampled centreline with width and target height, which is what the racing sim will consume next.
             </p>
         </div>
     </section>
 
-    <section class="py-12 bg-dark">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-2xl font-space font-light text-soft-white mb-6 tracking-tight">Build status</h3>
+    <!-- ======================== BUILD ======================== -->
+    <section class="py-12 bg-dark border-t border-gray-900">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-space font-light text-soft-white mb-6 tracking-tight">Physical build notes</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-darker rounded-lg p-6 border border-gray-800">
-                    <p class="text-xs text-gray-600 font-mono mb-2">01 · LAYOUT</p>
-                    <h4 class="font-space font-light text-soft-white mb-2">Course geometry</h4>
-                    <p class="text-sm text-gray-400 font-mono">Plot final polygon from sim seed, print 1:10 layout plan.</p>
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-2">FLOOR + TAPE</p>
+                    <h4>Tape run</h4>
+                    <p>The course above needs about <span id="bTape" class="text-white">–</span> of 50 mm green decorators tape (<span id="bRolls" class="text-white">–</span> × 50 m rolls with 15 % waste). Chalk the spine first, then offset each edge; mitre the corners.</p>
                 </div>
-                <div class="bg-darker rounded-lg p-6 border border-gray-800">
-                    <p class="text-xs text-gray-600 font-mono mb-2">02 · FLOOR + TAPE</p>
-                    <h4 class="font-space font-light text-soft-white mb-2">Track surface</h4>
-                    <p class="text-sm text-gray-400 font-mono">Lay corridor tape on an even floor; obstacles anchored beside.</p>
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-2">HURDLE</p>
+                    <h4>Gantry + hill</h4>
+                    <p>Two 1.5 m posts each side (50 mm timber or 25 mm ali extrusion), a top beam, a 0.9 × 0.57 m sloped board and a 0.9 × 0.6 m barrier board. Hill: two 0.65 m and two 0.25 m legs under a 0.57 m sloped top with a back panel. Two 600 × 400 mm white boards with green arrows.</p>
                 </div>
-                <div class="bg-darker rounded-lg p-6 border border-gray-800">
-                    <p class="text-xs text-gray-600 font-mono mb-2">03 · OBSTACLES</p>
-                    <h4 class="font-space font-light text-soft-white mb-2">Tunnels + blocks</h4>
-                    <p class="text-sm text-gray-400 font-mono">Foam blocks, tunnel frame with rails and tape.</p>
+                <div class="card">
+                    <p class="text-xs text-gray-600 mb-2">VENUE</p>
+                    <h4>Footprint</h4>
+                    <p>Courses are generated to fit a 15 × 10 m room by default; change the room fields above to match a real hall. The footprint includes 150 mm around the tape for the gantry posts.</p>
                 </div>
             </div>
-            <p class="mt-8 text-sm text-gray-500 font-mono">
-                Photos, CAD, and test results will land on this page as the build progresses.
-            </p>
+            <div class="mt-8 flex flex-wrap gap-3 items-center">
+                <span class="text-xs text-gray-600">Canonical sample (seed 1337), rendered with OpenSCAD:</span>
+                <a class="dl" href="models/course_1337.stl" download>course_1337.stl</a>
+                <a class="dl" href="models/course_1337_tape.stl" download>tape only</a>
+                <a class="dl" href="models/course_1337_hurdles.stl" download>hurdles only</a>
+                <a class="dl" href="models/course_1337.json" download>course_1337.json</a>
+                <a class="dl" href="course_gen.js">course_gen.js</a>
+            </div>
         </div>
     </section>
 
     <footer class="bg-dark border-t border-gray-800 text-white py-12">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-gray-400 font-mono font-light text-sm">
                 <a href="/themis/" class="hover:text-soft-white transition-colors">← back to Themis</a>
             </p>
         </div>
     </footer>
+
+<script type="importmap">
+{
+"imports":{
+"three":"https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
+}
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLExporter } from 'three/addons/exporters/STLExporter.js';
+import { generateCourse, describe, SPEC } from './course_gen.js';
+
+const COL = { tape: 0x4aa829, floor: 0x141416, path: 0x60a5fa, drone: 0x2f6fb3, struct: 0xbdbdbd, board: 0xffffff, start: 0x3b82f6, finish: 0xffffff };
+const $ = (id) => document.getElementById(id);
+
+// ---- scene ------------------------------------------------------------------
+const container = $('viewer');
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x0a0a0a);
+const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 10, 200000);
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(container.clientWidth, container.clientHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.1;
+container.appendChild(renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.dampingFactor = 0.08; controls.maxPolarAngle = Math.PI / 2 - 0.02;
+scene.add(new THREE.AmbientLight(0xffffff, 1.6));
+const d1 = new THREE.DirectionalLight(0xffffff, 1.6); d1.position.set(8000, 12000, 6000); scene.add(d1);
+const d2 = new THREE.DirectionalLight(0xffffff, 0.8); d2.position.set(-8000, 8000, -6000); scene.add(d2);
+
+// World group: generator / OpenSCAD Z-up → three Y-up (same trick as the CAD viewer)
+const world = new THREE.Group(); world.rotation.x = -Math.PI / 2; scene.add(world);
+const gTape = new THREE.Group(), gHurdle = new THREE.Group(), gBoxes = new THREE.Group(), gPath = new THREE.Group(), gDrones = new THREE.Group(), gLabels = new THREE.Group(), gFloor = new THREE.Group();
+world.add(gFloor, gTape, gBoxes, gHurdle, gPath, gDrones, gLabels);
+
+const matTape = new THREE.MeshStandardMaterial({ color: COL.tape, roughness: 0.7 });
+const matStruct = new THREE.MeshStandardMaterial({ color: COL.struct, roughness: 0.6, metalness: 0.1 });
+const matBoard = new THREE.MeshStandardMaterial({ color: COL.board, roughness: 0.9 });
+const matArrow = new THREE.MeshStandardMaterial({ color: COL.tape, roughness: 0.9, side: THREE.DoubleSide });
+const matDrone = new THREE.MeshStandardMaterial({ color: COL.drone, transparent: true, opacity: 0.55, roughness: 0.4 });
+
+function clear(g) { while (g.children.length) { const c = g.children.pop(); if (c.material && c.material.map) c.material.map.dispose(); } }
+
+// ---- builders (mm, Z-up local frame) ---------------------------------------------------
+function buildTape(course) {
+    const w = SPEC.tapeWidth, t = 3;
+    const cyl = new THREE.CylinderGeometry(w / 2, w / 2, t, 16); cyl.rotateX(Math.PI / 2);
+    for (const s of course.tape) {
+        const dx = s.b.x - s.a.x, dy = s.b.y - s.a.y, L = Math.hypot(dx, dy);
+        const m = new THREE.Mesh(new THREE.BoxGeometry(L, w, t), matTape);
+        m.position.set((s.a.x + s.b.x) / 2, (s.a.y + s.b.y) / 2, t / 2); m.rotation.z = Math.atan2(dy, dx);
+        gTape.add(m);
+        const c = new THREE.Mesh(cyl, matTape); c.position.set(s.a.x, s.a.y, t / 2); gTape.add(c);
+    }
+}
+function buildBoxes(course) {
+    for (const b of [course.startBox, course.finishBox]) {
+        const m = new THREE.Mesh(new THREE.PlaneGeometry(b.l, b.w), new THREE.MeshBasicMaterial({ color: b.name === 'start' ? COL.start : COL.finish, transparent: true, opacity: b.name === 'start' ? 0.16 : 0.08, depthWrite: false }));
+        m.position.set(b.cx, b.cy, 1); m.rotation.z = b.heading; gBoxes.add(m);
+        gLabels.add(label(b.name.toUpperCase(), b.cx, b.cy, 60, '#9ab', 26));
+    }
+}
+function buildFloor(course) {
+    const b = course.bounds, pad = 1000;
+    const w = b.maxX - b.minX + 2 * pad, d = b.maxY - b.minY + 2 * pad;
+    const cx = (b.minX + b.maxX) / 2, cy = (b.minY + b.maxY) / 2;
+    const f = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshStandardMaterial({ color: COL.floor, roughness: 1 }));
+    f.position.set(cx, cy, -2); gFloor.add(f);
+    const size = Math.ceil(Math.max(w, d) / 1000) * 1000;
+    const grid = new THREE.GridHelper(size, size / 1000, 0x2c2c30, 0x1f1f22);
+    grid.rotation.x = Math.PI / 2; grid.position.set(Math.round(cx / 1000) * 1000, Math.round(cy / 1000) * 1000, -1); gFloor.add(grid);
+}
+function slopePanel(run, dz, width, below) {
+    // mirrors track_lib.scad slope_panel(): x along the slope, body on +z (or -z when `below`)
+    const slen = Math.hypot(run, dz), ang = -Math.atan2(dz, run), t = 20;
+    const g = new THREE.Group(); g.rotation.y = ang;
+    const p = new THREE.Mesh(new THREE.BoxGeometry(slen, width, t), matStruct); p.position.set(slen / 2, 0, below ? -t / 2 : t / 2); g.add(p);
+    const bh = SPEC.hurdle.board.h, bw = SPEC.hurdle.board.w, sgn = below ? 1 : -1;
+    const board = new THREE.Mesh(new THREE.BoxGeometry(bh, bw, 8), matBoard); board.position.set(slen / 2, 0, sgn * 5); g.add(board);
+    const shp = new THREE.Shape(); [[-150, -35], [40, -35], [40, -120], [160, 0], [40, 120], [40, 35], [-150, 35]].forEach(([x, y], i) => i ? shp.lineTo(x, y) : shp.moveTo(x, y));
+    const arrow = new THREE.Mesh(new THREE.ShapeGeometry(shp), matArrow); arrow.position.set(slen / 2, 0, sgn * 9.5); g.add(arrow);
+    const border = new THREE.Mesh(new THREE.ShapeGeometry(ring(bh, bw, 15)), matArrow); border.position.set(slen / 2, 0, sgn * 9.5); g.add(border);
+    return g;
+}
+function ring(h, w, t) { const s = new THREE.Shape(); s.moveTo(-h / 2, -w / 2); s.lineTo(h / 2, -w / 2); s.lineTo(h / 2, w / 2); s.lineTo(-h / 2, w / 2); s.closePath(); const hole = new THREE.Path(); hole.moveTo(-h / 2 + t, -w / 2 + t); hole.lineTo(h / 2 - t, -w / 2 + t); hole.lineTo(h / 2 - t, w / 2 - t); hole.lineTo(-h / 2 + t, w / 2 - t); hole.closePath(); s.holes.push(hole); return s; }
+function box(w, d, h, x, y, z) { const m = new THREE.Mesh(new THREE.BoxGeometry(w, d, h), matStruct); m.position.set(x + w / 2, y + d / 2, z + h / 2); return m; }
+function buildHurdle(h) {
+    const H = SPEC.hurdle, W = h.width, P = H.postSize, O = H.postOffset;
+    const g = new THREE.Group(); g.position.set(h.x, h.y, 0); g.rotation.z = h.heading;
+    // hanging wedge
+    const wedge = slopePanel(h.run, H.ceiling.lowZ - H.ceiling.highZ, W, false); wedge.position.z = H.ceiling.highZ; g.add(wedge);
+    g.add(box(20, W, H.topZ - H.ceiling.lowZ, h.run - 20, -W / 2, H.ceiling.lowZ));               // barrier panel
+    g.add(box(h.run, W + 2 * O + P, P, 0, -W / 2 - O - P / 2, H.topZ - P));                        // top beam
+    for (const sy of [-1, 1]) for (const sx of [0, h.run - P]) g.add(box(P, P, H.topZ, sx, sy * (W / 2 + O) - P / 2, 0));
+    // hill
+    const hx = h.run + h.under;
+    const hill = slopePanel(h.run, H.hill.highZ - H.hill.lowZ, W, true); hill.position.set(hx, 0, H.hill.lowZ); g.add(hill);
+    g.add(box(20, W, H.hill.highZ, hx + h.run - 20, -W / 2, 0));
+    for (const sy of [-1, 1]) { const y = sy * (W / 2) - (sy > 0 ? P : 0); g.add(box(P, P, H.hill.lowZ, hx, y, 0)); g.add(box(P, P, H.hill.highZ, hx + h.run - P, y, 0)); }
+    return g;
+}
+function buildPath(course) {
+    const pts = course.centreline.map((p) => new THREE.Vector3(p.x, p.y, p.z));
+    gPath.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: COL.path, transparent: true, opacity: 0.9 })));
+    // poles every 2 m so the height reads in perspective
+    const poleGeo = []; for (let i = 0; i < pts.length; i += 20) poleGeo.push(pts[i].x, pts[i].y, 0, pts[i].x, pts[i].y, pts[i].z);
+    const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.Float32BufferAttribute(poleGeo, 3));
+    gPath.add(new THREE.LineSegments(pg, new THREE.LineBasicMaterial({ color: COL.path, transparent: true, opacity: 0.25 })));
+}
+function buildDrones(course) {
+    const b = course.startBox, s = 450, D = SPEC.droneBox;
+    const geo = new THREE.BoxGeometry(D, D, D), edge = new THREE.EdgesGeometry(geo), em = new THREE.LineBasicMaterial({ color: 0x8ec5ff, transparent: true, opacity: 0.8 });
+    const t = { x: Math.cos(b.heading), y: Math.sin(b.heading) }, n = { x: -t.y, y: t.x };
+    for (const [a, c] of [[-1, -1], [-1, 1], [1, -1], [1, 1]]) {
+        const x = b.cx + t.x * a * s / 2 + n.x * c * s / 2, y = b.cy + t.y * a * s / 2 + n.y * c * s / 2;
+        const m = new THREE.Mesh(geo, matDrone); m.position.set(x, y, SPEC.flightZ); m.rotation.z = b.heading; gDrones.add(m);
+        const e = new THREE.LineSegments(edge, em); e.position.copy(m.position); e.rotation.z = b.heading; gDrones.add(e);
+    }
+}
+function label(text, x, y, z, color = '#ddd', px = 30) {
+    const c = document.createElement('canvas'); c.width = 128; c.height = 64; const ctx = c.getContext('2d');
+    ctx.font = `${px}px JetBrains Mono, monospace`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(10,10,10,0.7)'; const tw = ctx.measureText(text).width + 16; ctx.fillRect(64 - tw / 2, 12, tw, 40);
+    ctx.fillStyle = color; ctx.fillText(text, 64, 32);
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthTest: false }));
+    sp.position.set(x, y, z); sp.scale.set(640, 320, 1); return sp;
+}
+
+// ---- element positions (for labels + click-to-look) ------------------------------------
+function elementAnchors(course) {
+    const out = []; let ri = 0;
+    for (const el of course.elements) {
+        if (el.type === 'bend' || el.type === 'turn') { const v = course.verts[ri]; out.push({ el, x: v.x, y: v.y }); }
+        else { const r = course.runs[ri++]; out.push({ el, x: r.x0 + Math.cos(r.heading) * r.len / 2, y: r.y0 + Math.sin(r.heading) * r.len / 2 }); }
+    }
+    return out;
+}
+
+// ---- build + UI ------------------------------------------------------------------------
+let course = null, anchors = [];
+function build(seed) {
+    const room = { w: (+$('roomW').value || 15) * 1000, d: (+$('roomD').value || 10) * 1000 };
+    course = generateCourse({ seed, room });
+    [gTape, gHurdle, gBoxes, gPath, gDrones, gLabels, gFloor].forEach(clear);
+    buildFloor(course); buildTape(course); buildBoxes(course); course.hurdles.forEach((h) => gHurdle.add(buildHurdle(h)));
+    buildPath(course); buildDrones(course);
+    anchors = elementAnchors(course);
+    anchors.forEach((a, i) => { if (a.el.type !== 'straight') gLabels.add(label(String(i + 1), a.x, a.y, 420, '#eee')); });
+    applyToggles();
+    // stats
+    const d = describe(course), obs = course.elements.filter((e) => e.type !== 'straight').length;
+    $('sLen').textContent = d.courseLength_m + ' m'; $('sTape').textContent = d.tapeLength_m + ' m';
+    $('sExt').textContent = d.extent_m; $('sObs').textContent = obs;
+    $('sAtt').textContent = course.valid ? `layout attempt ${course.attempt}` : 'NO VALID LAYOUT';
+    $('vmsg').textContent = course.valid ? '' : 'No layout fits this room for this seed after ' + course.attempt + ' attempts: ' + course.problems.join('; ');
+    $('bTape').textContent = d.tapeLength_m + ' m'; $('bRolls').textContent = Math.ceil(d.tapeLength_m * 1.15 / 50);
+    // element list
+    const list = $('elist'); list.innerHTML = '';
+    d.elements.forEach((line, i) => {
+        const el = course.elements[i], row = document.createElement('div');
+        if (el.type !== 'straight') row.className = 'ob';
+        const text = line.replace(/^\d+\. /, '');
+        row.innerHTML = `<span class="n">${i + 1}</span><span>${text}</span>` + (el.type === 'straight' ? '' : `<span class="tag">${el.type === 'narrow' ? 'narrow ' + el.side : el.type}</span>`);
+        row.onclick = () => lookAt(anchors[i]);
+        list.appendChild(row);
+    });
+    $('shareUrl').textContent = '?seed=' + seed;
+    history.replaceState(null, '', '?seed=' + seed);
+    fitCamera();
+}
+function toThree(x, y, z) { return new THREE.Vector3(x, z, -y); }
+function fitCamera() {
+    const b = course.bounds, cx = (b.minX + b.maxX) / 2, cy = (b.minY + b.maxY) / 2;
+    const span = Math.max(b.maxX - b.minX, b.maxY - b.minY);
+    const dist = span / (2 * Math.tan(camera.fov * Math.PI / 360)) * 1.05;
+    controls.target.copy(toThree(cx, cy, 0));
+    camera.position.copy(controls.target).add(new THREE.Vector3(dist * 0.35, dist * 0.8, dist * 0.55));
+    controls.minDistance = 500; controls.maxDistance = dist * 3; controls.update();
+}
+function lookAt(a) {
+    const target = toThree(a.x, a.y, 300), off = new THREE.Vector3(1800, 1600, 1800);
+    animateTo(target, target.clone().add(off));
+}
+let anim = null;
+function animateTo(target, pos) { anim = { t0: performance.now(), p0: camera.position.clone(), t0v: controls.target.clone(), p1: pos, t1: target }; }
+function applyToggles() { gPath.visible = $('tPath').checked; gDrones.visible = $('tDrones').checked; gLabels.visible = $('tLabels').checked; }
+['tPath', 'tDrones', 'tLabels'].forEach((id) => $(id).onchange = applyToggles);
+$('regen').onclick = () => build(Math.max(0, Math.floor(+$('seed').value || 0)));
+$('random').onclick = () => { $('seed').value = Math.floor(Math.random() * 100000); $('regen').click(); };
+$('seed').onkeydown = (e) => { if (e.key === 'Enter') $('regen').click(); };
+$('dlJson').onclick = () => save(new Blob([JSON.stringify(course, null, 1)], { type: 'application/json' }), `course_${course.seed}.json`);
+$('dlStl').onclick = () => {
+    // export in the generator's Z-up frame (same as the OpenSCAD STLs), so clone the groups without the world rotation
+    const grp = new THREE.Group(); grp.add(gTape.clone(), gHurdle.clone()); grp.updateMatrixWorld(true);
+    const data = new STLExporter().parse(grp, { binary: true });
+    save(new Blob([data], { type: 'model/stl' }), `course_${course.seed}.stl`);
+};
+function save(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); }
+
+window.addEventListener('resize', () => { camera.aspect = container.clientWidth / container.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(container.clientWidth, container.clientHeight); });
+(function loop() {
+    requestAnimationFrame(loop);
+    if (anim) { const k = Math.min(1, (performance.now() - anim.t0) / 700), e = 1 - Math.pow(1 - k, 3); camera.position.lerpVectors(anim.p0, anim.p1, e); controls.target.lerpVectors(anim.t0v, anim.t1, e); if (k >= 1) anim = null; }
+    controls.update(); renderer.render(scene, camera);
+})();
+
+const qs = new URLSearchParams(location.search);
+const seed0 = parseInt(qs.get('seed') ?? '1337', 10);
+$('seed').value = Number.isFinite(seed0) ? seed0 : 1337;
+build(+$('seed').value);
+window.__course = () => course; window.__view = { camera, controls, toThree }; // for headless verification
+</script>
 </body>
 </html>
