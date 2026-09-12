@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Model | Themis</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+        body { font-family: 'JetBrains Mono', monospace; font-weight: 300; background-color: #111111; color: rgba(255,255,255,0.92); }
+        .bg-darker { background-color: #0a0a0a; }
+    </style>
+</head>
+<body>
+    <header class="bg-dark border-b border-gray-800">
+        <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-space font-light text-soft-white tracking-tight">
+                    <a href="/" class="text-gray-300 hover:text-soft-white transition-colors">Adam Croft</a>
+                    <span class="text-gray-600 mx-2">/</span>
+                    <a href="/themis/" class="text-gray-300 hover:text-soft-white transition-colors">Themis</a>
+                    <span class="text-gray-600 mx-2">/</span>
+                    Track Model
+                </h1>
+            </div>
+        </nav>
+    </header>
+
+    <section class="bg-dark">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <p class="text-xs text-gray-500 mb-4 font-mono">PHYSICAL BUILD · UNDER CONSTRUCTION</p>
+            <h2 class="text-4xl font-space font-light text-soft-white tracking-tight">Track Model</h2>
+            <p class="mt-4 max-w-2xl text-gray-400 font-mono font-light leading-relaxed">
+                A physical tape-and-obstacle track for end-to-end hardware testing: the drone sees the
+                tape with its camera, the pipeline plans and fights the swarm, and the airframe navigates
+                tunnels and blocks — exactly what the sim models.
+            </p>
+            <div class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-700 text-xs text-gray-400 font-mono">
+                <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span> layout + components in progress
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 bg-dark">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-space font-light text-soft-white mb-6 tracking-tight">Course spec (draft)</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm font-mono">
+                    <thead>
+                        <tr class="border-b border-gray-800 text-left text-gray-500">
+                            <th class="py-3 pr-6 font-light">Element</th>
+                            <th class="py-3 pr-6 font-light">Source (racing-sim)</th>
+                            <th class="py-3 pr-6 font-light">Model track</th>
+                            <th class="py-3 font-light">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-400">
+                        <tr class="border-b border-gray-900">
+                            <td class="py-3 pr-6">Track size</td>
+                            <td class="py-3 pr-6">radius 45 m</td>
+                            <td class="py-3 pr-6">~4.5–6 m overall</td>
+                            <td class="py-3">1:10 scale of the sim course</td>
+                        </tr>
+                        <tr class="border-b border-gray-900">
+                            <td class="py-3 pr-6">Half-lane</td>
+                            <td class="py-3 pr-6">5 m (10 m lane)</td>
+                            <td class="py-3 pr-6">0.5 m half-lane</td>
+                            <td class="py-3">1 m wide tape corridor</td>
+                        </tr>
+                        <tr class="border-b border-gray-900">
+                            <td class="py-3 pr-6">Vertices</td>
+                            <td class="py-3 pr-6">7 (5–12)</td>
+                            <td class="py-3 pr-6">5–7</td>
+                            <td class="py-3">polygon corners → straights & turns</td>
+                        </tr>
+                        <tr class="border-b border-gray-900">
+                            <td class="py-3 pr-6">Turn radii</td>
+                            <td class="py-3 pr-6">4–12 m</td>
+                            <td class="py-3 pr-6">0.4–1.2 m</td>
+                            <td class="py-3">filleted corners</td>
+                        </tr>
+                        <tr class="border-b border-gray-900">
+                            <td class="py-3 pr-6">Obstacles</td>
+                            <td class="py-3 pr-6">8 · tunnel + block</td>
+                            <td class="py-3 pr-6">4–8 total</td>
+                            <td class="py-3">1 tunnel + blocks on straights/turns</td>
+                        </tr>
+                        <tr class="border-b border-gray-900">
+                            <td class="py-3 pr-6">Tunnel</td>
+                            <td class="py-3 pr-6">chute, forces single file</td>
+                            <td class="py-3 pr-6">~1 m long, 1.4 m wide</td>
+                            <td class="py-3">side rails + ceiling, tape through</td>
+                        </tr>
+                        <tr class="border-b border-gray-900">
+                            <td class="py-3 pr-6">Blocks</td>
+                            <td class="py-3 pr-6">solid, detour</td>
+                            <td class="py-3 pr-6">0.3 × 0.3 × 0.15 m foam</td>
+                            <td class="py-3">offset lateral spread ±0.16 m</td>
+                        </tr>
+                        <tr class="border-b border-gray-900">
+                            <td class="py-3 pr-6">Guidance</td>
+                            <td class="py-3 pr-6">tape perception</td>
+                            <td class="py-3 pr-6">50 mm colored tape edges</td>
+                            <td class="py-3">contrast against floor for OpenCV</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-4 text-xs text-gray-600 font-mono">
+                Draft only — derived from racing-sim course defaults (seed 1337 · radius 45m · half-lane 5m · 7 vertices · fillets 4–12m · 8 obstacles). Final layout TBD.
+            </p>
+        </div>
+    </section>
+
+    <section class="py-12 bg-dark">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-space font-light text-soft-white mb-6 tracking-tight">Build status</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-darker rounded-lg p-6 border border-gray-800">
+                    <p class="text-xs text-gray-600 font-mono mb-2">01 · LAYOUT</p>
+                    <h4 class="font-space font-light text-soft-white mb-2">Course geometry</h4>
+                    <p class="text-sm text-gray-400 font-mono">Plot final polygon from sim seed, print 1:10 layout plan.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800">
+                    <p class="text-xs text-gray-600 font-mono mb-2">02 · FLOOR + TAPE</p>
+                    <h4 class="font-space font-light text-soft-white mb-2">Track surface</h4>
+                    <p class="text-sm text-gray-400 font-mono">Lay corridor tape on an even floor; obstacles anchored beside.</p>
+                </div>
+                <div class="bg-darker rounded-lg p-6 border border-gray-800">
+                    <p class="text-xs text-gray-600 font-mono mb-2">03 · OBSTACLES</p>
+                    <h4 class="font-space font-light text-soft-white mb-2">Tunnels + blocks</h4>
+                    <p class="text-sm text-gray-400 font-mono">Foam blocks, tunnel frame with rails and tape.</p>
+                </div>
+            </div>
+            <p class="mt-8 text-sm text-gray-500 font-mono">
+                Photos, CAD, and test results will land on this page as the build progresses.
+            </p>
+        </div>
+    </section>
+
+    <footer class="bg-dark border-t border-gray-800 text-white py-12">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400 font-mono font-light text-sm">
+                <a href="/themis/" class="hover:text-soft-white transition-colors">← back to Themis</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
