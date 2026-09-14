@@ -263,6 +263,12 @@ a_profile = 2.5
 # --- formation (tape frame) ---
 form_long = 0.45
 form_lat_max = 0.45
+# the brief permits 300-600 mm centre-to-centre; the box resizes freely in that range
+form_lat_min = 0.30
+# lateral margin below which a 2-wide box is not flyable -> deviate to single file
+line_enter_margin = 0.06
+# slot-offset blend rate during a mode change (m/s of offset)
+blend_rate = 0.9
 lat_margin = 0.025
 k_slot_s = 1.5
 k_slot_lat = 1.5
@@ -284,6 +290,8 @@ sep_yield = 0.6
 # formation reference hold-back for a lagging drone. The floor is load-bearing:
 # a hard stall is a positive feedback loop (drone yields -> reference waits ->
 # swarm crawls -> run times out).
+# the centroid is pulled toward the swarm’s own mean progress at this rate (1/s)
+k_ref = 1.0
 ref_lag_start = 0.3
 ref_lag_band = 0.8
 ref_lag_floor = 0.25
@@ -296,7 +304,7 @@ use_z_ff = 0
 use_vert_cap = 1
 use_apf = 1
 # formation through narrowings: 1 = single file (line) inside the 2 s deviation allowance, 0 = compressed box
-narrow_mode = 0
+allow_line = 1
 line_gap = 0.35
 # follow-gap hold to the drone ahead in the lane (UWB range hold)
 gap_k = 2.0
@@ -346,6 +354,8 @@ alpha_form = 2.0
 alpha_z = 1.0
 alpha_action = 0.01
 alpha_jerk = 0.05
+# a command the safety filter vetoes must produce gradient, not silence
+alpha_clip = 0.05
 pen_tape = 2.0
 pen_drone = 2.0
 pen_obstacle = 2.0
