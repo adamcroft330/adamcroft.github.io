@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RL Eval | Themis</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+        body { font-family: 'JetBrains Mono', monospace; font-weight: 300; background-color: #111111; color: rgba(255,255,255,0.92); }
+        .bg-dark { background-color: #111111; } .bg-darker { background-color: #0a0a0a; } .text-soft-white { color: rgba(255,255,255,0.92); }
+        #stage { position: relative; background: #08090c; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; overflow: hidden; aspect-ratio: 3 / 2; max-height: 76vh; }
+        canvas.emscripten { display: block; width: 100%; height: 100%; background: #08090c; outline: none; }
+        #loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; color: #777; font-size: 12px; background: #08090c; }
+        #spin { width: 28px; height: 28px; border: 2px solid rgba(255,255,255,0.1); border-top-color: #4aa829; border-radius: 50%; animation: s .8s linear infinite; }
+        @keyframes s { to { transform: rotate(360deg); } }
+        #status { font-size: 11px; color: #666; margin-top: 6px; min-height: 14px; }
+        kbd { font-size: 11px; color: #ddd; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; padding: 0 5px; }
+        .card { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 16px; }
+        .card h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 300; color: #fff; margin-bottom: 6px; }
+        .card p, .card li { font-size: 12px; color: #9a9a9a; line-height: 1.6; }
+        .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+        code { font-size: 11px; color: #bbb; background: rgba(255,255,255,0.05); padding: 1px 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <header class="bg-dark border-b border-gray-800">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <h1 class="text-2xl font-space font-light text-soft-white tracking-tight">
+                <a href="/" class="text-gray-300 hover:text-soft-white transition-colors">Adam Croft</a>
+                <span class="text-gray-600 mx-2">/</span>
+                <a href="/themis/" class="text-gray-300 hover:text-soft-white transition-colors">Themis</a>
+                <span class="text-gray-600 mx-2">/</span> RL Eval
+            </h1>
+        </nav>
+    </header>
+
+    <section class="bg-dark">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
+            <p class="text-xs text-gray-500 mb-3 font-mono">TRAINING ENVIRONMENT · LIVE IN THE BROWSER · RAYLIB / WEBASSEMBLY</p>
+            <h2 class="text-4xl font-space font-light text-soft-white tracking-tight">Swarm RL evaluation</h2>
+            <p class="mt-3 max-w-3xl text-gray-400 font-mono font-light leading-relaxed">
+                This is the actual PufferLib training environment compiled to WebAssembly: four drones fly a random
+                addendum course with the classical tape-frame planner, the bounded RL residual on top, a PX4-style
+                cascade and rotor-level physics. Nothing is pre-recorded. The policy packed into this page is shown
+                below; with no checkpoint the residual is zero and you are watching the classical baseline.
+            </p>
+            <p id="policy" class="mt-2 text-xs text-gray-500 font-mono">policy: loading…</p>
+        </div>
+    </section>
+
+    <section class="bg-dark pb-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                <div class="lg:col-span-3">
+                    <div id="stage">
+                        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
+                        <div id="loading"><div id="spin"></div><div>compiling environment…</div></div>
+                    </div>
+                    <div id="status"></div>
+                </div>
+                <div class="space-y-3">
+                    <div class="card">
+                        <h4>Controls (click the canvas first)</h4>
+                        <p><kbd>SPACE</kbd> pause · <kbd>R</kbd> new course · <kbd>P</kbd> residual on/off · <kbd>C</kbd> follow / free camera</p>
+                        <p class="mt-1"><kbd>1</kbd>–<kbd>4</kbd> select drone · <kbd>W</kbd>/<kbd>S</kbd> sim speed · <kbd>H</kbd> help · drag to orbit, wheel to zoom</p>
+                    </div>
+                    <div class="card">
+                        <h4>What you are seeing</h4>
+                        <ul>
+                            <li><span class="sw" style="background:#4aa829"></span>tape corridor, 900 → 600 mm narrowings, start/finish boxes</li>
+                            <li><span class="sw" style="background:#2f6fb3"></span>right-lane drones, <span class="sw" style="background:#e68c28"></span>left-lane drones (250 mm cubes)</li>
+                            <li><span class="sw" style="background:#bdbdbd"></span>overhead hurdle: hanging wedge, barrier, hill, arrow boards</li>
+                            <li>small cubes = slot targets; thin blue line = height profile (1000 mm, 600 mm under the hurdle)</li>
+                            <li>red cube = tape-out or contact event; HUD shows the selected drone's residual output</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Caveats</h4>
+                        <p>Perception is ground truth plus noise, comms are noise plus dropout, and the airframe constants are placeholders until the platform is fixed. Courses here are a 59-seed web bank; training uses 298.</p>
+                    </div>
+                    <p class="text-xs text-gray-600">Source: <code>training/ocean/themis/</code> · built by <code>training/web/publish.sh</code> · <a class="underline" href="/themis/track/">course generator</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark border-t border-gray-800 text-white py-10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400 font-mono font-light text-sm"><a href="/themis/" class="hover:text-soft-white transition-colors">← back to Themis</a></p>
+        </div>
+    </footer>
+
+    <script>
+        fetch('POLICY.txt').then(r => r.ok ? r.text() : 'policy: unknown').then(t => { document.getElementById('policy').textContent = t.trim(); }).catch(() => {});
+        var statusEl = document.getElementById('status');
+        var Module = {
+            canvas: document.getElementById('canvas'),
+            print: function (text) { if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' '); console.log(text); },
+            printErr: function (text) { console.warn(text); },
+            setStatus: function (t) { if (t) statusEl.textContent = t; },
+            onRuntimeInitialized: function () { var l = document.getElementById('loading'); if (l) l.remove(); statusEl.textContent = ''; }
+        };
+        document.getElementById('canvas').addEventListener('keydown', function (e) { if ([' ', 'ArrowUp', 'ArrowDown'].includes(e.key)) e.preventDefault(); });
+    </script>
+    <script async src="game.js"></script>
+</body>
+</html>
