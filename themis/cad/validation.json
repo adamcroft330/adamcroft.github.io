@@ -1,12 +1,12 @@
 {
   "parts": 253,
   "variantParts": 64,
-  "operations": 4047,
-  "operationTriangles": 526648,
+  "operations": 4008,
+  "operationTriangles": 521998,
   "maxTriangles": 53610,
   "maxDepth": 17,
-  "renderTriangles": 108048,
-  "renderBytes": 11669184,
+  "renderTriangles": 107690,
+  "renderBytes": 11630520,
   "renderLimit": 12582912,
   "assemblyBounds": [
     [
