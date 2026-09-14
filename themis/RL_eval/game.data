@@ -262,13 +262,16 @@ a_profile = 2.5
 
 # --- formation (tape frame) ---
 form_long = 0.45
-form_lat_max = 0.45
+# 383 mm balances the two margins in a 900 mm corridor: tape margin
+# (0.325 - d/2) equals drone gap (d - 0.25) at d = 0.383, both 133 mm.
+# At 450 mm the tape margin is only 100 mm, which is where the contacts were.
+form_lat_max = 0.383
 # the brief permits 300-600 mm centre-to-centre; the box resizes freely in that range
 form_lat_min = 0.30
 # lateral margin below which a 2-wide box is not flyable -> deviate to single file
 line_enter_margin = 0.06
 # slot-offset blend rate during a mode change (m/s of offset)
-blend_rate = 0.9
+blend_rate = 1.6
 lat_margin = 0.025
 k_slot_s = 1.5
 k_slot_lat = 1.5
@@ -303,9 +306,13 @@ use_lat_ff = 1
 use_z_ff = 0
 use_vert_cap = 1
 use_apf = 1
+# Taking along-track straight from the speed profile instead of projecting the
+# pursuit vector. Measured WORSE (more tape contacts, longitudinal error barely
+# moved), so off: the cos(theta) loss was not the cause it looked like.
+decouple_axes = 0
 # formation through narrowings: 1 = single file (line) inside the 2 s deviation allowance, 0 = compressed box
 allow_line = 1
-line_gap = 0.35
+line_gap = 0.30
 # follow-gap hold to the drone ahead in the lane (UWB range hold)
 gap_k = 2.0
 # lane compression through corners
