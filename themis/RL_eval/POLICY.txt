@@ -1,1 +1,1 @@
-policy: none — classical baseline (residual = 0), packed 2026-09-14T18:04Z
+policy: none — classical baseline (residual = 0), packed 2026-09-14T19:17Z
