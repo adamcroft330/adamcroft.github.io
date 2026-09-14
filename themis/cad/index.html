@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Themis Control-Stack Quad</title>
+<title>Themis Integrated Housing — Dingcad Frame</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
@@ -12,46 +12,58 @@ body{font-family:'JetBrains Mono',monospace;font-weight:300;background:#0a0a0a;c
 #c{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
 #s{position:fixed;top:0;right:0;width:300px;height:100%;z-index:10;background:rgba(10,10,10,0.95);border-left:1px solid rgba(255,255,255,0.08);overflow-y:auto;padding:16px}
 #h{position:fixed;top:0;left:0;z-index:5;padding:12px 20px;background:linear-gradient(to bottom,rgba(10,10,10,0.95) 60%,transparent);width:calc(100% - 300px)}
-.p{padding:5px 8px;margin:1px 0;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:6px;border:1px solid transparent;font-size:12px;user-select:none}
-.p:hover{background:rgba(255,255,255,0.05)}
-.p.a{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15)}
-.cd{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,0.15)}
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:10px 0}
 .sb{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:6px 8px;text-align:center}
-.sv{font-size:14px;color:#fff}
+.sv{font-size:12px;color:#fff;font-weight:400}
 .sl{font-size:9px;color:#666;margin-top:1px}
 #lo{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:#0a0a0a;flex-direction:column;gap:12px}
 #sp{width:32px;height:32px;border:2px solid rgba(255,255,255,0.1);border-top-color:#fff;border-radius:50%;animation:s .8s linear infinite}
 @keyframes s{to{transform:rotate(360deg)}}
 #er{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:30;background:rgba(200,50,50,0.85);padding:6px 14px;border-radius:4px;font-size:11px;display:none;white-space:nowrap}
-/* ruler replaced by 3D in-scene ruler */
+.tb{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.bg{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:5px 8px;font-size:11px;color:#bbb;cursor:pointer;font-family:inherit}
+.bg:hover{background:rgba(255,255,255,0.08);color:#fff}
+details{border:1px solid rgba(255,255,255,0.07);border-radius:4px;margin:3px 0;background:rgba(255,255,255,0.02)}
+details[open]{background:rgba(255,255,255,0.035)}
+summary{cursor:pointer;padding:6px 8px;font-size:11px;color:#9aa;user-select:none;list-style:none;display:flex;align-items:center;justify-content:space-between}
+summary::-webkit-details-marker{display:none}
+summary .cnt{font-size:9px;color:#555}
+label{display:flex;align-items:center;gap:6px;padding:3px 8px 3px 14px;font-size:11px;color:#bbb;cursor:pointer;user-select:none}
+label:hover{background:rgba(255,255,255,0.05);color:#fff}
+label input{width:auto;margin:0;accent-color:#88aacc}
+.exp{display:flex;align-items:center;gap:8px;margin:10px 0 4px;font-size:10px;color:#666}
+.exp input{flex:1}
 @media(max-width:768px){
-#s{width:100%;height:40%;top:auto;bottom:0;border-left:none;border-top:1px solid rgba(255,255,255,0.08);padding:10px}
+#s{width:100%;height:42%;top:auto;bottom:0;border-left:none;border-top:1px solid rgba(255,255,255,0.08);padding:10px}
 #h{width:100%}
 }
 </style>
 </head>
 <body>
-<div id="lo"><div id="sp"></div><div style="font-size:12px;color:#666">Loading 3D models…</div></div>
+<div id="lo"><div id="sp"></div><div style="font-size:12px;color:#666">Loading Integrated Themis model…</div></div>
     <div id="er"></div>
     <a href="/" style="position:fixed;top:12px;left:12px;z-index:20;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);padding:6px 12px;border-radius:4px;color:#aaa;text-decoration:none;font-size:12px">← Back</a>
 <div id="h">
-<div style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:300">Themis Control-Stack Quad</div>
-    <div style="font-size:11px;color:#666;margin-top:2px"><span id="pc">0</span> components · 402g AUW · TWR 3.08:1 · 250mm cube</div>
+<div style="font-size:16px;font-family:'Space Grotesk',sans-serif;font-weight:300">Themis Integrated Housing — Dingcad Frame</div>
+    <div style="font-size:11px;color:#666;margin-top:2px"><span id="pc">0</span> model parts · 253-component assembly · fits 250mm cube</div>
 </div>
 <div id="c"></div>
 <div id="s">
         <div class="sg">
-            <div class="sb"><div class="sv">$515</div><div class="sl">EST. BOM</div></div>
-            <div class="sb"><div class="sv">3.08:1</div><div class="sl">TWR</div></div>
-            <div class="sb"><div class="sv">248×110mm</div><div class="sl">ENVELOPE</div></div>
-            <div class="sb"><div class="sv">402g</div><div class="sl">AUW</div></div>
+            <div class="sb"><div class="sv" id="dims">—</div><div class="sl">ENVELOPE</div></div>
+            <div class="sb"><div class="sv">96×80mm</div><div class="sl">HOUSING</div></div>
+            <div class="sb"><div class="sv">253</div><div class="sl">ASSEMBLY PARTS</div></div>
+            <div class="sb"><div class="sv" id="fit">—</div><div class="sl">CUBE FIT</div></div>
         </div>
-<div style="font-size:10px;color:#555;display:flex;justify-content:space-between;margin:10px 0 6px">
-<span>Parts (<span id="vc">0</span>/<span id="tc">0</span>)</span>
-<span style="cursor:pointer;color:#888" onclick="ta()" id="tab">Hide All</span>
-</div>
-<div id="pl"></div>
+        <div class="tb">
+            <button class="bg" id="iso">Perspective</button>
+            <button class="bg" id="top">Top</button>
+            <button class="bg" id="front">Front</button>
+            <button class="bg" id="internal">Show internals</button>
+            <button class="bg" id="tab">Hide All</button>
+        </div>
+        <div class="exp">Explode <input id="explode" type="range" min="0" max="1" step=".01" value="0"></div>
+<div id="pl" style="margin-top:6px"></div>
 </div>
 
 <script type="importmap">
@@ -65,28 +77,13 @@ body{font-family:'JetBrains Mono',monospace;font-weight:300;background:#0a0a0a;c
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { STLLoader } from 'three/addons/loaders/STLLoader.js';
-
-const PARTS=[
-{file:'models/plate.stl',name:'Custom Frame Plate (PETG)',w:'60g',c:0x606060},
-{file:'models/pi5_real.stl',name:'Raspberry Pi 5 (2GB)',w:'46g',c:0x1a9c33,special:true},
-{file:'models/pixhawk.stl',name:'Pixhawk 6C Mini',w:'42g',c:0x2E7D32},
-{file:'models/esc.stl',name:'4-in-1 35A ESC',w:'7g',c:0xD4A017},
-{file:'models/cam.stl',name:'Mightycam',w:'10g',c:0x212121},
-{file:'models/tof.stl',name:'VL53L1X ToF (down)',w:'3g',c:0x7B1FA2},
-{file:'models/sensors.stl',name:'UWB + ELRS',w:'5g',c:0x8E24AA},
-{file:'models/motor.stl',name:'1806 Motor x4',w:'82g',c:0x9E9E9E},
-{file:'models/prop.stl',name:'4" Propeller x4',w:'12g',c:0x424242},
-{file:'models/guard.stl',name:'TPU Prop Guard x4',w:'20g',c:0xE65100},
-];
-// Real Pi5 geometry: center its PCB at (-33, 21, 0) three-coords (standoff top)
-const PI5_TARGET=(()=>{const v=new THREE.Vector3(-33,5+16,0);return v;})();
 
 const container=document.getElementById('c');
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x0a0a0a);
 
-const camera=new THREE.PerspectiveCamera(30,container.clientWidth/container.clientHeight,1,2000);
-camera.position.set(260,140,260);
+const camera=new THREE.PerspectiveCamera(35,container.clientWidth/container.clientHeight,0.1,2000);
+camera.up.set(0,0,1);camera.position.set(605,-280,235);
+const TARGET=new THREE.Vector3(390,0,76);
 
 const renderer=new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(container.clientWidth,container.clientHeight);
@@ -96,120 +93,109 @@ renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.
 container.appendChild(renderer.domElement);
 
 const controls=new OrbitControls(camera,renderer.domElement);
-controls.target.set(0,12,0);controls.enableDamping=true;controls.dampingFactor=0.08;
-controls.minDistance=80;controls.maxDistance=600;controls.update();
+controls.target.copy(TARGET);controls.enableDamping=true;controls.dampingFactor=0.08;
+controls.minDistance=80;controls.maxDistance=1200;controls.update();
 
-scene.add(new THREE.AmbientLight(0xffffff,1.8));
-const dl=new THREE.DirectionalLight(0xffffff,1.5);dl.position.set(150,200,150);scene.add(dl);
-const d2=new THREE.DirectionalLight(0xffffff,1.5);d2.position.set(-150,100,-150);scene.add(d2);
-const d3=new THREE.DirectionalLight(0xffffff,1.5);d3.position.set(-150,200,150);scene.add(d3);
-const d4=new THREE.DirectionalLight(0xffffff,1.5);d4.position.set(150,100,-150);scene.add(d4);
-const d5=new THREE.DirectionalLight(0xffffff,1.0);d5.position.set(0,-100,0);scene.add(d5);
+scene.add(new THREE.HemisphereLight(0xf0f7ff,0x727c80,1.6));
+for(const p of [[180,-200,350],[600,100,250],[400,-80,-150]]){
+const l=new THREE.DirectionalLight(0xffffff,2.2);l.position.set(...p);scene.add(l);
+}
+const d5=new THREE.DirectionalLight(0xffffff,1.0);d5.position.set(390,0,-200);scene.add(d5);
 
-const grid=new THREE.GridHelper(500,30,0x444444,0x333333);grid.position.y=-30;scene.add(grid);
+const grid=new THREE.GridHelper(600,40,0x444444,0x333333);grid.rotation.x=Math.PI/2;grid.position.z=14;scene.add(grid);
 
-// Drone group: rotates OpenSCAD Z-up geometry into Three Y-up world (x-z flat)
-const drone=new THREE.Group();
-drone.rotation.x=-Math.PI/2; // Z-up -> Y-up
-scene.add(drone);
+const model=new THREE.Group();scene.add(model);
+const GROUP_NAMES={
+'right-v2-drone':'Frame & motors','right-v2-enclosure':'Frame enclosure','tv-enclosure':'Enclosure',
+'tv-mount':'Mount','tv-pi':'Pi 5','tv-fc':'Pixhawk','tv-esc':'ESC','tv-camera':'Camera',
+'tv-sensors':'Sensors','tv-power':'Power','tv-props':'Props','tv-wiring':'Wiring'
+};
 
-// Bounding box (rotates with drone)
-const bbox=new THREE.BoxGeometry(250,250,250);
-const bframe=new THREE.LineSegments(new THREE.EdgesGeometry(bbox),new THREE.LineBasicMaterial({color:0xff3333,transparent:true,opacity:0.15}));
-drone.add(bframe);
-
-// 3D scale ruler: ground-level bar behind the drone in the rotated frame
-(function buildRuler3d(){
-    const verts=[];
-    verts.push(-124,2,124, 124,2,124);
-    for(let mm=0; mm<=248; mm+=12.4){
-        const x=-124+mm;
-        const h=mm%49.6===0?12:(mm%24.8===0?8:5);
-        verts.push(x,2-h/2,124, x,2+h/2,124);
-    }
-    const geo=new THREE.BufferGeometry();
-    geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
-    drone.add(new THREE.LineSegments(geo,new THREE.LineBasicMaterial({color:0x88aacc,transparent:true,opacity:0.6})));
-})();
-
-const loader=new STLLoader();
 const meshes=[];
-let loaded=0;
-
 function showError(msg){
 const el=document.getElementById('er');el.textContent=msg;el.style.display='block';
 setTimeout(()=>{el.style.display='none'},8000);
 }
 
-PARTS.forEach((p,i)=>{
-loader.load(p.file,(geom)=>{
-geom.computeVertexNormals();
-const mat=new THREE.MeshPhysicalMaterial({color:p.c,metalness:0.1,roughness:0.5,clearcoat:0.05});
-const mesh=new THREE.Mesh(geom,mat);
-mesh.castShadow=true;mesh.receiveShadow=true;mesh.userData={idx:i,vis:true};
-if(p.special){
-    // Center the real Pi 5 geometry at its standoff-top position
-    geom.computeBoundingBox();const bb=geom.boundingBox;const g=new THREE.Vector3();
-    bb.getCenter(g);
-    mesh.position.set(PI5_TARGET.x-g.x,PI5_TARGET.y-g.y,PI5_TARGET.z-g.z);
+async function load(){
+let data,val;
+try{
+[data,val]=await Promise.all([
+(await fetch('preview-geometry.json')).json(),
+(await fetch('validation.json')).json()
+]);
+}catch(e){showError('Failed to load model data');return}
+const dims=val.assemblyDimensions.map(n=>n.toFixed(1)).join('×')+'mm';
+document.getElementById('dims').textContent=dims;
+document.getElementById('fit').textContent=val.fits250?'250mm ✓':'OVER';
+document.getElementById('pc').textContent=data.length;
+const folders=new Map();
+const pl=document.getElementById('pl');
+for(const p of data){
+const positions=[],colors=[];
+for(let i=0;i<p.indices.length;i++){
+const k=p.indices[i]*3;
+positions.push(p.positions[k],p.positions[k+1],p.positions[k+2]);
+colors.push(p.faceColors[Math.floor(i/3)*3],p.faceColors[Math.floor(i/3)*3+1],p.faceColors[Math.floor(i/3)*3+2]);
 }
-drone.add(mesh);meshes[i]=mesh;loaded++;
-document.getElementById('pc').textContent=PARTS.length;updateUI();
-if(loaded===PARTS.length)document.getElementById('lo').style.display='none';
-},null,(err)=>{showError('Failed: '+p.file);loaded++;if(loaded===PARTS.length)document.getElementById('lo').style.display='none'});
-});
-
-const raycaster=new THREE.Raycaster();const pointer=new THREE.Vector2();
-renderer.domElement.addEventListener('click',(e)=>{
-const rect=renderer.domElement.getBoundingClientRect();
-pointer.x=((e.clientX-rect.left)/rect.width)*2-1;pointer.y=-((e.clientY-rect.top)/rect.height)*2+1;
-raycaster.setFromCamera(pointer,camera);
-const hits=raycaster.intersectObjects(drone.children,true);
-if(hits.length>0&&hits[0].object.userData&&hits[0].object.userData.idx!==undefined){highlight(hits[0].object.userData.idx);return}
-highlight(-1);
-});
-
-function highlight(idx){
-meshes.forEach(m=>{if(m&&m.material.emissive)m.material.emissive.setHex(0)});
-document.querySelectorAll('.p').forEach(el=>el.classList.remove('a'));
-if(idx>=0&&meshes[idx]){
-meshes[idx].material.emissive.setHex(0x4444ff);
-const item=document.querySelector(`[data-i="${idx}"]`);
-if(item){item.classList.add('a');item.scrollIntoView({block:'nearest',behavior:'smooth'})};
+const g=new THREE.BufferGeometry();
+g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+g.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
+g.computeVertexNormals();
+const m=new THREE.Mesh(g,new THREE.MeshPhysicalMaterial({vertexColors:true,metalness:0.1,roughness:0.55,clearcoat:0.05}));
+m.castShadow=true;m.receiveShadow=true;m.userData=p;
+model.add(m);meshes.push(m);
+const key=p.group||'frame';
+const name=p.id.replace(/^(tv-|right-)/,'').replace(/^(pavo2-)/,'');
+const l=document.createElement('label');
+const c=document.createElement('input');c.type='checkbox';c.checked=true;
+c.onchange=()=>{m.visible=c.checked;updateUI()};
+l.append(c,document.createTextNode(name));
+if(!folders.has(key)){
+const d=document.createElement('details'),s=document.createElement('summary');
+s.innerHTML='<span>'+(GROUP_NAMES[key]||key)+'</span><span class="cnt" data-cnt="'+key+'">0</span>';
+d.append(s);pl.append(d);folders.set(key,d);
+folders.get(key)._cnt=s.querySelector('[data-cnt]');
 }
+folders.get(key).append(l);
+folders.get(key)._cnt.textContent=+folders.get(key)._cnt.textContent+1;
 }
-
-window.tp=function(idx){
-const mesh=meshes[idx];if(!mesh)return;
-mesh.visible=!mesh.visible;mesh.userData.vis=mesh.visible;
-const item=document.querySelector(`[data-i="${idx}"]`);
-if(item)item.style.opacity=mesh.visible?1:0.3;
-updateUI();
+document.getElementById('explode').oninput=e=>{
+const x=+e.target.value;
+meshes.forEach(m=>{const a=m.userData.motion?.at(-1)?.offset||[0,0,0];m.position.set(a[0]*x,a[1]*x,a[2]*x)});
 };
-window.ta=function(){
-const any=meshes.some(m=>m&&m.userData.vis);
-meshes.forEach(m=>{if(m){m.visible=!any;m.userData.vis=!any}});
-document.querySelectorAll('.p').forEach(el=>el.style.opacity=any?0.3:1);
+document.getElementById('tab').onclick=()=>{
+const any=meshes.some(m=>m&&m.visible);
+meshes.forEach(m=>{if(m)m.visible=!any});
+document.querySelectorAll('label input').forEach(el=>el.checked=!any);
 document.getElementById('tab').textContent=any?'Show All':'Hide All';
 updateUI();
 };
-function updateUI(){
-const v=meshes.filter(m=>m&&m.userData.vis).length;
-const t=meshes.filter(m=>m).length;
-document.getElementById('vc').textContent=v;document.getElementById('tc').textContent=t;
-document.getElementById('tab').textContent=v===t?'Hide All':'Show All';
+document.getElementById('lo').style.display='none';
 }
+function view(p){camera.position.set(...p);controls.target.copy(TARGET);controls.update();}
+document.getElementById('iso').onclick=()=>view([605,-280,235]);
+document.getElementById('top').onclick=()=>view([390,0,460]);
+document.getElementById('front').onclick=()=>view([390,-430,76]);
+let internal=false;
+document.getElementById('internal').onclick=()=>{
+internal=!internal;
+meshes.filter(m=>m.userData.group==='tv-enclosure').forEach(m=>{m.visible=!internal});
+document.getElementById('internal').textContent=internal?'Show enclosure':'Show internals';
+updateUI();
+};
+function updateUI(){
+const v=meshes.filter(m=>m&&m.visible).length;
+document.getElementById('tab').textContent=v===meshes.length?'Hide All':'Show All';
+document.querySelectorAll('label input').forEach((el,i)=>{const m=meshes[i];if(m)el.checked=m.visible;});
+}
+load();
+const mode=new URLSearchParams(location.search).get('view');
+if(mode==='internal')document.getElementById('internal').click();
+if(mode==='top')view([390,0,460]);
+if(mode==='front')view([390,-430,76]);
 
-// Build parts list
-const pl=document.getElementById('pl');
-PARTS.forEach((p,i)=>{
-const d=document.createElement('div');d.className='p';d.setAttribute('data-i',i);
-d.innerHTML='<span class="cd" style="background:#'+p.c.toString(16).padStart(6,'0')+'"></span><span style="flex:1;font-size:12px">'+p.name+'</span><span style="font-size:10px;color:#666">'+p.w+'</span>';
-d.onclick=()=>{highlight(i);tp(i)};
-pl.appendChild(d);
-});
-document.getElementById('tc').textContent=PARTS.length;document.getElementById('vc').textContent=PARTS.length;
-
+addEventListener('resize',()=>{camera.aspect=container.clientWidth/container.clientHeight;camera.updateProjectionMatrix();renderer.setSize(container.clientWidth,container.clientHeight);});
 function anim(){requestAnimationFrame(anim);controls.update();renderer.render(scene,camera)}
 anim();
 </script>

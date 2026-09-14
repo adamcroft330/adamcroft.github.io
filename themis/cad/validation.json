@@ -1,0 +1,29 @@
+{
+  "parts": 253,
+  "variantParts": 64,
+  "operations": 4047,
+  "operationTriangles": 526648,
+  "maxTriangles": 53610,
+  "maxDepth": 17,
+  "renderTriangles": 108048,
+  "renderBytes": 11669184,
+  "renderLimit": 12582912,
+  "assemblyBounds": [
+    [
+      323.11810302734375,
+      -66.88189697265625,
+      20
+    ],
+    [
+      456.88189697265625,
+      66.9102783203125,
+      109.1
+    ]
+  ],
+  "assemblyDimensions": [
+    133.7637939453125,
+    133.79217529296875,
+    89.1
+  ],
+  "fits250": true
+}
