@@ -385,6 +385,7 @@ disturbance = 0.5
 # seconds cost points directly: a 25 s run pays 7.5, a 40 s run 12, which is
 # about the 6-point spread the race awards for finishing order
 alpha_time = 0.3
+t_target = 26.0
 alpha_progress = 0.2
 alpha_form = 1.2
 alpha_z = 1.0
@@ -413,7 +414,7 @@ total_timesteps = 200_000_000
 horizon = 64
 gamma = 0.99
 gae_lambda = 0.95
-learning_rate = 0.003
+learning_rate = 0.001
 minibatch_size = 16384
 clip_coef = 0.2
 vf_coef = 0.5
