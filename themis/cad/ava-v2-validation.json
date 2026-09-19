@@ -1,0 +1,293 @@
+{
+  "passed": true,
+  "status": "local-only",
+  "liveReady": false,
+  "liveRepresentation": "Three grouped parts, with 16-sided external motor envelopes; detailed motor components remain in atlas and individual STLs. Live mesh simplification tolerance 0.001 mm.",
+  "liveBlockers": [
+    "The additive scene exceeds the 12 MiB render budget; do not upload this proposal unchanged."
+  ],
+  "assemblyDimensions": [
+    166,
+    166,
+    121.1
+  ],
+  "checks": [
+    {
+      "name": "166 mm frame footprint",
+      "pass": true,
+      "details": {
+        "min": [
+          -83,
+          -83,
+          -12
+        ],
+        "max": [
+          83,
+          83,
+          53.099998474121094
+        ],
+        "size": [
+          166,
+          166,
+          65.0999984741211
+        ]
+      }
+    },
+    {
+      "name": "Individual assembled v2 fits 250 mm cube",
+      "pass": true,
+      "details": {
+        "min": [
+          -83,
+          -83,
+          -12
+        ],
+        "max": [
+          83,
+          83,
+          109.1
+        ],
+        "size": [
+          166,
+          166,
+          121.1
+        ]
+      }
+    },
+    {
+      "name": "Duct spacing",
+      "pass": true,
+      "details": {
+        "spacing": 83,
+        "outerDiameter": 82,
+        "gap": 1
+      }
+    },
+    {
+      "name": "Adjacent ducts do not intersect",
+      "pass": true,
+      "details": {
+        "intersectionMm3": 0
+      }
+    },
+    {
+      "name": "3-inch swept volumes clear all geometry",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "Minimum duct ID and prop clearance",
+      "pass": true,
+      "details": {
+        "minimumDuctId": 79,
+        "propDiameter": 76.2,
+        "diametralClearance": 2.8,
+        "radialClearance": 1.4
+      }
+    },
+    {
+      "name": "Battery clears cradle and frame",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "Battery cavity margins at least 2 mm",
+      "pass": true,
+      "details": {
+        "expandedEnvelopeIntrusionMm3": 0,
+        "xPerSide": 2.5,
+        "yPerSide": 2,
+        "zBelow": 2,
+        "zAbove": 3,
+        "internal": [
+          75,
+          42,
+          30
+        ],
+        "externalTray": [
+          79,
+          46,
+          32
+        ]
+      }
+    },
+    {
+      "name": "All sixteen M2 holes align through motor bases and upper plate",
+      "pass": true,
+      "details": {
+        "pitchCircleDiameter": 9,
+        "holesPerMotor": 4,
+        "intrusionMm3": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "All motors centred and fully seated at z47",
+      "pass": true,
+      "details": [
+        {
+          "motor": 1,
+          "centre": [
+            -41.5,
+            -41.5
+          ],
+          "mountFaceZ": 47,
+          "supportedFraction": 1.0000000000000109,
+          "centreErrorMm": 0
+        },
+        {
+          "motor": 2,
+          "centre": [
+            41.5,
+            -41.5
+          ],
+          "mountFaceZ": 47,
+          "supportedFraction": 1.0000000000000127,
+          "centreErrorMm": 0
+        },
+        {
+          "motor": 3,
+          "centre": [
+            -41.5,
+            41.5
+          ],
+          "mountFaceZ": 47,
+          "supportedFraction": 1.0000000000000149,
+          "centreErrorMm": 0
+        },
+        {
+          "motor": 4,
+          "centre": [
+            41.5,
+            41.5
+          ],
+          "mountFaceZ": 47,
+          "supportedFraction": 1.0000000000000138,
+          "centreErrorMm": 0
+        }
+      ]
+    },
+    {
+      "name": "Motor bodies clear the complete frame",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "Sixteen installed M2 screws fit plate and motor bores",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "Unchanged housing clears ducts",
+      "pass": true,
+      "details": {
+        "housingBottom": 52,
+        "ductTop": 47,
+        "gap": 5
+      }
+    },
+    {
+      "name": "Exact retained geometry: right-frame-M2x3-heatset-1",
+      "pass": true,
+      "details": {
+        "volumeMm3": 20.01635491847992
+      }
+    },
+    {
+      "name": "Exact retained geometry: right-frame-M2x3-heatset-2",
+      "pass": true,
+      "details": {
+        "volumeMm3": 20.01635491847992
+      }
+    },
+    {
+      "name": "Exact retained geometry: right-frame-M2x3-heatset-3",
+      "pass": true,
+      "details": {
+        "volumeMm3": 20.01635491847992
+      }
+    },
+    {
+      "name": "Exact retained geometry: right-frame-M2x3-heatset-4",
+      "pass": true,
+      "details": {
+        "volumeMm3": 20.01635491847992
+      }
+    },
+    {
+      "name": "Central payload mounting pattern and top plate Z retained",
+      "pass": true,
+      "details": {
+        "pattern": [
+          [
+            -13,
+            -22.8
+          ],
+          [
+            -13,
+            22.8
+          ],
+          [
+            13,
+            -22.8
+          ],
+          [
+            13,
+            22.8
+          ]
+        ],
+        "intrusionsMm3": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "z": [
+          47,
+          49
+        ]
+      }
+    },
+    {
+      "name": "Frame, ducts and cradle form connected structure",
+      "pass": true,
+      "details": {
+        "connectedBodies": 1
+      }
+    },
+    {
+      "name": "Existing graph unchanged in proposed scene",
+      "pass": true,
+      "details": {
+        "baselineRevision": 3485
+      }
+    }
+  ],
+  "budget": {
+    "oldParts": 253,
+    "newParts": 3,
+    "totalParts": 256,
+    "totalNodes": 6493,
+    "graphBytes": 769977,
+    "oldRenderTriangles": 107690,
+    "newRenderTriangles": 9548,
+    "totalRenderBytes": 12661704,
+    "renderLimitBytes": 12582912
+  }
+}
