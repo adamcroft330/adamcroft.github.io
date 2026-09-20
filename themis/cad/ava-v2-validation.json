@@ -1,15 +1,38 @@
 {
+  "revision": "ava-v2-refined-20260919",
+  "flightReady": false,
+  "releaseStatus": "Geometry-checked prototype; propulsion target unmet; hardware and flight qualification pending",
+  "massBudget": {
+    "basis": "User supplied 275 g payload including housing; manufacturer component masses; solid CAD carrier volume at assumed PA12 density1.01g/cm3, carbon1.55g/cm3; 15g installation allowance. Not measured.",
+    "componentsG": {
+      "payload": 275,
+      "motors": 37.36,
+      "props": 5.92,
+      "battery": 141,
+      "carrierPA12": 34.87502843744146,
+      "carbonPlate": 11.236691560677519,
+      "hardwarePadStrapsWiringAllowance": 15
+    },
+    "estimatedMassG": 520.391719998119,
+    "benchThrustG": 1242.28,
+    "idealBenchThrustToWeight": 2.387201702602974,
+    "target": 3.8,
+    "targetMet": false,
+    "peakMotorCurrentA": 20.23,
+    "quadPeakMotorCurrentA": 80.92,
+    "note": "Open bench thrust, without housing/guards or battery sag. Actual thrust-to-weight will differ. 35A ESC must mean per channel; power distribution and connector temperatures require testing."
+  },
   "passed": true,
-  "status": "local-only",
+  "status": "exported-prototype",
   "liveReady": false,
-  "liveRepresentation": "Three grouped parts, with 16-sided external motor envelopes; detailed motor components remain in atlas and individual STLs. Live mesh simplification tolerance 0.001 mm.",
+  "liveRepresentation": "Five grouped parts, with 16-sided external motor envelopes; detailed motor components remain in atlas and individual STLs. Live mesh simplification tolerance 0.001 mm.",
   "liveBlockers": [
     "The additive scene exceeds the 12 MiB render budget; do not upload this proposal unchanged."
   ],
   "assemblyDimensions": [
     166,
     166,
-    121.1
+    119.39999999701976
   ],
   "checks": [
     {
@@ -19,7 +42,7 @@
         "min": [
           -83,
           -83,
-          -12
+          -10.299999997019768
         ],
         "max": [
           83,
@@ -29,7 +52,7 @@
         "size": [
           166,
           166,
-          65.0999984741211
+          63.39999847114086
         ]
       }
     },
@@ -40,7 +63,7 @@
         "min": [
           -83,
           -83,
-          -12
+          -10.299999997019768
         ],
         "max": [
           83,
@@ -50,7 +73,7 @@
         "size": [
           166,
           166,
-          121.1
+          119.39999999701976
         ]
       }
     },
@@ -94,22 +117,81 @@
       "name": "Battery cavity margins at least 2 mm",
       "pass": true,
       "details": {
-        "expandedEnvelopeIntrusionMm3": 0,
-        "xPerSide": 2.5,
+        "expandedEnvelopeIntrusionMm3": 2.983724378680108e-16,
+        "xPerSide": 2,
         "yPerSide": 2,
-        "zBelow": 2,
-        "zAbove": 3,
+        "padBelow": 2,
         "internal": [
-          75,
-          42,
-          30
+          86,
+          43,
+          29
         ],
-        "externalTray": [
-          79,
-          46,
-          32
+        "battery": [
+          82,
+          39,
+          25
         ]
       }
+    },
+    {
+      "name": "Four visible three-blade propellers; two CW and two CCW",
+      "pass": true,
+      "details": {
+        "diameter": 76.2,
+        "hubDiameter": 9.8,
+        "hubHeight": 4.9,
+        "bladeSurfaces": "representative purchased-part visualization"
+      }
+    },
+    {
+      "name": "Motor arms terminate at pads without outer overhangs",
+      "pass": true,
+      "details": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "Visible blades stay inside the checked 76.2 mm envelopes",
+      "pass": true,
+      "details": [
+        {
+          "rotor": 1,
+          "maxRadiusMm": 38.00009701102494
+        },
+        {
+          "rotor": 2,
+          "maxRadiusMm": 38.00009701102494
+        },
+        {
+          "rotor": 3,
+          "maxRadiusMm": 38.00009701102494
+        },
+        {
+          "rotor": 4,
+          "maxRadiusMm": 38.00009701102494
+        }
+      ]
+    },
+    {
+      "name": "Straps and pad contact but do not penetrate the battery",
+      "pass": true,
+      "details": [
+        {
+          "part": "ava-v2-battery-2mm-foam-pad",
+          "volumeMm3": 0
+        },
+        {
+          "part": "ava-v2-battery-strap-1",
+          "volumeMm3": 0
+        },
+        {
+          "part": "ava-v2-battery-strap-2",
+          "volumeMm3": 0
+        }
+      ]
     },
     {
       "name": "All sixteen M2 holes align through motor bases and upper plate",
@@ -148,7 +230,7 @@
             -41.5
           ],
           "mountFaceZ": 47,
-          "supportedFraction": 1.0000000000000109,
+          "supportedFraction": 1.000000000000015,
           "centreErrorMm": 0
         },
         {
@@ -158,7 +240,7 @@
             -41.5
           ],
           "mountFaceZ": 47,
-          "supportedFraction": 1.0000000000000127,
+          "supportedFraction": 1.0000000000000124,
           "centreErrorMm": 0
         },
         {
@@ -168,7 +250,7 @@
             41.5
           ],
           "mountFaceZ": 47,
-          "supportedFraction": 1.0000000000000149,
+          "supportedFraction": 1.0000000000000095,
           "centreErrorMm": 0
         },
         {
@@ -178,7 +260,7 @@
             41.5
           ],
           "mountFaceZ": 47,
-          "supportedFraction": 1.0000000000000138,
+          "supportedFraction": 1.000000000000012,
           "centreErrorMm": 0
         }
       ]
@@ -192,6 +274,45 @@
       "name": "Sixteen installed M2 screws fit plate and motor bores",
       "pass": true,
       "details": []
+    },
+    {
+      "name": "Plate and propeller retention hardware fits its bores",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "Prop hubs seat on bells with 3 mm shaft engagement",
+      "pass": true,
+      "details": [
+        {
+          "rotor": 1,
+          "hubTop": 34.900000000000006,
+          "bellSeat": 34.9,
+          "shaftEngagement": 3,
+          "bodyOverlapMm3": 2.842170943040401e-14
+        },
+        {
+          "rotor": 2,
+          "hubTop": 34.900000000000006,
+          "bellSeat": 34.9,
+          "shaftEngagement": 3,
+          "bodyOverlapMm3": 2.353672812205332e-14
+        },
+        {
+          "rotor": 3,
+          "hubTop": 34.900000000000006,
+          "bellSeat": 34.9,
+          "shaftEngagement": 3,
+          "bodyOverlapMm3": 2.7755575615628914e-14
+        },
+        {
+          "rotor": 4,
+          "hubTop": 34.900000000000006,
+          "bellSeat": 34.9,
+          "shaftEngagement": 3,
+          "bodyOverlapMm3": 2.3314683517128287e-14
+        }
+      ]
     },
     {
       "name": "Unchanged housing clears ducts",
@@ -281,13 +402,13 @@
   ],
   "budget": {
     "oldParts": 253,
-    "newParts": 3,
-    "totalParts": 256,
-    "totalNodes": 6493,
-    "graphBytes": 769977,
+    "newParts": 5,
+    "totalParts": 258,
+    "totalNodes": 6497,
+    "graphBytes": 770841,
     "oldRenderTriangles": 107690,
-    "newRenderTriangles": 9548,
-    "totalRenderBytes": 12661704,
+    "newRenderTriangles": 16540,
+    "totalRenderBytes": 13416840,
     "renderLimitBytes": 12582912
   }
 }
