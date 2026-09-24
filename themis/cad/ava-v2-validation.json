@@ -1,21 +1,25 @@
 {
-  "revision": "ava-v2-payload-mounts-20260923",
+  "revision": "ava-v2-independent-tray-20260924",
   "flightReady": false,
   "releaseStatus": "Geometry-checked prototype; propulsion target unmet; hardware and flight qualification pending",
   "massBudget": {
-    "basis": "User supplied 275 g payload including housing; manufacturer component masses; solid CAD carrier volume at assumed PA12 density1.01g/cm3, carbon1.55g/cm3; 15g installation allowance. Not measured.",
+    "basis": "User supplied 275 g payload including housing; manufacturer component masses; solid CAD carrier volume at assumed PA12 density1.01g/cm3, carbon1.55g/cm3, payload plastic changes1.27g/cm3; 15g installation allowance plus2g shell fasteners. Open estimate subtracts shell plastics and2g hardware, and is density-dependent. Not measured.",
     "componentsG": {
       "payload": 275,
+      "payloadPlasticRevision": -0.04367298956456827,
+      "shellFastenersAllowance": 2,
       "motors": 37.36,
       "props": 5.92,
       "battery": 141,
-      "carrierPA12": 35.61423511149989,
+      "carrierPA12": 36.26081692504288,
       "carbonPlate": 11.407643191123022,
       "hardwarePadStrapsWiringAllowance": 15
     },
-    "estimatedMassG": 521.301878302623,
+    "estimatedMassG": 523.9047871266014,
+    "openEstimatedMassG": 457.1043321237062,
+    "openIdealBenchThrustToWeight": 2.7177165314281067,
     "benchThrustG": 1242.28,
-    "idealBenchThrustToWeight": 2.3830338076757114,
+    "idealBenchThrustToWeight": 2.3711942141498383,
     "target": 3.8,
     "targetMet": false,
     "peakMotorCurrentA": 20.23,
@@ -45,7 +49,7 @@
       "spacerPlateSupport": 0.9999999999999983,
       "plateBossSupport": 0.9999999999999973,
       "housingSpacerSupport": 0.9999999999999962,
-      "screwHeadSupport": 1.0000000000000002,
+      "screwHeadSupport": 1,
       "insertEncasedFraction": 1.0000000000000009,
       "holeIntrusionMm3": 0
     },
@@ -70,8 +74,8 @@
       ],
       "spacerPlateSupport": 1.000000000000001,
       "plateBossSupport": 0.9999999999999986,
-      "housingSpacerSupport": 1.0000000000000016,
-      "screwHeadSupport": 1.0000000000000047,
+      "housingSpacerSupport": 0.9999999999999991,
+      "screwHeadSupport": 1.0000000000000049,
       "insertEncasedFraction": 1.0000000000000004,
       "holeIntrusionMm3": 0
     },
@@ -97,7 +101,7 @@
       "spacerPlateSupport": 0.9999999999999926,
       "plateBossSupport": 0.9999999999999992,
       "housingSpacerSupport": 1.0000000000000058,
-      "screwHeadSupport": 1.000000000000004,
+      "screwHeadSupport": 1.0000000000000036,
       "insertEncasedFraction": 1.0000000000000007,
       "holeIntrusionMm3": 0
     },
@@ -122,16 +126,230 @@
       ],
       "spacerPlateSupport": 0.9999999999999971,
       "plateBossSupport": 0.9999999999999973,
-      "housingSpacerSupport": 1,
-      "screwHeadSupport": 1.0000000000000016,
+      "housingSpacerSupport": 1.0000000000000024,
+      "screwHeadSupport": 1.0000000000000002,
       "insertEncasedFraction": 1.0000000000000009,
       "holeIntrusionMm3": 0
     }
   ],
+  "openConfiguration": {
+    "shellPartsRemoved": [
+      "ava-v2-removable-lower-shell",
+      "ava-v2-shell-M2x8-screw-1",
+      "ava-v2-shell-M2-nut-1",
+      "ava-v2-shell-M2x8-screw-2",
+      "ava-v2-shell-M2-nut-2",
+      "ava-v2-shell-M2x8-screw-3",
+      "ava-v2-shell-M2-nut-3",
+      "ava-v2-shell-M2x8-screw-4",
+      "ava-v2-shell-M2-nut-4",
+      "ava-v2-context-tv-enclosure-M2-service-screw-1",
+      "ava-v2-context-tv-enclosure-M2-service-screw-2",
+      "ava-v2-context-tv-enclosure-M2-service-screw-3",
+      "ava-v2-context-tv-enclosure-M2-service-screw-4",
+      "ava-v2-context-tv-rear-service-cover",
+      "ava-v2-context-tv-orange-seam-gasket"
+    ],
+    "retainedTrayParts": [
+      "ava-v2-payload-tray",
+      "ava-v2-context-tv-Pi5-M2_5-standoff-1",
+      "ava-v2-context-tv-Pi5-M2_5-standoff-2",
+      "ava-v2-context-tv-Pi5-M2_5-standoff-3",
+      "ava-v2-context-tv-Pi5-M2_5-standoff-4",
+      "ava-v2-context-tv-Pixhawk-support-bridge",
+      "ava-v2-context-tv-Mightycam-mount-1",
+      "ava-v2-context-tv-Mightycam-mount-2"
+    ],
+    "frameMounts": [
+      {
+        "mount": 1,
+        "centre": [
+          -13,
+          -22.8
+        ],
+        "spacerAxisErrorMm": 0,
+        "insertAxisErrorMm": 0,
+        "screwTipZ": 43,
+        "screwLengthMm": 12,
+        "insertZ": [
+          43.5,
+          46.5
+        ],
+        "threadEngagementMm": 3,
+        "spacerZ": [
+          49,
+          52
+        ],
+        "spacerPlateSupport": 0.9999999999999983,
+        "plateBossSupport": 0.9999999999999973,
+        "housingSpacerSupport": 0.9999999999999962,
+        "screwHeadSupport": 1,
+        "insertEncasedFraction": 1.0000000000000009,
+        "holeIntrusionMm3": 0
+      },
+      {
+        "mount": 2,
+        "centre": [
+          13,
+          -22.8
+        ],
+        "spacerAxisErrorMm": 0,
+        "insertAxisErrorMm": 0,
+        "screwTipZ": 43,
+        "screwLengthMm": 12,
+        "insertZ": [
+          43.5,
+          46.5
+        ],
+        "threadEngagementMm": 3,
+        "spacerZ": [
+          49,
+          52
+        ],
+        "spacerPlateSupport": 1.000000000000001,
+        "plateBossSupport": 0.9999999999999986,
+        "housingSpacerSupport": 0.9999999999999991,
+        "screwHeadSupport": 1.0000000000000049,
+        "insertEncasedFraction": 1.0000000000000004,
+        "holeIntrusionMm3": 0
+      },
+      {
+        "mount": 3,
+        "centre": [
+          -13,
+          22.8
+        ],
+        "spacerAxisErrorMm": 0,
+        "insertAxisErrorMm": 0,
+        "screwTipZ": 43,
+        "screwLengthMm": 12,
+        "insertZ": [
+          43.5,
+          46.5
+        ],
+        "threadEngagementMm": 3,
+        "spacerZ": [
+          49,
+          52
+        ],
+        "spacerPlateSupport": 0.9999999999999926,
+        "plateBossSupport": 0.9999999999999992,
+        "housingSpacerSupport": 1.0000000000000058,
+        "screwHeadSupport": 1.0000000000000036,
+        "insertEncasedFraction": 1.0000000000000007,
+        "holeIntrusionMm3": 0
+      },
+      {
+        "mount": 4,
+        "centre": [
+          13,
+          22.8
+        ],
+        "spacerAxisErrorMm": 0,
+        "insertAxisErrorMm": 0,
+        "screwTipZ": 43,
+        "screwLengthMm": 12,
+        "insertZ": [
+          43.5,
+          46.5
+        ],
+        "threadEngagementMm": 3,
+        "spacerZ": [
+          49,
+          52
+        ],
+        "spacerPlateSupport": 0.9999999999999971,
+        "plateBossSupport": 0.9999999999999973,
+        "housingSpacerSupport": 1.0000000000000024,
+        "screwHeadSupport": 1.0000000000000002,
+        "insertEncasedFraction": 1.0000000000000009,
+        "holeIntrusionMm3": 0
+      }
+    ],
+    "bridges": [
+      {
+        "name": "front",
+        "contactsMm3": [
+          189.46050628331574,
+          189.46050628331574
+        ],
+        "bounds": {
+          "min": [
+            -2.7696377368930833,
+            -49.5,
+            28
+          ],
+          "max": [
+            2.7696377368930833,
+            -33.5,
+            36
+          ]
+        }
+      },
+      {
+        "name": "rear",
+        "contactsMm3": [
+          189.46050628331574,
+          189.46050628331574
+        ],
+        "bounds": {
+          "min": [
+            -2.7696377368930833,
+            33.5,
+            28
+          ],
+          "max": [
+            2.7696377368930833,
+            49.5,
+            36
+          ]
+        }
+      },
+      {
+        "name": "left",
+        "contactsMm3": [
+          189.46050628331574,
+          189.46050628331574
+        ],
+        "bounds": {
+          "min": [
+            -49.5,
+            -2.769637736893083,
+            28
+          ],
+          "max": [
+            -33.5,
+            2.769637736893083,
+            36
+          ]
+        }
+      },
+      {
+        "name": "right",
+        "contactsMm3": [
+          189.46050628331574,
+          189.46050628331574
+        ],
+        "bounds": {
+          "min": [
+            33.5,
+            -2.769637736893083,
+            28
+          ],
+          "max": [
+            49.5,
+            2.769637736893083,
+            36
+          ]
+        }
+      }
+    ],
+    "structuralQualification": "Geometric connectivity only; stiffness, retention and flight testing pending."
+  },
   "passed": true,
   "status": "exported-prototype",
   "liveReady": false,
-  "liveRepresentation": "Five grouped parts, with 16-sided external motor envelopes; detailed motor components remain in atlas and individual STLs. Live mesh simplification tolerance 0.001 mm.",
+  "liveRepresentation": "Six grouped parts, with 16-sided external motor envelopes; detailed components remain in atlas and individual STLs. Live mesh simplification tolerance 0.001 mm.",
   "liveBlockers": [
     "The additive scene exceeds the 12 MiB render budget; do not upload this proposal unchanged."
   ],
@@ -153,12 +371,12 @@
         "max": [
           83,
           83,
-          50.400000000000006
+          109.1
         ],
         "size": [
           166,
           166,
-          60.69999999701977
+          119.39999999701976
         ]
       }
     },
@@ -421,12 +639,12 @@
       ]
     },
     {
-      "name": "Unchanged housing clears ducts",
+      "name": "Removable housing clears ducts",
       "pass": true,
       "details": {
-        "housingBottom": 52,
+        "housingBottom": 50.400000000000006,
         "ductTop": 47,
-        "gap": 5
+        "gap": 3.4000000000000057
       }
     },
     {
@@ -565,7 +783,7 @@
           "spacerPlateSupport": 0.9999999999999983,
           "plateBossSupport": 0.9999999999999973,
           "housingSpacerSupport": 0.9999999999999962,
-          "screwHeadSupport": 1.0000000000000002,
+          "screwHeadSupport": 1,
           "insertEncasedFraction": 1.0000000000000009,
           "holeIntrusionMm3": 0
         },
@@ -590,8 +808,8 @@
           ],
           "spacerPlateSupport": 1.000000000000001,
           "plateBossSupport": 0.9999999999999986,
-          "housingSpacerSupport": 1.0000000000000016,
-          "screwHeadSupport": 1.0000000000000047,
+          "housingSpacerSupport": 0.9999999999999991,
+          "screwHeadSupport": 1.0000000000000049,
           "insertEncasedFraction": 1.0000000000000004,
           "holeIntrusionMm3": 0
         },
@@ -617,7 +835,7 @@
           "spacerPlateSupport": 0.9999999999999926,
           "plateBossSupport": 0.9999999999999992,
           "housingSpacerSupport": 1.0000000000000058,
-          "screwHeadSupport": 1.000000000000004,
+          "screwHeadSupport": 1.0000000000000036,
           "insertEncasedFraction": 1.0000000000000007,
           "holeIntrusionMm3": 0
         },
@@ -642,8 +860,8 @@
           ],
           "spacerPlateSupport": 0.9999999999999971,
           "plateBossSupport": 0.9999999999999973,
-          "housingSpacerSupport": 1,
-          "screwHeadSupport": 1.0000000000000016,
+          "housingSpacerSupport": 1.0000000000000024,
+          "screwHeadSupport": 1.0000000000000002,
           "insertEncasedFraction": 1.0000000000000009,
           "holeIntrusionMm3": 0
         }
@@ -675,7 +893,7 @@
           "spacerPlateSupport": 0.9999999999999983,
           "plateBossSupport": 0.9999999999999973,
           "housingSpacerSupport": 0.9999999999999962,
-          "screwHeadSupport": 1.0000000000000002,
+          "screwHeadSupport": 1,
           "insertEncasedFraction": 1.0000000000000009,
           "holeIntrusionMm3": 0
         },
@@ -700,8 +918,8 @@
           ],
           "spacerPlateSupport": 1.000000000000001,
           "plateBossSupport": 0.9999999999999986,
-          "housingSpacerSupport": 1.0000000000000016,
-          "screwHeadSupport": 1.0000000000000047,
+          "housingSpacerSupport": 0.9999999999999991,
+          "screwHeadSupport": 1.0000000000000049,
           "insertEncasedFraction": 1.0000000000000004,
           "holeIntrusionMm3": 0
         },
@@ -727,7 +945,7 @@
           "spacerPlateSupport": 0.9999999999999926,
           "plateBossSupport": 0.9999999999999992,
           "housingSpacerSupport": 1.0000000000000058,
-          "screwHeadSupport": 1.000000000000004,
+          "screwHeadSupport": 1.0000000000000036,
           "insertEncasedFraction": 1.0000000000000007,
           "holeIntrusionMm3": 0
         },
@@ -752,8 +970,8 @@
           ],
           "spacerPlateSupport": 0.9999999999999971,
           "plateBossSupport": 0.9999999999999973,
-          "housingSpacerSupport": 1,
-          "screwHeadSupport": 1.0000000000000016,
+          "housingSpacerSupport": 1.0000000000000024,
+          "screwHeadSupport": 1.0000000000000002,
           "insertEncasedFraction": 1.0000000000000009,
           "holeIntrusionMm3": 0
         }
@@ -785,7 +1003,7 @@
           "spacerPlateSupport": 0.9999999999999983,
           "plateBossSupport": 0.9999999999999973,
           "housingSpacerSupport": 0.9999999999999962,
-          "screwHeadSupport": 1.0000000000000002,
+          "screwHeadSupport": 1,
           "insertEncasedFraction": 1.0000000000000009,
           "holeIntrusionMm3": 0
         },
@@ -810,8 +1028,8 @@
           ],
           "spacerPlateSupport": 1.000000000000001,
           "plateBossSupport": 0.9999999999999986,
-          "housingSpacerSupport": 1.0000000000000016,
-          "screwHeadSupport": 1.0000000000000047,
+          "housingSpacerSupport": 0.9999999999999991,
+          "screwHeadSupport": 1.0000000000000049,
           "insertEncasedFraction": 1.0000000000000004,
           "holeIntrusionMm3": 0
         },
@@ -837,7 +1055,7 @@
           "spacerPlateSupport": 0.9999999999999926,
           "plateBossSupport": 0.9999999999999992,
           "housingSpacerSupport": 1.0000000000000058,
-          "screwHeadSupport": 1.000000000000004,
+          "screwHeadSupport": 1.0000000000000036,
           "insertEncasedFraction": 1.0000000000000007,
           "holeIntrusionMm3": 0
         },
@@ -862,8 +1080,8 @@
           ],
           "spacerPlateSupport": 0.9999999999999971,
           "plateBossSupport": 0.9999999999999973,
-          "housingSpacerSupport": 1,
-          "screwHeadSupport": 1.0000000000000016,
+          "housingSpacerSupport": 1.0000000000000024,
+          "screwHeadSupport": 1.0000000000000002,
           "insertEncasedFraction": 1.0000000000000009,
           "holeIntrusionMm3": 0
         }
@@ -882,6 +1100,220 @@
       }
     },
     {
+      "name": "Four guard bridges join both adjacent rings outside their bores",
+      "pass": true,
+      "details": [
+        {
+          "name": "front",
+          "contactsMm3": [
+            189.46050628331574,
+            189.46050628331574
+          ],
+          "bounds": {
+            "min": [
+              -2.7696377368930833,
+              -49.5,
+              28
+            ],
+            "max": [
+              2.7696377368930833,
+              -33.5,
+              36
+            ]
+          }
+        },
+        {
+          "name": "rear",
+          "contactsMm3": [
+            189.46050628331574,
+            189.46050628331574
+          ],
+          "bounds": {
+            "min": [
+              -2.7696377368930833,
+              33.5,
+              28
+            ],
+            "max": [
+              2.7696377368930833,
+              49.5,
+              36
+            ]
+          }
+        },
+        {
+          "name": "left",
+          "contactsMm3": [
+            189.46050628331574,
+            189.46050628331574
+          ],
+          "bounds": {
+            "min": [
+              -49.5,
+              -2.769637736893083,
+              28
+            ],
+            "max": [
+              -33.5,
+              2.769637736893083,
+              36
+            ]
+          }
+        },
+        {
+          "name": "right",
+          "contactsMm3": [
+            189.46050628331574,
+            189.46050628331574
+          ],
+          "bounds": {
+            "min": [
+              33.5,
+              -2.769637736893083,
+              28
+            ],
+            "max": [
+              49.5,
+              2.769637736893083,
+              36
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Joined tray clears boards, component screws and wiring references",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "Tray and electronics supports form one body without the shell",
+      "pass": true,
+      "details": {
+        "connectedBodies": 1,
+        "parts": [
+          "ava-v2-payload-tray",
+          "ava-v2-context-tv-Pi5-M2_5-standoff-1",
+          "ava-v2-context-tv-Pi5-M2_5-standoff-2",
+          "ava-v2-context-tv-Pi5-M2_5-standoff-3",
+          "ava-v2-context-tv-Pi5-M2_5-standoff-4",
+          "ava-v2-context-tv-Pixhawk-support-bridge",
+          "ava-v2-context-tv-Mightycam-mount-1",
+          "ava-v2-context-tv-Mightycam-mount-2"
+        ]
+      }
+    },
+    {
+      "name": "Independent tray and removable shell have separate geometry",
+      "pass": true,
+      "details": {
+        "intersectionMm3": 1.432759618412438e-15,
+        "wallSeamGapMm": 0.3,
+        "bossSeatZ": 55
+      }
+    },
+    {
+      "name": "Shell has four independent supported screws and captive nuts",
+      "pass": true,
+      "details": [
+        {
+          "centre": [
+            -30,
+            -41.5
+          ],
+          "headSupport": 1.0000000000000056,
+          "bossSupport": 0.999999999999998,
+          "bossSeat": 1.00000000000001,
+          "nutSeat": 1.0000000000000002,
+          "boltTrayHit": -3.139849491518021e-16,
+          "boltShellHit": 0,
+          "nutShellHit": 4.119426154358674e-16,
+          "nutThreadEngagement": 1.5999999999999943
+        },
+        {
+          "centre": [
+            30,
+            -41.5
+          ],
+          "headSupport": 1.0000000000000069,
+          "bossSupport": 0.999999999999997,
+          "bossSeat": 1.0000000000000104,
+          "nutSeat": 1.000000000000001,
+          "boltTrayHit": -2.6107588313450947e-15,
+          "boltShellHit": 0,
+          "nutShellHit": -4.762358042642578e-16,
+          "nutThreadEngagement": 1.5999999999999943
+        },
+        {
+          "centre": [
+            -34,
+            31.5
+          ],
+          "headSupport": 1.0000000000000064,
+          "bossSupport": 1.0000000000000084,
+          "bossSeat": 1.0000000000000042,
+          "nutSeat": 0.9999999999999974,
+          "boltTrayHit": 2.798759488054081e-15,
+          "boltShellHit": 0,
+          "nutShellHit": 5.88938620094126e-16,
+          "nutThreadEngagement": 1.5999999999999943
+        },
+        {
+          "centre": [
+            34,
+            31.5
+          ],
+          "headSupport": 1.000000000000007,
+          "bossSupport": 1.0000000000000067,
+          "bossSeat": 1.000000000000006,
+          "nutSeat": 0.9999999999999974,
+          "boltTrayHit": 3.775625645463521e-15,
+          "boltShellHit": 0,
+          "nutShellHit": 4.779163176316104e-16,
+          "nutThreadEngagement": 1.5999999999999943
+        }
+      ]
+    },
+    {
+      "name": "Electronics support feet remain seated on the independent tray",
+      "pass": true,
+      "details": [
+        {
+          "part": "ava-v2-context-tv-Pi5-M2_5-standoff-1",
+          "supportFraction": 1.0000000000000002
+        },
+        {
+          "part": "ava-v2-context-tv-Pi5-M2_5-standoff-2",
+          "supportFraction": 1.0000000000000009
+        },
+        {
+          "part": "ava-v2-context-tv-Pi5-M2_5-standoff-3",
+          "supportFraction": 1.0000000000000002
+        },
+        {
+          "part": "ava-v2-context-tv-Pi5-M2_5-standoff-4",
+          "supportFraction": 1.0000000000000009
+        },
+        {
+          "part": "ava-v2-context-tv-Pixhawk-support-bridge",
+          "supportFraction": 1
+        },
+        {
+          "part": "ava-v2-context-tv-Mightycam-mount-1",
+          "supportFraction": 0.9999999999999978
+        },
+        {
+          "part": "ava-v2-context-tv-Mightycam-mount-2",
+          "supportFraction": 1.000000000000001
+        }
+      ]
+    },
+    {
+      "name": "Lower shell lifts over the fixed payload in 1 mm removal samples",
+      "pass": true,
+      "details": []
+    },
+    {
       "name": "Existing graph unchanged in proposed scene",
       "pass": true,
       "details": {
@@ -891,13 +1323,13 @@
   ],
   "budget": {
     "oldParts": 253,
-    "newParts": 5,
-    "totalParts": 258,
-    "totalNodes": 6497,
-    "graphBytes": 770841,
+    "newParts": 6,
+    "totalParts": 259,
+    "totalNodes": 6499,
+    "graphBytes": 771243,
     "oldRenderTriangles": 107690,
-    "newRenderTriangles": 17560,
-    "totalRenderBytes": 13527000,
+    "newRenderTriangles": 23528,
+    "totalRenderBytes": 14171544,
     "renderLimitBytes": 12582912
   }
 }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="ava-v2-payload-mounts-20260923">
+<html lang="en" data-build="ava-v2-independent-tray-20260924">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Themis / AVA — Frame Comparison</title>
@@ -19,13 +19,15 @@
 <label><input id="payload" type="checkbox" checked> Payloads</label>
 <label><input id="props" type="checkbox" checked> Propellers</label>
 <label><input id="battery" type="checkbox" checked> V2 battery &amp; straps</label>
-<label><input id="housing" type="checkbox" checked> Housing covers</label>
+<label><input id="housing" type="checkbox" checked> Housing shells</label>
 <div class="buttons"><button id="both">Both</button><button id="focus-old">Original</button><button id="focus-new">AVA v2</button></div>
 <div class="buttons"><button id="iso">Perspective</button><button id="top">Top</button><button id="front">Front</button><button id="under">Underside</button></div>
-<div class="buttons"><button id="rotors">Rotor directions</button><button id="battery-view">Battery fit</button><button id="payload-mounts" aria-pressed="false">Payload mounts</button></div>
-<p class="note" id="mount-note" hidden>Mount inspection: housing floor shown translucent; other payload parts hidden. Four M2×12 screws pass through the floor, 3 mm spacers and carbon pads into the frame bosses.</p>
+<div class="buttons"><button id="rotors">Rotor directions</button><button id="battery-view">Battery fit</button><button id="payload-mounts" aria-pressed="false">Payload mounts</button><button id="open-build" aria-pressed="false">V2 shell off</button></div>
+<p class="note" id="mount-note" hidden>Mount inspection: independent tray shown translucent; other payload parts hidden. Four M2×12 screws pass through the tray, 3 mm spacers and carbon pads into the frame bosses.</p>
+<p class="note" id="open-note" hidden>V2 open configuration: tray, electronics supports and frame mounts stay attached. Only the shell, lid, gasket and their screws/nuts are removed. Hardware retention and flight testing remain required.</p>
 <div id="check">Checking model data…</div>
 <p class="note">V2 motor centres: ±41.5 mm.<br>Four M2 screws on each Ø9 mm pattern.<br>Rounded arms end at the motor pads.<br>Motor faces seat at z47 under the rebuilt plate.<br>79 mm duct ID · 83 mm centre spacing.</p>
+<p class="note">Four integrated bridges join neighbouring guards. The payload tray carries its supports independently of the removable shell.</p>
 <p class="note" id="dimensions"></p>
 <a class="download" href="themis-ava-v2-export.tar.gz">Download revised V2 CAD + build notes ↓</a>
 <a class="download" href="build-guide.html" target="_blank" rel="noopener">Parts, assembly and readiness →</a>
@@ -52,7 +54,7 @@ const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamp
 window.cameraState=()=>({position:camera.position.toArray(),target:controls.target.toArray(),damping:controls.enableDamping});
 scene.add(new T.HemisphereLight(0xf0f7ff,0x657989,2));
 for(const p of [[300,-250,350],[700,150,280],[550,-80,-130]]){const l=new T.DirectionalLight(0xffffff,2.2);l.position.set(...p);scene.add(l);}
-const meshes=[],folders=new Map(),rotorLabels=[];let target=[520,0,50],distance=620,viewMode='iso',mountInspection=false;
+const meshes=[],folders=new Map(),rotorLabels=[];let target=[520,0,50],distance=620,viewMode='iso',mountInspection=false,openBuild=false;
 function view(mode='iso'){
  viewMode=mode;const [x,y,z]=target;const d=distance*Math.max(1,1.35/(container.clientWidth/container.clientHeight));
  const positions={iso:[x+d*.38,y-d*.83,z+d*.5],top:[x,y,z+d],front:[x,y-d,z],under:[x+d*.3,y-d*.7,z-d*.6]};
@@ -61,13 +63,14 @@ function view(mode='iso'){
 function focus(which){if(mountInspection){mountInspection=false;visibility();}target=[which==='old'?390:which==='new'?650:520,0,50];distance=which==='both'?620:350;view();}
 function visibility(){
  $('payload-mounts').setAttribute('aria-pressed',String(mountInspection));$('mount-note').hidden=!mountInspection;
+ $('open-build').setAttribute('aria-pressed',String(openBuild));$('open-build').textContent=openBuild?'V2 shell on':'V2 shell off';$('open-note').hidden=!openBuild||mountInspection;
  for(const l of rotorLabels)l.visible=!mountInspection&&showRotors&&$('new').checked;
  for(const m of meshes){
-  const p=m.userData,old=!p.id.startsWith('ava-v2-'),context=p.group==='v2-payload-context'||(old&&p.id.startsWith('tv-')&&p.group!=='tv-props'),shell=/integrated-front-housing|rear-service-cover|orange-seam-gasket/.test(p.id);
-  const floor=p.id==='ava-v2-context-tv-integrated-front-housing';
+  const p=m.userData,old=!p.id.startsWith('ava-v2-'),context=['v2-payload-context','v2-payload-structure','v2-shell'].includes(p.group)||(old&&p.id.startsWith('tv-')&&p.group!=='tv-props'),shell=p.group==='v2-shell'||(old&&/integrated-front-housing|rear-service-cover|orange-seam-gasket|enclosure-M2-service-screw/.test(p.id));
+  const floor=p.id==='ava-v2-payload-tray';
   m.material.transparent=mountInspection&&floor;m.material.opacity=(mountInspection&&floor)?0.22:1;m.material.depthWrite=!(mountInspection&&floor);m.material.clippingPlanes=mountInspection&&floor?[floorClip]:null;
   if(mountInspection){m.visible=!old&&(floor||/ava-v2-(frame-plate$|upper-motor-plate-3inch$|frame-M2x3-heatset-|context-tv-adapter-)/.test(p.id));continue;}
-  m.visible=p.selected&&$(old?'old':'new').checked&&(!context||$('payload').checked)&&(!shell||$('housing').checked)&&(!/prop-\d|2inch-prop/.test(p.id)||$('props').checked)&&(!p.id.startsWith('ava-v2-battery-')||p.id==='ava-v2-battery-cradle'||$('battery').checked);
+  m.visible=p.selected&&$(old?'old':'new').checked&&(!context||$('payload').checked)&&(!shell||($('housing').checked&&(old||!openBuild)))&&(!/prop-\d|2inch-prop/.test(p.id)||$('props').checked)&&(!p.id.startsWith('ava-v2-battery-')||p.id==='ava-v2-battery-cradle'||$('battery').checked);
  }
 }
 let showRotors=false;
@@ -76,6 +79,7 @@ badge('FL · CCW ↺',585,-67,50);badge('FR · CW ↻',715,-67,50);badge('RL · 
 $('rotors').onclick=()=>{showRotors=!showRotors;visibility();focus('new');view('top');};
 $('battery-view').onclick=()=>{focus('new');view('under');};
 $('payload-mounts').onclick=()=>{const next=!mountInspection;focus('new');mountInspection=next;visibility();if(next){target=[650,0,49];distance=170;view('iso');}};
+$('open-build').onclick=()=>{openBuild=!openBuild;focus('new');visibility();};
 for(const id of ['old','new','payload','housing','props','battery'])$(id).onchange=visibility;
 for(const id of ['iso','top','front','under'])$(id).onclick=()=>view(id);
 $('both').onclick=()=>focus('both');$('focus-old').onclick=()=>focus('old');$('focus-new').onclick=()=>focus('new');
@@ -100,7 +104,7 @@ try{
  $('mass').textContent=`Estimated AUW: ${val.massBudget.estimatedMassG.toFixed(0)} g. Ideal open-bench thrust/weight: ${val.massBudget.idealBenchThrustToWeight.toFixed(2)}:1; assembled performance untested.`;
  $('dimensions').textContent=`V2 assembled: ${val.assemblyDimensions.map(x=>x.toFixed(1)).join(' × ')} mm. Each aircraft fits the 250 mm cube independently.`;
  visibility();$('loading').style.display='none';
- window.comparisonState=()=>({visibleParts:meshes.filter(m=>m.visible).length,totalParts:meshes.length,oldParts:old.length,newParts:added.length,alignment:alignment.details,payloadAlignment:val.payloadAlignment,mountInspection,propParts:added.filter(p=>p.group==='v2-prop').length,batteryParts:added.filter(p=>p.group==='v2-battery').length,partVisible:id=>meshes.find(m=>m.userData.id===id)?.visible});window.previewReady=true;
+ window.comparisonState=()=>({visibleParts:meshes.filter(m=>m.visible).length,totalParts:meshes.length,oldParts:old.length,newParts:added.length,alignment:alignment.details,payloadAlignment:val.payloadAlignment,openConfiguration:val.openConfiguration,openBuild,mountInspection,propParts:added.filter(p=>p.group==='v2-prop').length,batteryParts:added.filter(p=>p.group==='v2-battery').length,partVisible:id=>meshes.find(m=>m.userData.id===id)?.visible});window.previewReady=true;
  const which=new URLSearchParams(location.search).get('assembly');if(which==='original'){$('new').checked=false;visibility();focus('old');}if(which==='v2'){$('old').checked=false;visibility();focus('new');}
 }catch(e){$('loading').textContent=`Could not load the comparison: ${e.message}`;console.error(e);}
 addEventListener('resize',()=>{camera.aspect=container.clientWidth/container.clientHeight;camera.updateProjectionMatrix();renderer.setSize(container.clientWidth,container.clientHeight);view(viewMode);});
