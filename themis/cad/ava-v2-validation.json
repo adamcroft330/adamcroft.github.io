@@ -1,5 +1,5 @@
 {
-  "revision": "ava-v2-refined-20260919",
+  "revision": "ava-v2-payload-mounts-20260923",
   "flightReady": false,
   "releaseStatus": "Geometry-checked prototype; propulsion target unmet; hardware and flight qualification pending",
   "massBudget": {
@@ -9,19 +9,125 @@
       "motors": 37.36,
       "props": 5.92,
       "battery": 141,
-      "carrierPA12": 34.87502843744146,
-      "carbonPlate": 11.236691560677519,
+      "carrierPA12": 35.61423511149989,
+      "carbonPlate": 11.407643191123022,
       "hardwarePadStrapsWiringAllowance": 15
     },
-    "estimatedMassG": 520.391719998119,
+    "estimatedMassG": 521.301878302623,
     "benchThrustG": 1242.28,
-    "idealBenchThrustToWeight": 2.387201702602974,
+    "idealBenchThrustToWeight": 2.3830338076757114,
     "target": 3.8,
     "targetMet": false,
     "peakMotorCurrentA": 20.23,
     "quadPeakMotorCurrentA": 80.92,
     "note": "Open bench thrust, without housing/guards or battery sag. Actual thrust-to-weight will differ. 35A ESC must mean per channel; power distribution and connector temperatures require testing."
   },
+  "payloadAlignment": [
+    {
+      "mount": 1,
+      "centre": [
+        -13,
+        -22.8
+      ],
+      "spacerAxisErrorMm": 0,
+      "insertAxisErrorMm": 0,
+      "screwTipZ": 43,
+      "screwLengthMm": 12,
+      "insertZ": [
+        43.5,
+        46.5
+      ],
+      "threadEngagementMm": 3,
+      "spacerZ": [
+        49,
+        52
+      ],
+      "spacerPlateSupport": 0.9999999999999983,
+      "plateBossSupport": 0.9999999999999973,
+      "housingSpacerSupport": 0.9999999999999962,
+      "screwHeadSupport": 1.0000000000000002,
+      "insertEncasedFraction": 1.0000000000000009,
+      "holeIntrusionMm3": 0
+    },
+    {
+      "mount": 2,
+      "centre": [
+        13,
+        -22.8
+      ],
+      "spacerAxisErrorMm": 0,
+      "insertAxisErrorMm": 0,
+      "screwTipZ": 43,
+      "screwLengthMm": 12,
+      "insertZ": [
+        43.5,
+        46.5
+      ],
+      "threadEngagementMm": 3,
+      "spacerZ": [
+        49,
+        52
+      ],
+      "spacerPlateSupport": 1.000000000000001,
+      "plateBossSupport": 0.9999999999999986,
+      "housingSpacerSupport": 1.0000000000000016,
+      "screwHeadSupport": 1.0000000000000047,
+      "insertEncasedFraction": 1.0000000000000004,
+      "holeIntrusionMm3": 0
+    },
+    {
+      "mount": 3,
+      "centre": [
+        -13,
+        22.8
+      ],
+      "spacerAxisErrorMm": 0,
+      "insertAxisErrorMm": 0,
+      "screwTipZ": 43,
+      "screwLengthMm": 12,
+      "insertZ": [
+        43.5,
+        46.5
+      ],
+      "threadEngagementMm": 3,
+      "spacerZ": [
+        49,
+        52
+      ],
+      "spacerPlateSupport": 0.9999999999999926,
+      "plateBossSupport": 0.9999999999999992,
+      "housingSpacerSupport": 1.0000000000000058,
+      "screwHeadSupport": 1.000000000000004,
+      "insertEncasedFraction": 1.0000000000000007,
+      "holeIntrusionMm3": 0
+    },
+    {
+      "mount": 4,
+      "centre": [
+        13,
+        22.8
+      ],
+      "spacerAxisErrorMm": 0,
+      "insertAxisErrorMm": 0,
+      "screwTipZ": 43,
+      "screwLengthMm": 12,
+      "insertZ": [
+        43.5,
+        46.5
+      ],
+      "threadEngagementMm": 3,
+      "spacerZ": [
+        49,
+        52
+      ],
+      "spacerPlateSupport": 0.9999999999999971,
+      "plateBossSupport": 0.9999999999999973,
+      "housingSpacerSupport": 1,
+      "screwHeadSupport": 1.0000000000000016,
+      "insertEncasedFraction": 1.0000000000000009,
+      "holeIntrusionMm3": 0
+    }
+  ],
   "passed": true,
   "status": "exported-prototype",
   "liveReady": false,
@@ -47,12 +153,12 @@
         "max": [
           83,
           83,
-          53.099998474121094
+          50.400000000000006
         ],
         "size": [
           166,
           166,
-          63.39999847114086
+          60.69999999701977
         ]
       }
     },
@@ -230,7 +336,7 @@
             -41.5
           ],
           "mountFaceZ": 47,
-          "supportedFraction": 1.000000000000015,
+          "supportedFraction": 1.000000000000016,
           "centreErrorMm": 0
         },
         {
@@ -240,7 +346,7 @@
             -41.5
           ],
           "mountFaceZ": 47,
-          "supportedFraction": 1.0000000000000124,
+          "supportedFraction": 1.0000000000000135,
           "centreErrorMm": 0
         },
         {
@@ -250,7 +356,7 @@
             41.5
           ],
           "mountFaceZ": 47,
-          "supportedFraction": 1.0000000000000095,
+          "supportedFraction": 1.0000000000000109,
           "centreErrorMm": 0
         },
         {
@@ -324,31 +430,79 @@
       }
     },
     {
-      "name": "Exact retained geometry: right-frame-M2x3-heatset-1",
+      "name": "Retained insert shape at corrected frame location: right-frame-M2x3-heatset-1",
       "pass": true,
       "details": {
-        "volumeMm3": 20.01635491847992
+        "volumeMm3": 20.01635491847992,
+        "bounds": {
+          "min": [
+            -14.800048828125,
+            -24.600048828125,
+            43.5
+          ],
+          "max": [
+            -11.199951171875,
+            -20.999951171875,
+            46.5
+          ]
+        }
       }
     },
     {
-      "name": "Exact retained geometry: right-frame-M2x3-heatset-2",
+      "name": "Retained insert shape at corrected frame location: right-frame-M2x3-heatset-2",
       "pass": true,
       "details": {
-        "volumeMm3": 20.01635491847992
+        "volumeMm3": 20.01635491847992,
+        "bounds": {
+          "min": [
+            -14.800048828125,
+            20.999951171875,
+            43.5
+          ],
+          "max": [
+            -11.199951171875,
+            24.600048828125,
+            46.5
+          ]
+        }
       }
     },
     {
-      "name": "Exact retained geometry: right-frame-M2x3-heatset-3",
+      "name": "Retained insert shape at corrected frame location: right-frame-M2x3-heatset-3",
       "pass": true,
       "details": {
-        "volumeMm3": 20.01635491847992
+        "volumeMm3": 20.01635491847992,
+        "bounds": {
+          "min": [
+            11.199951171875,
+            -24.600048828125,
+            43.5
+          ],
+          "max": [
+            14.800048828125,
+            -20.999951171875,
+            46.5
+          ]
+        }
       }
     },
     {
-      "name": "Exact retained geometry: right-frame-M2x3-heatset-4",
+      "name": "Retained insert shape at corrected frame location: right-frame-M2x3-heatset-4",
       "pass": true,
       "details": {
-        "volumeMm3": 20.01635491847992
+        "volumeMm3": 20.01635491847992,
+        "bounds": {
+          "min": [
+            11.199951171875,
+            20.999951171875,
+            43.5
+          ],
+          "max": [
+            14.800048828125,
+            24.600048828125,
+            46.5
+          ]
+        }
       }
     },
     {
@@ -386,6 +540,341 @@
       }
     },
     {
+      "name": "All four payload screws, spacers and frame inserts are coaxial",
+      "pass": true,
+      "details": [
+        {
+          "mount": 1,
+          "centre": [
+            -13,
+            -22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 0.9999999999999983,
+          "plateBossSupport": 0.9999999999999973,
+          "housingSpacerSupport": 0.9999999999999962,
+          "screwHeadSupport": 1.0000000000000002,
+          "insertEncasedFraction": 1.0000000000000009,
+          "holeIntrusionMm3": 0
+        },
+        {
+          "mount": 2,
+          "centre": [
+            13,
+            -22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 1.000000000000001,
+          "plateBossSupport": 0.9999999999999986,
+          "housingSpacerSupport": 1.0000000000000016,
+          "screwHeadSupport": 1.0000000000000047,
+          "insertEncasedFraction": 1.0000000000000004,
+          "holeIntrusionMm3": 0
+        },
+        {
+          "mount": 3,
+          "centre": [
+            -13,
+            22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 0.9999999999999926,
+          "plateBossSupport": 0.9999999999999992,
+          "housingSpacerSupport": 1.0000000000000058,
+          "screwHeadSupport": 1.000000000000004,
+          "insertEncasedFraction": 1.0000000000000007,
+          "holeIntrusionMm3": 0
+        },
+        {
+          "mount": 4,
+          "centre": [
+            13,
+            22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 0.9999999999999971,
+          "plateBossSupport": 0.9999999999999973,
+          "housingSpacerSupport": 1,
+          "screwHeadSupport": 1.0000000000000016,
+          "insertEncasedFraction": 1.0000000000000009,
+          "holeIntrusionMm3": 0
+        }
+      ]
+    },
+    {
+      "name": "Payload spacers and carbon plate have full frame support",
+      "pass": true,
+      "details": [
+        {
+          "mount": 1,
+          "centre": [
+            -13,
+            -22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 0.9999999999999983,
+          "plateBossSupport": 0.9999999999999973,
+          "housingSpacerSupport": 0.9999999999999962,
+          "screwHeadSupport": 1.0000000000000002,
+          "insertEncasedFraction": 1.0000000000000009,
+          "holeIntrusionMm3": 0
+        },
+        {
+          "mount": 2,
+          "centre": [
+            13,
+            -22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 1.000000000000001,
+          "plateBossSupport": 0.9999999999999986,
+          "housingSpacerSupport": 1.0000000000000016,
+          "screwHeadSupport": 1.0000000000000047,
+          "insertEncasedFraction": 1.0000000000000004,
+          "holeIntrusionMm3": 0
+        },
+        {
+          "mount": 3,
+          "centre": [
+            -13,
+            22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 0.9999999999999926,
+          "plateBossSupport": 0.9999999999999992,
+          "housingSpacerSupport": 1.0000000000000058,
+          "screwHeadSupport": 1.000000000000004,
+          "insertEncasedFraction": 1.0000000000000007,
+          "holeIntrusionMm3": 0
+        },
+        {
+          "mount": 4,
+          "centre": [
+            13,
+            22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 0.9999999999999971,
+          "plateBossSupport": 0.9999999999999973,
+          "housingSpacerSupport": 1,
+          "screwHeadSupport": 1.0000000000000016,
+          "insertEncasedFraction": 1.0000000000000009,
+          "holeIntrusionMm3": 0
+        }
+      ]
+    },
+    {
+      "name": "Payload screws engage frame-retained inserts by 3 mm",
+      "pass": true,
+      "details": [
+        {
+          "mount": 1,
+          "centre": [
+            -13,
+            -22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 0.9999999999999983,
+          "plateBossSupport": 0.9999999999999973,
+          "housingSpacerSupport": 0.9999999999999962,
+          "screwHeadSupport": 1.0000000000000002,
+          "insertEncasedFraction": 1.0000000000000009,
+          "holeIntrusionMm3": 0
+        },
+        {
+          "mount": 2,
+          "centre": [
+            13,
+            -22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 1.000000000000001,
+          "plateBossSupport": 0.9999999999999986,
+          "housingSpacerSupport": 1.0000000000000016,
+          "screwHeadSupport": 1.0000000000000047,
+          "insertEncasedFraction": 1.0000000000000004,
+          "holeIntrusionMm3": 0
+        },
+        {
+          "mount": 3,
+          "centre": [
+            -13,
+            22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 0.9999999999999926,
+          "plateBossSupport": 0.9999999999999992,
+          "housingSpacerSupport": 1.0000000000000058,
+          "screwHeadSupport": 1.000000000000004,
+          "insertEncasedFraction": 1.0000000000000007,
+          "holeIntrusionMm3": 0
+        },
+        {
+          "mount": 4,
+          "centre": [
+            13,
+            22.8
+          ],
+          "spacerAxisErrorMm": 0,
+          "insertAxisErrorMm": 0,
+          "screwTipZ": 43,
+          "screwLengthMm": 12,
+          "insertZ": [
+            43.5,
+            46.5
+          ],
+          "threadEngagementMm": 3,
+          "spacerZ": [
+            49,
+            52
+          ],
+          "spacerPlateSupport": 0.9999999999999971,
+          "plateBossSupport": 0.9999999999999973,
+          "housingSpacerSupport": 1,
+          "screwHeadSupport": 1.0000000000000016,
+          "insertEncasedFraction": 1.0000000000000009,
+          "holeIntrusionMm3": 0
+        }
+      ]
+    },
+    {
+      "name": "Payload fasteners and inserts do not intersect spacers or housing",
+      "pass": true,
+      "details": []
+    },
+    {
       "name": "Frame, ducts and cradle form connected structure",
       "pass": true,
       "details": {
@@ -407,8 +896,8 @@
     "totalNodes": 6497,
     "graphBytes": 770841,
     "oldRenderTriangles": 107690,
-    "newRenderTriangles": 16540,
-    "totalRenderBytes": 13416840,
+    "newRenderTriangles": 17560,
+    "totalRenderBytes": 13527000,
     "renderLimitBytes": 12582912
   }
 }

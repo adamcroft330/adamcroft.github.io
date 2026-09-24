@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="ava-v2-refined-20260919">
+<html lang="en" data-build="ava-v2-payload-mounts-20260923">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Themis / AVA — Frame Comparison</title>
@@ -22,7 +22,8 @@
 <label><input id="housing" type="checkbox" checked> Housing covers</label>
 <div class="buttons"><button id="both">Both</button><button id="focus-old">Original</button><button id="focus-new">AVA v2</button></div>
 <div class="buttons"><button id="iso">Perspective</button><button id="top">Top</button><button id="front">Front</button><button id="under">Underside</button></div>
-<div class="buttons"><button id="rotors">Rotor directions</button><button id="battery-view">Battery fit</button></div>
+<div class="buttons"><button id="rotors">Rotor directions</button><button id="battery-view">Battery fit</button><button id="payload-mounts" aria-pressed="false">Payload mounts</button></div>
+<p class="note" id="mount-note" hidden>Mount inspection: housing floor shown translucent; other payload parts hidden. Four M2×12 screws pass through the floor, 3 mm spacers and carbon pads into the frame bosses.</p>
 <div id="check">Checking model data…</div>
 <p class="note">V2 motor centres: ±41.5 mm.<br>Four M2 screws on each Ø9 mm pattern.<br>Rounded arms end at the motor pads.<br>Motor faces seat at z47 under the rebuilt plate.<br>79 mm duct ID · 83 mm centre spacing.</p>
 <p class="note" id="dimensions"></p>
@@ -43,25 +44,38 @@ const $=id=>document.getElementById(id),container=$('canvas');
 const scene=new T.Scene();scene.background=new T.Color('#0a0d10');
 const camera=new T.PerspectiveCamera(38,container.clientWidth/container.clientHeight,.1,3000);camera.up.set(0,0,1);
 const renderer=new T.WebGLRenderer({antialias:true});renderer.setSize(container.clientWidth,container.clientHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;container.append(renderer.domElement);
+renderer.localClippingEnabled=true;
+const floorClip=new T.Plane(new T.Vector3(0,0,-1),55.01);
 // Direct manipulation: the old default .05 damping integrated each pan for
 // roughly a second after release. Camera movement now follows the pointer.
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=false;controls.screenSpacePanning=true;controls.zoomToCursor=true;controls.panSpeed=1;controls.rotateSpeed=.8;controls.minDistance=70;controls.maxDistance=1800;
 window.cameraState=()=>({position:camera.position.toArray(),target:controls.target.toArray(),damping:controls.enableDamping});
 scene.add(new T.HemisphereLight(0xf0f7ff,0x657989,2));
 for(const p of [[300,-250,350],[700,150,280],[550,-80,-130]]){const l=new T.DirectionalLight(0xffffff,2.2);l.position.set(...p);scene.add(l);}
-const meshes=[],folders=new Map(),rotorLabels=[];let target=[520,0,50],distance=620,viewMode='iso';
+const meshes=[],folders=new Map(),rotorLabels=[];let target=[520,0,50],distance=620,viewMode='iso',mountInspection=false;
 function view(mode='iso'){
  viewMode=mode;const [x,y,z]=target;const d=distance*Math.max(1,1.35/(container.clientWidth/container.clientHeight));
  const positions={iso:[x+d*.38,y-d*.83,z+d*.5],top:[x,y,z+d],front:[x,y-d,z],under:[x+d*.3,y-d*.7,z-d*.6]};
  camera.position.set(...positions[mode]);controls.target.set(...target);controls.update();
 }
-function focus(which){target=[which==='old'?390:which==='new'?650:520,0,50];distance=which==='both'?620:350;view();}
-function visibility(){for(const l of rotorLabels)l.visible=showRotors&&$('new').checked;for(const m of meshes){const p=m.userData,old=!p.id.startsWith('ava-v2-'),context=p.group==='v2-payload-context'||(old&&p.id.startsWith('tv-')&&p.group!=='tv-props'),shell=/integrated-front-housing|rear-service-cover|orange-seam-gasket/.test(p.id);m.visible=p.selected&&$(old?'old':'new').checked&&(!context||$('payload').checked)&&(!shell||$('housing').checked)&&(!/prop-\d|2inch-prop/.test(p.id)||$('props').checked)&&(!p.id.startsWith('ava-v2-battery-')||p.id==='ava-v2-battery-cradle'||$('battery').checked);}}
+function focus(which){if(mountInspection){mountInspection=false;visibility();}target=[which==='old'?390:which==='new'?650:520,0,50];distance=which==='both'?620:350;view();}
+function visibility(){
+ $('payload-mounts').setAttribute('aria-pressed',String(mountInspection));$('mount-note').hidden=!mountInspection;
+ for(const l of rotorLabels)l.visible=!mountInspection&&showRotors&&$('new').checked;
+ for(const m of meshes){
+  const p=m.userData,old=!p.id.startsWith('ava-v2-'),context=p.group==='v2-payload-context'||(old&&p.id.startsWith('tv-')&&p.group!=='tv-props'),shell=/integrated-front-housing|rear-service-cover|orange-seam-gasket/.test(p.id);
+  const floor=p.id==='ava-v2-context-tv-integrated-front-housing';
+  m.material.transparent=mountInspection&&floor;m.material.opacity=(mountInspection&&floor)?0.22:1;m.material.depthWrite=!(mountInspection&&floor);m.material.clippingPlanes=mountInspection&&floor?[floorClip]:null;
+  if(mountInspection){m.visible=!old&&(floor||/ava-v2-(frame-plate$|upper-motor-plate-3inch$|frame-M2x3-heatset-|context-tv-adapter-)/.test(p.id));continue;}
+  m.visible=p.selected&&$(old?'old':'new').checked&&(!context||$('payload').checked)&&(!shell||$('housing').checked)&&(!/prop-\d|2inch-prop/.test(p.id)||$('props').checked)&&(!p.id.startsWith('ava-v2-battery-')||p.id==='ava-v2-battery-cradle'||$('battery').checked);
+ }
+}
 let showRotors=false;
 function badge(text,x,y,z){const c=document.createElement('canvas');c.width=320;c.height=96;const ctx=c.getContext('2d');ctx.fillStyle='#14212bed';ctx.fillRect(0,0,320,96);ctx.fillStyle='#ffd29b';ctx.font='bold 28px system-ui';ctx.textAlign='center';ctx.fillText(text,160,56);const t=new T.CanvasTexture(c),sprite=new T.Sprite(new T.SpriteMaterial({map:t,depthTest:false,depthWrite:false}));sprite.position.set(x,y,z);sprite.scale.set(39,12,1);sprite.visible=false;scene.add(sprite);rotorLabels.push(sprite);}
 badge('FL · CCW ↺',585,-67,50);badge('FR · CW ↻',715,-67,50);badge('RL · CW ↻',585,67,50);badge('RR · CCW ↺',715,67,50);badge('FRONT −Y',650,-95,45);
 $('rotors').onclick=()=>{showRotors=!showRotors;visibility();focus('new');view('top');};
 $('battery-view').onclick=()=>{focus('new');view('under');};
+$('payload-mounts').onclick=()=>{const next=!mountInspection;focus('new');mountInspection=next;visibility();if(next){target=[650,0,49];distance=170;view('iso');}};
 for(const id of ['old','new','payload','housing','props','battery'])$(id).onchange=visibility;
 for(const id of ['iso','top','front','under'])$(id).onclick=()=>view(id);
 $('both').onclick=()=>focus('both');$('focus-old').onclick=()=>focus('old');$('focus-new').onclick=()=>focus('new');
@@ -80,12 +94,13 @@ try{
   const l=document.createElement('label'),c=document.createElement('input');c.type='checkbox';c.checked=true;c.onchange=()=>{m.userData.selected=c.checked;visibility();};l.append(c,document.createTextNode(p.id.replace(/^ava-v2-|^right-pavo2-|^tv-/g,'')));folders.get(key).append(l);m.userData.label=l;
  }
  const alignment=val.checks.find(c=>c.name==='All motors centred and fully seated at z47');
- if(!val.passed||!alignment?.pass)throw Error('Geometry validation is incomplete.');
- $('check').textContent=`${val.checks.length} geometry checks passed · mounting alignment verified`;
+ const payloadChecks=val.checks.filter(c=>/^All four payload screws|^Payload spacers|^Payload screws engage|^Payload fasteners/.test(c.name));
+ if(!val.passed||!alignment?.pass||payloadChecks.length!==4||!payloadChecks.every(c=>c.pass))throw Error('Geometry validation is incomplete.');
+ $('check').textContent=`${val.checks.length} geometry checks passed · motor and payload mounts verified`;
  $('mass').textContent=`Estimated AUW: ${val.massBudget.estimatedMassG.toFixed(0)} g. Ideal open-bench thrust/weight: ${val.massBudget.idealBenchThrustToWeight.toFixed(2)}:1; assembled performance untested.`;
  $('dimensions').textContent=`V2 assembled: ${val.assemblyDimensions.map(x=>x.toFixed(1)).join(' × ')} mm. Each aircraft fits the 250 mm cube independently.`;
  visibility();$('loading').style.display='none';
- window.comparisonState=()=>({visibleParts:meshes.filter(m=>m.visible).length,totalParts:meshes.length,oldParts:old.length,newParts:added.length,alignment:alignment.details,propParts:added.filter(p=>p.group==='v2-prop').length,batteryParts:added.filter(p=>p.group==='v2-battery').length,partVisible:id=>meshes.find(m=>m.userData.id===id)?.visible});window.previewReady=true;
+ window.comparisonState=()=>({visibleParts:meshes.filter(m=>m.visible).length,totalParts:meshes.length,oldParts:old.length,newParts:added.length,alignment:alignment.details,payloadAlignment:val.payloadAlignment,mountInspection,propParts:added.filter(p=>p.group==='v2-prop').length,batteryParts:added.filter(p=>p.group==='v2-battery').length,partVisible:id=>meshes.find(m=>m.userData.id===id)?.visible});window.previewReady=true;
  const which=new URLSearchParams(location.search).get('assembly');if(which==='original'){$('new').checked=false;visibility();focus('old');}if(which==='v2'){$('old').checked=false;visibility();focus('new');}
 }catch(e){$('loading').textContent=`Could not load the comparison: ${e.message}`;console.error(e);}
 addEventListener('resize',()=>{camera.aspect=container.clientWidth/container.clientHeight;camera.updateProjectionMatrix();renderer.setSize(container.clientWidth,container.clientHeight);view(viewMode);});
