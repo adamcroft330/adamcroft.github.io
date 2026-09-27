@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Occurrence summary of the TerraHawk v1 QuickTune hover crash on 27 Sep 2026: sequence of events, root cause, open questions and actions before the next flight.">
+<title>TerraHawk v1 crash | Adam Croft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #f4f5f2;
+    --surface: #ffffff;
+    --ink: #15181b;
+    --ink-2: #454b51;
+    --ink-3: #676d73;
+    --rule: #d9dcd6;
+    --accent: #9c4f08;
+    --accent-soft: #f5e6d1;
+    --chip-ink: #7a3d05;
+    --code-bg: #e9ebe6;
+    --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-head: "IBM Plex Sans Condensed", "IBM Plex Sans", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #121416;
+      --surface: #1a1d20;
+      --ink: #e8ebe7;
+      --ink-2: #b6bcb7;
+      --ink-3: #8d938f;
+      --rule: #2c3034;
+      --accent: #f0a44f;
+      --accent-soft: #3a2a17;
+      --chip-ink: #f4bd7c;
+      --code-bg: #24282b;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #121416;
+    --surface: #1a1d20;
+    --ink: #e8ebe7;
+    --ink-2: #b6bcb7;
+    --ink-3: #8d938f;
+    --rule: #2c3034;
+    --accent: #f0a44f;
+    --accent-soft: #3a2a17;
+    --chip-ink: #f4bd7c;
+    --code-bg: #24282b;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-inline: 20px;
+    padding-block: 40px 64px;
+  }
+  .page { max-width: 44rem; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .page > * { min-width: 0; }
+
+  header { display: grid; gap: 12px; }
+  section { min-width: 0; }
+  figure, .frame { min-width: 0; }
+  .label {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+    font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .chip {
+    background: var(--accent-soft); color: var(--chip-ink);
+    font-weight: 600; padding: 3px 9px; border-radius: 4px;
+  }
+  h1 {
+    font-family: var(--font-head); font-weight: 600;
+    font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.1; letter-spacing: -0.01em;
+    margin: 0; text-wrap: balance;
+  }
+  .meta { font-family: var(--font-mono); font-size: 13px; color: var(--ink-3); margin: 0; }
+
+  .lead {
+    font-size: 1.14rem; line-height: 1.55; margin: 0; color: var(--ink);
+    max-width: 62ch;
+  }
+  .lead strong { font-weight: 600; }
+
+  section { display: grid; gap: 12px; }
+  h2 {
+    font-family: var(--font-body); font-size: 12.5px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
+    margin: 0; padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+  }
+  p { margin: 0; max-width: 65ch; color: var(--ink-2); }
+  ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; max-width: 65ch; }
+  li { position: relative; padding-left: 20px; color: var(--ink-2); }
+  li::before {
+    content: ""; position: absolute; left: 2px; top: 0.72em;
+    width: 7px; height: 2px; background: var(--ink-3);
+  }
+  li strong, p strong { color: var(--ink); font-weight: 600; }
+  code {
+    font-family: var(--font-mono); font-size: 0.86em;
+    background: var(--code-bg); padding: 1px 5px; border-radius: 3px; color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+
+  .timeline { display: grid; gap: 0; margin: 0; }
+  .timeline div {
+    display: grid; grid-template-columns: 5.2rem minmax(0, 1fr); gap: 14px;
+    padding: 9px 0; border-bottom: 1px solid var(--rule);
+  }
+  .timeline div:last-child { border-bottom: 0; }
+  .timeline dt {
+    font-family: var(--font-mono); font-size: 13.5px; color: var(--ink-3);
+    font-variant-numeric: tabular-nums; padding-top: 1px;
+  }
+  .timeline dd { margin: 0; color: var(--ink-2); }
+  .timeline .key dt, .timeline .key dd { color: var(--ink); font-weight: 600; }
+  .timeline .key dt { color: var(--accent); }
+  .note { font-size: 13.5px; color: var(--ink-3); }
+
+  figure { margin: 0; display: grid; gap: 10px; }
+  figure .frame {
+    background: #fcfcfb; border: 1px solid var(--rule); border-radius: 6px;
+    padding: 8px; overflow: hidden;
+  }
+  figure img { display: block; width: 100%; height: auto; max-width: 100%; }
+  figcaption { font-size: 13.5px; color: var(--ink-3); max-width: 65ch; }
+
+  footer {
+    border-top: 1px solid var(--rule); padding-top: 16px;
+    font-size: 13.5px; color: var(--ink-3); display: grid; gap: 4px;
+  }
+  footer a { color: var(--accent); overflow-wrap: anywhere; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main class="page">
+  <header>
+    <div class="label"><span class="chip">Occurrence summary</span><span>27 Sep 2026 · 11:19:47 UTC</span></div>
+    <h1>TerraHawk v1 crash during QuickTune</h1>
+    <p class="meta">ArduPlane 4.7.1 · QuadPlane QUAD/X · QLOITER hover · log 00000008.BIN</p>
+  </header>
+
+  <p class="lead">QuickTune's pitch tuning set up an oscillation that overloaded a lift-motor mount until it
+    <strong>broke in flight at about 10.5 m</strong>. The failure cut drive to all four lift motors and the aircraft
+    fell almost freely. <strong>The oscillation came first; the mount failure followed.</strong></p>
+
+  <section>
+    <h2>What happened</h2>
+    <dl class="timeline">
+      <div><dt>296.5 s</dt><dd>QuickTune starts ramping Pitch P (and I). Pitch D was already left at 3.7× default by the previous stage.</dd></div>
+      <div><dt>~300 s</dt><dd>Oscillation begins: roll rocking, then a 4–6 Hz pitch oscillation that grows with the gain.</dd></div>
+      <div><dt>308.93 s</dt><dd>QuickTune's detector trips on the oscillation and cuts the gain.</dd></div>
+      <div><dt>~309.25 s</dt><dd>First mechanical sign: vibration leaves its normal range.</dd></div>
+      <div class="key"><dt>309.50 s</dt><dd>Mount breaks. Within ~50 ms current falls from 22 A to ~1 A while the autopilot keeps commanding full power.</dd></div>
+      <div><dt>311.08 s</dt><dd>Impact at ~12 m/s after 1.6 s of near free fall.</dd></div>
+    </dl>
+    <p class="note">Times are seconds since boot, as in the log.</p>
+  </section>
+
+  <section>
+    <h2>Why the tune caused it, not the reverse</h2>
+    <ul>
+      <li>The oscillation grew with the gain being ramped, and QuickTune's own detector tripped on it.</li>
+      <li>For the ~10 s of oscillation, vibration, trims, motor balance and structural stiffness all stayed normal.</li>
+      <li>The mount showed its first mechanical sign only ~0.25 s before breaking, at the highest load of the flight, after the oscillation had peaked.</li>
+      <li>The failed corner is almost certainly <strong>M4 (rear-right)</strong>. It was already carrying about 2× the thrust of M1 because of an aft CG and a large yaw trim, and the oscillation drove it to ~97% output.</li>
+    </ul>
+    <figure>
+      <div class="frame"><img src="/terrahawk_crash/fig5.png" width="1800" height="1800" alt="Five stacked time plots from 295 to 309.6 seconds: Pitch P gain ramping then cut; oscillation amplitude growing with the gain; M4 motor command climbing to its maximum; vibration staying in its normal range until the last quarter-second; lift efficiency dips recovering until a final slide."></div>
+      <figcaption>The oscillation built for about 10 s with vibration in its normal range. Mechanical signs appear only in the last ~0.25 s, at M4's peak load.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Contributing factors</h2>
+    <ul>
+      <li>No harmonic notch, which QuickTune depends on. No bidirectional DShot and no battery-voltage compensation either.</li>
+      <li>Tuned at ~11 m instead of the recommended ~3 m.</li>
+      <li><code>QWIK_ANGLE_MAX</code> at 10° was never reached. At 5° it would have reverted the tune ~6 s before the failure.</li>
+      <li>A built-in 2:1 thrust imbalance put the extra load on M4 from the first hover.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Still open</h2>
+    <ul>
+      <li>Confirm which mount failed, and whether the fracture shows fatigue marks or a single overload break.</li>
+      <li>Find why all four motors lost drive at once. Check the shared ESC power and signal wiring (a brief 22 A current return mid-fall suggests an intermittent connection) and bench-test the ESCs.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Before the next flight</h2>
+    <ul>
+      <li>Stronger mounts on all four corners. Fix the CG and motor alignment so hover trims are near zero.</li>
+      <li>Set up bidirectional DShot with an RPM harmonic notch, and battery-voltage compensation.</li>
+      <li>Run QuickTune at ~3 m with <code>QWIK_ANGLE_MAX</code> at 4–5° and a slower ramp, with a hand on the revert switch.</li>
+      <li>Disarm immediately after any crash. This aircraft was picked up and carried while still armed.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Full report, figures and the analysis script that reproduces every number:</span>
+    <span><a href="https://github.com/adamcroft330/adSwarm/tree/378de35cb096678b339d3dc1f957603571eb2b31/stirling/crash_analysis/terrahawk_v1_2026-09-27">stirling/crash_analysis/terrahawk_v1_2026-09-27</a> in the adSwarm repository</span>
+  </footer>
+</main>
+</body>
+</html>
