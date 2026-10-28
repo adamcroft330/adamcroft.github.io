@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Themis 35 | Drone CAD</title>
-<meta name="description" content="Themis 35: the custom 3.5-inch ducted frame for the Themis swarm-racing stack. Interactive 3D model with an exploded view, the full bill of materials, wiring and geometry checks.">
+<meta name="description" content="Themis 35: the Themis swarm-racing stack in a 3.5-inch ducted airframe, on a custom frame and on the GEPRC CineLog35 V2. Interactive 3D models with an exploded view, full bills of materials, wiring and geometry checks.">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,6 +55,12 @@ header { display: flex; flex-direction: column; gap: 10px; }
 .facts { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 0.92rem; }
 .facts b { font-family: var(--f-mono); font-weight: 500; }
 .facts span { color: var(--muted); }
+.frames { align-self: flex-start; display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--surface); }
+.frames button { font: 600 0.92rem var(--f-body); color: var(--ink); background: transparent; border: 0; padding: 8px 15px; cursor: pointer; display: inline-flex; align-items: baseline; gap: 7px; }
+.frames button + button { border-left: 1px solid var(--line); }
+.frames button:hover { background: var(--duct-soft); }
+.frames button[aria-pressed="true"] { background: var(--duct); color: #fff; }
+.frames button span { font: 500 0.68rem var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.8; }
 
 .work { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 20px; align-items: start; }
 .bench-col { position: sticky; top: max(12px, env(safe-area-inset-top, 0px)); }
@@ -115,14 +121,23 @@ tfoot td { font-weight: 600; background: var(--bg); }
 
 .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.panel .lead { font-size: 0.9rem; color: var(--muted); }
 ol.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 ol.checks li { display: grid; grid-template-columns: 1.3rem 1fr max-content; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--line); align-items: baseline; font-size: 0.88rem; }
 ol.checks li:last-child { border-bottom: 0; }
 ol.checks .tick { font-weight: 600; } ol.checks .ok .tick { color: var(--ok); } ol.checks .bad .tick { color: var(--bad); }
 ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--muted); text-align: right; }
+.checks-note { font-size: 0.85rem; color: var(--muted); }
+.compare { overflow-x: auto; }
+.compare table { font-size: 0.88rem; }
+.compare th[scope="row"] { color: var(--muted); font-weight: 500; width: 24%; }
+.compare thead th { position: static; }
+.compare td.on { box-shadow: inset 3px 0 0 var(--duct); }
+.compare .sub { display: block; color: var(--muted); font-size: 0.78rem; }
 .sec-head { display: flex; flex-direction: column; gap: 4px; border-top: 3px solid var(--duct); padding-top: 12px; }
 .sec-head .eyebrow { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .site-foot { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+.site-foot span { display: inline-flex; flex-wrap: wrap; gap: 6px 22px; }
 .site-foot a { color: var(--muted); }
 .site-foot a:hover { color: var(--duct); }
 @media (max-width: 980px) { .work, .cols { grid-template-columns: minmax(0, 1fr); } .bench-col { position: static; } .scroll { max-height: none; } }
@@ -133,17 +148,33 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
 <div class="wrap">
 <header>
   <div class="topline"><a href="/themis/">← Themis</a><a href="history.html">Earlier designs: the original frame and AVA v2 →</a></div>
-  <span class="draft">r2 · geometry-checked prototype · 28 Oct 2026</span>
+  <span class="draft" data-build="t35">r3 · geometry-checked prototype · 28 Oct 2026</span>
+  <span class="draft" data-build="cl35" hidden>draft r1 · frame modelled from GEPRC&#x27;s figures and photos · 28 Oct 2026</span>
   <h1>Themis 35</h1>
-  <p class="lede">The control-stack build on a custom 3.5-inch ducted frame. Every bought part is modelled to its published size, the wiring is routed, and all 58 BOM lines link to their sources. Click a BOM line to find it in the model, use its dot to hide it, and drag Explode to open the stack. 13 of 13 geometry checks pass.</p>
-  <div class="facts">
+  <div class="frames" role="group" aria-label="Frame">
+    <button type="button" data-frame="t35" aria-pressed="true">Custom frame<span>r3</span></button>
+    <button type="button" data-frame="cl35" aria-pressed="false">CineLog35 V2<span>draft</span></button>
+  </div>
+  <p class="lede">The Themis control stack in a 3.5-inch ducted airframe, drawn on two frames: our custom printed frame, and the off-the-shelf GEPRC CineLog35 V2 for comparison. Every bought part is modelled to its published size, the wiring is routed, and every BOM line links to its source. Click a BOM line to find it in the model, use its dot to hide it, and drag Explode to open the stack.</p>
+  <div class="facts" data-build="t35">
     <div><span>Envelope</span> <b>213 × 213 × 180 mm</b></div>
-    <div><span>Mass, all BOM lines</span> <b>718 g</b></div>
-    <div><span>Thrust-to-weight (estimate)</span> <b>3.6–5.0:1</b></div>
-    <div><span>Hover thrust per motor</span> <b>179 g</b></div>
-    <div><span>Centre of mass above the props</span> <b>38 mm</b></div>
+    <div><span>Mass, all BOM lines</span> <b>730 g</b></div>
+    <div><span>Thrust-to-weight (estimate)</span> <b>3.6–4.9:1</b></div>
+    <div><span>Hover thrust per motor</span> <b>183 g</b></div>
+    <div><span>Centre of mass above the props</span> <b>41 mm</b></div>
     <div><span>Tape margin, 900 mm corridor</span> <b>158 mm</b></div>
     <div><span>Tape margin, 600 mm narrowing</span> <b>43 mm</b></div>
+    <div><span>Geometry checks</span> <b>13 of 13 pass</b></div>
+  </div>
+  <div class="facts" data-build="cl35" hidden>
+    <div><span>Envelope</span> <b>204 × 207 × 152 mm</b></div>
+    <div><span>Mass, all BOM lines</span> <b>708 g</b></div>
+    <div><span>Thrust-to-weight (estimate)</span> <b>3.7–5.1:1</b></div>
+    <div><span>Hover thrust per motor</span> <b>177 g</b></div>
+    <div><span>Centre of mass above the props</span> <b>58 mm</b></div>
+    <div><span>Tape margin, 900 mm corridor</span> <b>164 mm</b></div>
+    <div><span>Tape margin, 600 mm narrowing</span> <b>48 mm</b></div>
+    <div><span>Geometry checks</span> <b>12 of 12 pass</b></div>
   </div>
 </header>
 
@@ -173,7 +204,7 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
           <button type="button" id="v-front">Front</button><button type="button" id="v-side">Side</button><button type="button" id="v-under">Underside</button>
         </div>
       </div>
-      <div class="bench" id="bench"><div class="bench-status" id="bench-status">Loading the model…</div><div class="cg-label" id="cg-label" hidden>Centre of mass · 38 mm above the props</div></div>
+      <div class="bench" id="bench"><div class="bench-status" id="bench-status">Loading the model…</div><div class="cg-label" id="cg-label" hidden></div></div>
       <div class="bench-foot"><span>Drag to orbit · scroll to zoom · right-drag to pan · click a part to find its BOM line</span><span id="picked" aria-live="polite">Nose points at the orange bumper</span></div>
     </div>
   </div>
@@ -181,7 +212,8 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
   <section class="bom" aria-labelledby="h-bom">
     <div class="bom-head">
       <h2 id="h-bom">Bill of materials</h2>
-      <p class="mono" style="font-size:0.8rem;color:var(--muted)">58 lines · 233 modelled parts · masses per drone; buy five sets · <a href="themis35-bom.csv" download>CSV</a></p>
+      <p class="mono" data-build="t35" style="font-size:0.8rem;color:var(--muted)">59 lines · 226 modelled parts · masses per drone; buy five sets · <a href="themis35-bom.csv" download>CSV</a></p>
+      <p class="mono" data-build="cl35" hidden style="font-size:0.8rem;color:var(--muted)">53 lines · 220 modelled parts · masses per drone; buy five sets · <a href="themis35-cl35-bom.csv" download>CSV</a></p>
       <div class="bom-tools">
         <input type="search" id="bom-filter" placeholder="Filter lines" aria-label="Filter BOM lines">
         <button type="button" id="bom-clear">Clear selection</button>
@@ -193,21 +225,22 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
     <div class="scroll">
       <table>
         <thead><tr><th class="c-eye" scope="col"><span class="sr" style="position:absolute;left:-9999px">Show</span></th><th scope="col">Item</th><th scope="col" class="num">Qty</th><th scope="col" class="h-dims">Size · material</th><th scope="col">Source</th><th scope="col" class="num">Mass</th></tr></thead>
-        <tbody>
-<tr class="grp"><th colspan="5" scope="rowgroup">Airframe (printed)</th><td class="num">184.1 g</td></tr>
+        <tbody data-build="t35">
+<tr class="grp"><th colspan="5" scope="rowgroup">Airframe (printed)</th><td class="num">186.6 g</td></tr>
 <tr class="line" data-bom="duct"><td class="c-eye"><button type="button" class="eye" data-bom="duct" aria-pressed="true" aria-label="Show or hide Duct"></button></td><td class="c-item"><span class="nm">Duct</span><span class="pt">Themis 35 duct, quadrant-trimmed bellmouth</span><span class="note">One STL printed four times; front pair dyed orange</span></td><td class="num c-qty">4</td><td class="c-dims"><span>106.7 × 106.7 × 31 mm</span><span class="mat">SLS PA12, 1.2 mm wall; 2 dyed orange (front), 2 black</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>72.51 g</span><span class="unit">18.13 g</span></td></tr>
 <tr class="line" data-bom="clip"><td class="c-eye"><button type="button" class="eye" data-bom="clip" aria-pressed="true" aria-label="Show or hide Crest clip"></button></td><td class="c-item"><span class="nm">Crest clip</span><span class="pt">Joins neighbouring ducts over the shared crest</span></td><td class="num c-qty">4</td><td class="c-dims"><span>27 × Ø2.7 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.63 g</span><span class="unit">0.16 g</span></td></tr>
 <tr class="line" data-bom="spine"><td class="c-eye"><button type="button" class="eye" data-bom="spine" aria-pressed="true" aria-label="Show or hide Spine"></button></td><td class="c-item"><span class="nm">Spine</span><span class="pt">Cruciform pylon with harness conduit, ESC bosses and cable windows</span></td><td class="num c-qty">1</td><td class="c-dims"><span>41 × 41 × 42 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>12.97 g</span><span class="unit">12.97 g</span></td></tr>
 <tr class="line" data-bom="belly"><td class="c-eye"><button type="button" class="eye" data-bom="belly" aria-pressed="true" aria-label="Show or hide Camera fairing"></button></td><td class="c-item"><span class="nm">Camera fairing</span><span class="pt">Belly fairing for the downward camera, lens window</span></td><td class="num c-qty">1</td><td class="c-dims"><span>43 × 43 × 23.5 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>4.90 g</span><span class="unit">4.9 g</span></td></tr>
-<tr class="line" data-bom="blister"><td class="c-eye"><button type="button" class="eye" data-bom="blister" aria-pressed="true" aria-label="Show or hide Sensor blister"></button></td><td class="c-item"><span class="nm">Sensor blister</span><span class="pt">Fairing under a motor pad (H-Flow under motor 2, UWB under motor 1)</span></td><td class="num c-qty">2</td><td class="c-dims"><span>33 × 33 × 11.5 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.78 g</span><span class="unit">1.89 g</span></td></tr>
+<tr class="line" data-bom="blister"><td class="c-eye"><button type="button" class="eye" data-bom="blister" aria-pressed="true" aria-label="Show or hide Sensor blister"></button></td><td class="c-item"><span class="nm">Sensor blister</span><span class="pt">Fairing under motor 2&#x27;s pad for the H-Flow</span></td><td class="num c-qty">1</td><td class="c-dims"><span>33 × 33 × 11.5 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.89 g</span><span class="unit">1.89 g</span></td></tr>
 <tr class="line" data-bom="pod"><td class="c-eye"><button type="button" class="eye" data-bom="pod" aria-pressed="true" aria-label="Show or hide Pod lower"></button></td><td class="c-item"><span class="nm">Pod lower</span><span class="pt">Streamlined pod: floor, ledges, canopy posts, vents, spine slot</span></td><td class="num c-qty">1</td><td class="c-dims"><span>68 × 134 × 46 mm</span><span class="mat">SLS PA12, 1.6 mm skin</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>36.72 g</span><span class="unit">36.72 g</span></td></tr>
-<tr class="line" data-bom="canopy"><td class="c-eye"><button type="button" class="eye" data-bom="canopy" aria-pressed="true" aria-label="Show or hide Canopy"></button></td><td class="c-item"><span class="nm">Canopy</span><span class="pt">Removable top shell with moulded front arrow</span></td><td class="num c-qty">1</td><td class="c-dims"><span>68 × 134 × 34 mm</span><span class="mat">SLS PA12, 1.6 mm skin</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>22.63 g</span><span class="unit">22.63 g</span></td></tr>
+<tr class="line" data-bom="canopy"><td class="c-eye"><button type="button" class="eye" data-bom="canopy" aria-pressed="true" aria-label="Show or hide Canopy"></button></td><td class="c-item"><span class="nm">Canopy</span><span class="pt">Removable top shell with moulded front arrow</span></td><td class="num c-qty">1</td><td class="c-dims"><span>68 × 134 × 34 mm</span><span class="mat">SLS PA12, 1.6 mm skin</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>22.54 g</span><span class="unit">22.54 g</span></td></tr>
 <tr class="line" data-bom="shelf"><td class="c-eye"><button type="button" class="eye" data-bom="shelf" aria-pressed="true" aria-label="Show or hide Pi shelf"></button></td><td class="c-item"><span class="nm">Pi shelf</span><span class="pt">54 mm wide, keyed to its ledges</span></td><td class="num c-qty">1</td><td class="c-dims"><span>54 × 88 × 1.6 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>7.58 g</span><span class="unit">7.58 g</span></td></tr>
 <tr class="line" data-bom="tray"><td class="c-eye"><button type="button" class="eye" data-bom="tray" aria-pressed="true" aria-label="Show or hide Battery tray"></button></td><td class="c-item"><span class="nm">Battery tray</span><span class="pt">60 mm wide with front end stop and rear XT60 holder</span></td><td class="num c-qty">1</td><td class="c-dims"><span>60 × 102 × 8.1 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>10.74 g</span><span class="unit">10.74 g</span></td></tr>
 <tr class="line" data-bom="bumper"><td class="c-eye"><button type="button" class="eye" data-bom="bumper" aria-pressed="true" aria-label="Show or hide Nose bumper"></button></td><td class="c-item"><span class="nm">Nose bumper</span><span class="pt">Protects the Mightycam window; marks the front</span></td><td class="num c-qty">1</td><td class="c-dims"><span>35 × 4.5 × 39 mm</span><span class="mat">TPU 95A, orange</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.49 g</span><span class="unit">1.49 g</span></td></tr>
+<tr class="line" data-bom="uwbhat"><td class="c-eye"><button type="button" class="eye" data-bom="uwbhat" aria-pressed="true" aria-label="Show or hide UWB hat"></button></td><td class="c-item"><span class="nm">UWB hat</span><span class="pt">Low spine on the canopy roof: carries the UWB board above the battery</span><span class="note">Two M2.5 screws up through the roof; two cable ties hold the board</span></td><td class="num c-qty">1</td><td class="c-dims"><span>29 × 81 × 6 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>4.51 g</span><span class="unit">4.51 g</span></td></tr>
 <tr class="line" data-bom="foot"><td class="c-eye"><button type="button" class="eye" data-bom="foot" aria-pressed="true" aria-label="Show or hide Foot"></button></td><td class="c-item"><span class="nm">Foot</span><span class="pt">TPU post with captive M2.5 nut; lowest point of the drone</span></td><td class="num c-qty">4</td><td class="c-dims"><span>Ø10 × 29.5 mm</span><span class="mat">TPU 95A, black</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>10.14 g</span><span class="unit">2.53 g</span></td></tr>
-<tr class="grp"><th colspan="5" scope="rowgroup">Airframe (carbon)</th><td class="num">25.1 g</td></tr>
-<tr class="line" data-bom="plate"><td class="c-eye"><button type="button" class="eye" data-bom="plate" aria-pressed="true" aria-label="Show or hide Carbon plate"></button></td><td class="c-item"><span class="nm">Carbon plate</span><span class="pt">Centre plate, arms, motor pads, tails; DXF exported</span><span class="note">Quote also from Carbon Fibre Tubes Ltd (Fareham)</span></td><td class="num c-qty">1</td><td class="c-dims"><span>190 × 190 × 2.5 mm</span><span class="mat">3K carbon fibre, 2.5 mm</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://www.pcbway.com/rapid-prototyping/cnc-machining/plastic/carbon-fiber/carbon-fiber-plate/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>25.15 g</span><span class="unit">25.15 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Airframe (carbon)</th><td class="num">24.4 g</td></tr>
+<tr class="line" data-bom="plate"><td class="c-eye"><button type="button" class="eye" data-bom="plate" aria-pressed="true" aria-label="Show or hide Carbon plate"></button></td><td class="c-item"><span class="nm">Carbon plate</span><span class="pt">Centre plate, arms, motor pads, tails; DXF exported</span><span class="note">Quote also from Carbon Fibre Tubes Ltd (Fareham)</span></td><td class="num c-qty">1</td><td class="c-dims"><span>190 × 190 × 2.5 mm</span><span class="mat">3K carbon fibre, 2.5 mm</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://www.pcbway.com/rapid-prototyping/cnc-machining/plastic/carbon-fiber/carbon-fiber-plate/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>24.44 g</span><span class="unit">24.44 g</span></td></tr>
 <tr class="grp"><th colspan="5" scope="rowgroup">Propulsion</th><td class="num">102.8 g</td></tr>
 <tr class="line" data-bom="motor"><td class="c-eye"><button type="button" class="eye" data-bom="motor" aria-pressed="true" aria-label="Show or hide Motor"></button></td><td class="c-item"><span class="nm">Motor</span><span class="pt">GEPRC SPEEDX2 2105.5 3450KV (3–4S), 12×12 M2, 1.5 mm shaft</span><span class="note">Mass includes leads. Supplied with M2×6 and M2×7 screws. Use 3450KV: the 2150/2650KV versions are 6S motors</span></td><td class="num c-qty">4</td><td class="c-dims"><span>Ø25.65 × 15.7 mm; leads 22 AWG × 150 mm</span><span class="mat">—</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://uk.banggood.com/en/GEPRC-SPEEDX2-2105_5-2650KV-or-3450KV-3-4S-Brushless-Motor-for-FPV-Racing-RC-Drone-p-1949985.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>84.00 g</span><span class="unit">21.0 g</span></td></tr>
 <tr class="line" data-bom="prop"><td class="c-eye"><button type="button" class="eye" data-bom="prop" aria-pressed="true" aria-label="Show or hide Propeller"></button></td><td class="c-item"><span class="nm">Propeller</span><span class="pt">Gemfan D90S 3-blade, 90 mm, 3&quot; pitch, 1.5 mm T-mount</span><span class="note">2 CW + 2 CCW. Hub diameter modelled at 9 mm (not published)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>Ø90 × 5.5 mm hub</span><span class="mat">Polycarbonate</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://www.getfpv.com/gemfan-d90s-90mm-3-5-ducted-3-blade-cinewhoop-propeller-1-5mm-shaft-set-of-4.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>9.20 g</span><span class="unit">2.3 g</span></td></tr>
@@ -235,45 +268,122 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
 <tr class="line" data-bom="fpc"><td class="c-eye"><button type="button" class="eye" data-bom="fpc" aria-pressed="true" aria-label="Show or hide Camera ribbon"></button></td><td class="c-item"><span class="nm">Camera ribbon</span><span class="pt">22-pin 0.5 mm FPC, 200 mm (supplied 22-22 with the B0445; check length)</span></td><td class="num c-qty">1</td><td class="c-dims"><span>200 × 13 × 0.3 mm (est.)</span><span class="mat">Polyimide</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.arducam.com/1-58mp-imx296-color-global-shutter-camera-module-with-m12-lens-for-raspberry-pi.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.00 g</span><span class="unit">1.0 g</span></td></tr>
 <tr class="line" data-bom="hflow"><td class="c-eye"><button type="button" class="eye" data-bom="hflow" aria-pressed="true" aria-label="Show or hide Optical flow + range"></button></td><td class="c-item"><span class="nm">Optical flow + range</span><span class="pt">Holybro H-Flow (bare PCB), PAA3905 + AFBR-S50 + IMU, DroneCAN</span><span class="note">Component height modelled at 4 mm (from the case drawing). CAN cable supplied</span></td><td class="num c-qty">1</td><td class="c-dims"><span>26 × 26 mm PCB; 20×20 M2 holes</span><span class="mat">—</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://docs.holybro.com/peripherals/h-flow-dronecan/dimensions" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.50 g</span><span class="unit">3.5 g</span></td></tr>
 <tr class="line" data-bom="mightycam"><td class="c-eye"><button type="button" class="eye" data-bom="mightycam" aria-pressed="true" aria-label="Show or hide Forward camera"></button></td><td class="c-item"><span class="nm">Forward camera</span><span class="pt">Mighty Camera V.1: 160°, VIO 60 Hz, USB 2.0</span><span class="note">Lens size modelled at Ø12 × 9 mm (not published)</span></td><td class="num c-qty">1</td><td class="c-dims"><span>33 × 30 mm PCB</span><span class="mat">—</span></td><td class="c-src"><span class="src src-maker">Maker</span><a href="https://mightycamera.com" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>10.00 g</span><span class="unit">10.0 g</span></td></tr>
-<tr class="grp"><th colspan="5" scope="rowgroup">Comms</th><td class="num">10.2 g</td></tr>
-<tr class="line" data-bom="dwm3000"><td class="c-eye"><button type="button" class="eye" data-bom="dwm3000" aria-pressed="true" aria-label="Show or hide UWB module"></button></td><td class="c-item"><span class="nm">UWB module</span><span class="pt">Qorvo DWM3000</span><span class="note">Mass not published</span></td><td class="num c-qty">1</td><td class="c-dims"><span>23.0 × 13.0 × 2.9 mm</span><span class="mat">—</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://qorvo.com/products/p/DWM3000" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.00 g</span><span class="unit">2.0 g</span></td></tr>
-<tr class="line" data-bom="uwbpcb"><td class="c-eye"><button type="button" class="eye" data-bom="uwbpcb" aria-pressed="true" aria-label="Show or hide UWB carrier PCB"></button></td><td class="c-item"><span class="nm">UWB carrier PCB</span><span class="pt">Team design: DWM3000 + 8-pin GH on the H-Flow&#x27;s 20×20 M2 pattern, 2-layer FR4</span><span class="note">Still to be designed. Same footprint as the H-Flow, so both blisters are one printed part</span></td><td class="num c-qty">1</td><td class="c-dims"><span>26 × 26 × 1.6 mm</span><span class="mat">FR4</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://jlcpcb.com" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.21 g</span><span class="unit">2.21 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Comms</th><td class="num">25.0 g</td></tr>
+<tr class="line" data-bom="uwbboard"><td class="c-eye"><button type="button" class="eye" data-bom="uwbboard" aria-pressed="true" aria-label="Show or hide UWB board"></button></td><td class="c-item"><span class="nm">UWB board</span><span class="pt">Makerfabs ESP32 UWB DW3000: ESP32 + Qorvo DW3000, USB to the Pi</span><span class="note">Rides on the canopy hat, above every drone&#x27;s body; no carrier PCB to design. Check the DW3000 antenna&#x27;s orientation on the bench</span></td><td class="num c-qty">1</td><td class="c-dims"><span>72.0 × 32.6 mm board (Makerfabs board file); 6.3 mm deep</span><span class="mat">FR4</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.tindie.com/products/makingfab/esp32-uwb-dw3000/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>12.00 g</span><span class="unit">12.0 g</span></td></tr>
 <tr class="line" data-bom="usb"><td class="c-eye"><button type="button" class="eye" data-bom="usb" aria-pressed="true" aria-label="Show or hide Mightycam USB lead"></button></td><td class="c-item"><span class="nm">Mightycam USB lead</span><span class="pt">USB 2.0 lead, right-angle USB-A, about 150 mm</span><span class="note">Mightycam-side connector to confirm</span></td><td class="num c-qty">1</td><td class="c-dims"><span>Ø3.2 mm cable</span><span class="mat">—</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://uk.rs-online.com/web/c/?searchTerm=right%20angle%20usb%20a%20cable%20150mm" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>6.00 g</span><span class="unit">6.0 g</span></td></tr>
-<tr class="grp"><th colspan="5" scope="rowgroup">Wiring</th><td class="num">29.2 g</td></tr>
+<tr class="line" data-bom="usb2"><td class="c-eye"><button type="button" class="eye" data-bom="usb2" aria-pressed="true" aria-label="Show or hide UWB USB lead"></button></td><td class="c-item"><span class="nm">UWB USB lead</span><span class="pt">Micro-USB to right-angle USB-A, about 250 mm, down through the canopy roof</span><span class="note">Unplug at the board to lift the canopy off</span></td><td class="num c-qty">1</td><td class="c-dims"><span>Ø3.2 mm cable</span><span class="mat">—</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://uk.rs-online.com/web/c/?searchTerm=right%20angle%20usb%20a%20to%20micro%20usb%20cable" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>7.00 g</span><span class="unit">7.0 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Wiring</th><td class="num">26.1 g</td></tr>
 <tr class="line" data-bom="w14"><td class="c-eye"><button type="button" class="eye" data-bom="w14" aria-pressed="true" aria-label="Show or hide 14 AWG silicone wire"></button></td><td class="c-item"><span class="nm">14 AWG silicone wire</span><span class="pt">Red + black, battery to PM02 to ESC</span></td><td class="num c-qty">0.45 m</td><td class="c-dims"><span>Ø3.5 mm; 28.2 g/m per core</span><span class="mat">Copper / silicone</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://shop.pimoroni.com/en-eu/products/dual-silicone-wire-per-metre" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>12.61 g</span><span class="unit">28.2 g/m</span></td></tr>
 <tr class="line" data-bom="w20"><td class="c-eye"><button type="button" class="eye" data-bom="w20" aria-pressed="true" aria-label="Show or hide 20 AWG silicone wire"></button></td><td class="c-item"><span class="nm">20 AWG silicone wire</span><span class="pt">Red + black, PM02 to BEC to Pi</span></td><td class="num c-qty">0.21 m</td><td class="c-dims"><span>Ø1.8 mm; 7.1 g/m per core</span><span class="mat">Copper / silicone</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://shop.pimoroni.com/en-eu/products/dual-silicone-wire-per-metre" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.51 g</span><span class="unit">7.1 g/m</span></td></tr>
-<tr class="line" data-bom="gh"><td class="c-eye"><button type="button" class="eye" data-bom="gh" aria-pressed="true" aria-label="Show or hide JST-GH signal leads"></button></td><td class="c-item"><span class="nm">JST-GH signal leads</span><span class="pt">TELEM1, TELEM2, POWER, CAN1, UWB SPI (from the Pixhawk/PM02/H-Flow sets, re-pinned)</span></td><td class="num c-qty">0.80 m</td><td class="c-dims"><span>Ø2.0–2.6 mm bundles; 15 g/m est.</span><span class="mat">Copper / PVC</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.worldronemarket.com/product/holybro-pixhawk-6c-mini-cable-set/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>12.00 g</span><span class="unit">15.0 g/m</span></td></tr>
+<tr class="line" data-bom="gh"><td class="c-eye"><button type="button" class="eye" data-bom="gh" aria-pressed="true" aria-label="Show or hide JST-GH signal leads"></button></td><td class="c-item"><span class="nm">JST-GH signal leads</span><span class="pt">TELEM1, TELEM2, POWER, CAN1 (from the Pixhawk/PM02/H-Flow sets, re-pinned)</span></td><td class="num c-qty">0.59 m</td><td class="c-dims"><span>Ø2.0–2.6 mm bundles; 15 g/m est.</span><span class="mat">Copper / PVC</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.worldronemarket.com/product/holybro-pixhawk-6c-mini-cable-set/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>8.91 g</span><span class="unit">15.0 g/m</span></td></tr>
 <tr class="line" data-bom="shlead"><td class="c-eye"><button type="button" class="eye" data-bom="shlead" aria-pressed="true" aria-label="Show or hide ESC signal lead"></button></td><td class="c-item"><span class="nm">ESC signal lead</span><span class="pt">JST-SH 8-pin to Pixhawk PWM header (supplied with ESC)</span></td><td class="num c-qty">0.07 m</td><td class="c-dims"><span>Ø2.8 mm bundle; 15 g/m est.</span><span class="mat">Copper / PVC</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://nextfpv.com/products/speedybee-bls-35a-mini-v2-20x20-4-in-1-esc" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.08 g</span><span class="unit">15.0 g/m</span></td></tr>
 <tr class="line unmodelled" data-bom="heatshrink"><td class="c-eye"><span class="eye-off" title="Not modelled">–</span></td><td class="c-item"><span class="nm">Heat-shrink and cable ties</span><span class="pt">Assorted, 1.5–6 mm</span></td><td class="num c-qty">1</td><td class="c-dims"><span>—</span><span class="mat">Polyolefin / nylon</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://uk.rs-online.com/web/c/?searchTerm=heat%20shrink%20assortment" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.00 g</span><span class="unit">2.0 g</span></td></tr>
-<tr class="grp"><th colspan="5" scope="rowgroup">Fasteners &amp; inserts</th><td class="num">32.2 g</td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Fasteners &amp; inserts</th><td class="num">31.7 g</td></tr>
 <tr class="line" data-bom="m2x6"><td class="c-eye"><button type="button" class="eye" data-bom="m2x6" aria-pressed="true" aria-label="Show or hide M2 × 6 cap screw"></button></td><td class="c-item"><span class="nm">M2 × 6 cap screw</span><span class="pt">Motor mount (supplied with the motors)</span></td><td class="num c-qty">16</td><td class="c-dims"><span>M2 × 6, head Ø3.8 × 2</span><span class="mat">Steel</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.banggood.com/en/GEPRC-SPEEDX2-2105_5-2650KV-or-3450KV-3-4S-Brushless-Motor-for-FPV-Racing-RC-Drone-p-1949985.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>5.25 g</span><span class="unit">0.33 g</span></td></tr>
 <tr class="line" data-bom="m3x16"><td class="c-eye"><button type="button" class="eye" data-bom="m3x16" aria-pressed="true" aria-label="Show or hide M3 × 16 button head"></button></td><td class="c-item"><span class="nm">M3 × 16 button head</span><span class="pt">ESC stack: plate, grommets, ESC, spine inserts (ISO 7380 A2)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>M3 × 16, head Ø5.7 × 1.65</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/button-head-screws" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>4.90 g</span><span class="unit">1.23 g</span></td></tr>
 <tr class="line" data-bom="m25x12"><td class="c-eye"><button type="button" class="eye" data-bom="m25x12" aria-pressed="true" aria-label="Show or hide M2.5 × 12 cap screw"></button></td><td class="c-item"><span class="nm">M2.5 × 12 cap screw</span><span class="pt">Duct boss, plate, foot nut (DIN 912 A2)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>M2.5 × 12, head Ø4.5 × 2.5</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/metric-cap-head-screws/3807-SSCF-M2-5-12-A2" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.12 g</span><span class="unit">0.78 g</span></td></tr>
 <tr class="line" data-bom="m25nut"><td class="c-eye"><button type="button" class="eye" data-bom="m25nut" aria-pressed="true" aria-label="Show or hide M2.5 nut"></button></td><td class="c-item"><span class="nm">M2.5 nut</span><span class="pt">Captive in each foot (DIN 934 A2)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>5 AF × 2 mm</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/hexagon-nuts" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.37 g</span><span class="unit">0.34 g</span></td></tr>
 <tr class="line" data-bom="m25x6b"><td class="c-eye"><button type="button" class="eye" data-bom="m25x6b" aria-pressed="true" aria-label="Show or hide M2.5 × 6 button head"></button></td><td class="c-item"><span class="nm">M2.5 × 6 button head</span><span class="pt">Pod floor to spine cap, under the Pixhawk foam (ISO 7380 A2)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>M2.5 × 6, head Ø4.7 × 1.4</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/button-head-screws" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.70 g</span><span class="unit">0.42 g</span></td></tr>
-<tr class="line" data-bom="m25x6"><td class="c-eye"><button type="button" class="eye" data-bom="m25x6" aria-pressed="true" aria-label="Show or hide M2.5 × 6 cap screw"></button></td><td class="c-item"><span class="nm">M2.5 × 6 cap screw</span><span class="pt">Pi shelf and battery tray to their ledges (DIN 912 A2)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>M2.5 × 6, head Ø4.5 × 2.5</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/metric-cap-head-screws" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.19 g</span><span class="unit">0.55 g</span></td></tr>
-<tr class="line" data-bom="m2x10"><td class="c-eye"><button type="button" class="eye" data-bom="m2x10" aria-pressed="true" aria-label="Show or hide M2 × 10 cap screw"></button></td><td class="c-item"><span class="nm">M2 × 10 cap screw</span><span class="pt">H-Flow and UWB carrier through the motor pad (DIN 912 A2)</span></td><td class="num c-qty">8</td><td class="c-dims"><span>M2 × 10, head Ø3.8 × 2</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/metric-cap-head-screws" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.42 g</span><span class="unit">0.43 g</span></td></tr>
-<tr class="line" data-bom="m2nut"><td class="c-eye"><button type="button" class="eye" data-bom="m2nut" aria-pressed="true" aria-label="Show or hide M2 nut"></button></td><td class="c-item"><span class="nm">M2 nut</span><span class="pt">Under the H-Flow and UWB carrier (DIN 934 A2)</span></td><td class="num c-qty">8</td><td class="c-dims"><span>4 AF × 1.6 mm</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/hexagon-nuts" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.40 g</span><span class="unit">0.18 g</span></td></tr>
-<tr class="line" data-bom="spacer4"><td class="c-eye"><button type="button" class="eye" data-bom="spacer4" aria-pressed="true" aria-label="Show or hide M2 × 4 spacer"></button></td><td class="c-item"><span class="nm">M2 × 4 spacer</span><span class="pt">Holds the H-Flow and UWB carrier below the motor screw heads (nylon)</span></td><td class="num c-qty">8</td><td class="c-dims"><span>Ø4 × 4 mm</span><span class="mat">Nylon</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.rs-online.com/web/c/?searchTerm=M2%20nylon%20spacer%204mm" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.34 g</span><span class="unit">0.04 g</span></td></tr>
+<tr class="line" data-bom="m25x6"><td class="c-eye"><button type="button" class="eye" data-bom="m25x6" aria-pressed="true" aria-label="Show or hide M2.5 × 6 cap screw"></button></td><td class="c-item"><span class="nm">M2.5 × 6 cap screw</span><span class="pt">Pi shelf and battery tray to their ledges; UWB hat through the canopy roof (DIN 912 A2)</span></td><td class="num c-qty">6</td><td class="c-dims"><span>M2.5 × 6, head Ø4.5 × 2.5</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/metric-cap-head-screws" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.28 g</span><span class="unit">0.55 g</span></td></tr>
+<tr class="line" data-bom="m2x10"><td class="c-eye"><button type="button" class="eye" data-bom="m2x10" aria-pressed="true" aria-label="Show or hide M2 × 10 cap screw"></button></td><td class="c-item"><span class="nm">M2 × 10 cap screw</span><span class="pt">H-Flow through motor 2&#x27;s pad (DIN 912 A2)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>M2 × 10, head Ø3.8 × 2</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/metric-cap-head-screws" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.71 g</span><span class="unit">0.43 g</span></td></tr>
+<tr class="line" data-bom="m2nut"><td class="c-eye"><button type="button" class="eye" data-bom="m2nut" aria-pressed="true" aria-label="Show or hide M2 nut"></button></td><td class="c-item"><span class="nm">M2 nut</span><span class="pt">Under the H-Flow (DIN 934 A2)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>4 AF × 1.6 mm</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/hexagon-nuts" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.70 g</span><span class="unit">0.18 g</span></td></tr>
+<tr class="line" data-bom="spacer4"><td class="c-eye"><button type="button" class="eye" data-bom="spacer4" aria-pressed="true" aria-label="Show or hide M2 × 4 spacer"></button></td><td class="c-item"><span class="nm">M2 × 4 spacer</span><span class="pt">Holds the H-Flow below the motor screw heads (nylon)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>Ø4 × 4 mm</span><span class="mat">Nylon</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.rs-online.com/web/c/?searchTerm=M2%20nylon%20spacer%204mm" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.17 g</span><span class="unit">0.04 g</span></td></tr>
 <tr class="line" data-bom="pistand"><td class="c-eye"><button type="button" class="eye" data-bom="pistand" aria-pressed="true" aria-label="Show or hide M2.5 × 3 standoff"></button></td><td class="c-item"><span class="nm">M2.5 × 3 standoff</span><span class="pt">Pi 5 to shelf, F-F (nylon)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>5 AF × 3 mm</span><span class="mat">Nylon</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.rs-online.com/web/c/?searchTerm=M2.5%20female%20female%20standoff%203mm" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.30 g</span><span class="unit">0.07 g</span></td></tr>
 <tr class="line" data-bom="m25x6n"><td class="c-eye"><button type="button" class="eye" data-bom="m25x6n" aria-pressed="true" aria-label="Show or hide M2.5 × 6 nylon screw"></button></td><td class="c-item"><span class="nm">M2.5 × 6 nylon screw</span><span class="pt">Pi 5 to standoffs, standoffs to shelf</span></td><td class="num c-qty">8</td><td class="c-dims"><span>M2.5 × 6, head Ø4.5 × 2.5</span><span class="mat">Nylon</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.rs-online.com/web/c/?searchTerm=M2.5%20nylon%20screw%206mm" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.63 g</span><span class="unit">0.08 g</span></td></tr>
 <tr class="line" data-bom="thumb"><td class="c-eye"><button type="button" class="eye" data-bom="thumb" aria-pressed="true" aria-label="Show or hide M3 thumb screw"></button></td><td class="c-item"><span class="nm">M3 thumb screw</span><span class="pt">Canopy, into the four posts (nylon, knurled)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>M3 × 8, head Ø8 × 4</span><span class="mat">Nylon</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.rs-online.com/web/c/?searchTerm=M3%20nylon%20thumb%20screw" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.17 g</span><span class="unit">0.29 g</span></td></tr>
 <tr class="line" data-bom="ins3"><td class="c-eye"><button type="button" class="eye" data-bom="ins3" aria-pressed="true" aria-label="Show or hide M3 heat-set insert"></button></td><td class="c-item"><span class="nm">M3 heat-set insert</span><span class="pt">CNC Kitchen M3 standard: spine ESC bosses, canopy posts</span></td><td class="num c-qty">8</td><td class="c-dims"><span>4.6 × 5.7 mm; 4.0 mm hole</span><span class="mat">Brass</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.3djake.com/cnc-kitchen/threaded-inserts-m3-standard" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.20 g</span><span class="unit">0.4 g</span></td></tr>
-<tr class="line" data-bom="ins25"><td class="c-eye"><button type="button" class="eye" data-bom="ins25" aria-pressed="true" aria-label="Show or hide M2.5 heat-set insert"></button></td><td class="c-item"><span class="nm">M2.5 heat-set insert</span><span class="pt">CNC Kitchen M2.5: spine cap, shelf and tray ledges</span></td><td class="num c-qty">8</td><td class="c-dims"><span>4.6 × 4.0 mm; 4.0 mm hole</span><span class="mat">Brass</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.3djake.com/cnc-kitchen/threaded-inserts-m25-standard" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.40 g</span><span class="unit">0.3 g</span></td></tr>
-<tr class="line" data-bom="grommet"><td class="c-eye"><button type="button" class="eye" data-bom="grommet" aria-pressed="true" aria-label="Show or hide ESC grommet"></button></td><td class="c-item"><span class="nm">ESC grommet</span><span class="pt">Silicone, supplied with the ESC</span></td><td class="num c-qty">8</td><td class="c-dims"><span>Ø6 × 1 mm</span><span class="mat">Silicone</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://nextfpv.com/products/speedybee-bls-35a-mini-v2-20x20-4-in-1-esc" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.80 g</span><span class="unit">0.1 g</span></td></tr>
+<tr class="line" data-bom="ins25"><td class="c-eye"><button type="button" class="eye" data-bom="ins25" aria-pressed="true" aria-label="Show or hide M2.5 heat-set insert"></button></td><td class="c-item"><span class="nm">M2.5 heat-set insert</span><span class="pt">CNC Kitchen M2.5: spine cap, shelf and tray ledges, UWB hat</span></td><td class="num c-qty">10</td><td class="c-dims"><span>4.6 × 4.0 mm; 4.0 mm hole</span><span class="mat">Brass</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.3djake.com/cnc-kitchen/threaded-inserts-m25-standard" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.00 g</span><span class="unit">0.3 g</span></td></tr>
+<tr class="line" data-bom="alspacer"><td class="c-eye"><button type="button" class="eye" data-bom="alspacer" aria-pressed="true" aria-label="Show or hide M3 aluminium spacer"></button></td><td class="c-item"><span class="nm">M3 aluminium spacer</span><span class="pt">Hard-mounts the ESC stack: 1 mm under the ESC, 4.4 mm over it (4 mm spacer + 0.4 mm shim)</span><span class="note">Replaces the ESC&#x27;s silicone grommets: on those the pod and battery would rock at an estimated 10–20 Hz</span></td><td class="num c-qty">8</td><td class="c-dims"><span>Ø6 × 1 mm and Ø6 × 4.4 mm, M3 clearance</span><span class="mat">Aluminium</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/spacers/aluminium-spacers" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.18 g</span><span class="unit">0.15 g</span></td></tr>
 <tr class="grp"><th colspan="5" scope="rowgroup">Finishing</th><td class="num">0.3 g</td></tr>
 <tr class="line" data-bom="decals"><td class="c-eye"><button type="button" class="eye" data-bom="decals" aria-pressed="true" aria-label="Show or hide Decal set"></button></td><td class="c-item"><span class="nm">Decal set</span><span class="pt">Motor numbers, rotation arrows (PX4 Quad X), FRONT arrow</span><span class="note">Artwork follows the rotation marks in the CAD</span></td><td class="num c-qty">1</td><td class="c-dims"><span>—</span><span class="mat">Vinyl</span></td><td class="c-src"><span class="src src-est">Estimate</span><span class="path">CAD/themis35/build_t35.py</span></td><td class="num c-mass"><span>0.30 g</span><span class="unit">0.3 g</span></td></tr>
         </tbody>
-        <tfoot><tr><td></td><td colspan="4">All up, every line</td><td class="num">718 g</td></tr></tfoot>
+        <tbody data-build="cl35" hidden>
+<tr class="grp"><th colspan="5" scope="rowgroup">Airframe (frame kit)</th><td class="num">104.5 g</td></tr>
+<tr class="line" data-bom="clarm"><td class="c-eye"><button type="button" class="eye" data-bom="clarm" aria-pressed="true" aria-label="Show or hide Arm plate"></button></td><td class="c-item"><span class="nm">Arm plate</span><span class="pt">GEPRC CineLog35 V2 (GEP-CL35 V2) arm plate, from the frame kit</span><span class="note">Drill 4 × Ø3.2 mm on a 28.3 mm circle for the ESC and pylon. Kit is 133.7 g as sold (maker); its camera, top and bottom plates, mounts, standoffs, straps and XT60 lead stay in the box. Outline traced from GEPRC&#x27;s photos</span></td><td class="num c-qty">1</td><td class="c-dims"><span>120.4 × 158.2 × 3.5 mm</span><span class="mat">3K carbon, 3.5 mm (maker)</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://geprc.com/product/gep-cl35-v2-frame/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>48.00 g</span><span class="unit">48.0 g</span></td></tr>
+<tr class="line" data-bom="clguard"><td class="c-eye"><button type="button" class="eye" data-bom="clguard" aria-pressed="true" aria-label="Show or hide Propeller guard"></button></td><td class="c-item"><span class="nm">Propeller guard</span><span class="pt">One-piece injection-moulded guard from the kit, 95 mm ID (maker)</span><span class="note">Mass is the kit weight less its plates and mounts, estimated</span></td><td class="num c-qty">1</td><td class="c-dims"><span>203.5 × 203.5 × 24 mm (overall: maker; height: read off photos)</span><span class="mat">Injection-moulded plastic</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://geprc.com/product/gep-cl35-v2-frame/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>52.00 g</span><span class="unit">52.0 g</span></td></tr>
+<tr class="line" data-bom="clkit"><td class="c-eye"><button type="button" class="eye" data-bom="clkit" aria-pressed="true" aria-label="Show or hide Kit screws and nuts"></button></td><td class="c-item"><span class="nm">Kit screws and nuts</span><span class="pt">M2 × 7 round head screws and M2 nuts from the kit&#x27;s screw pack</span><span class="note">Guard to arm plate, feet and H-Flow bridge; the kit ships 30 × M2×7 and 18 × M2 nuts</span></td><td class="num c-qty">18</td><td class="c-dims"><span>M2 × 7, head Ø3.8 × 2</span><span class="mat">Steel</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://geprc.com/product/gep-cl35-v2-frame/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>4.50 g</span><span class="unit">0.25 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Airframe (printed)</th><td class="num">91.8 g</td></tr>
+<tr class="line" data-bom="pod"><td class="c-eye"><button type="button" class="eye" data-bom="pod" aria-pressed="true" aria-label="Show or hide Pod lower"></button></td><td class="c-item"><span class="nm">Pod lower</span><span class="pt">Streamlined pod: floor, ledges, canopy posts, vents, spine slot</span><span class="note">same part as on the custom frame</span></td><td class="num c-qty">1</td><td class="c-dims"><span>68 × 134 × 46 mm</span><span class="mat">SLS PA12, 1.6 mm skin</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>36.72 g</span><span class="unit">36.72 g</span></td></tr>
+<tr class="line" data-bom="canopy"><td class="c-eye"><button type="button" class="eye" data-bom="canopy" aria-pressed="true" aria-label="Show or hide Canopy"></button></td><td class="c-item"><span class="nm">Canopy</span><span class="pt">Removable top shell with moulded front arrow</span><span class="note">same part as on the custom frame</span></td><td class="num c-qty">1</td><td class="c-dims"><span>68 × 134 × 34 mm</span><span class="mat">SLS PA12, 1.6 mm skin</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>22.54 g</span><span class="unit">22.54 g</span></td></tr>
+<tr class="line" data-bom="shelf"><td class="c-eye"><button type="button" class="eye" data-bom="shelf" aria-pressed="true" aria-label="Show or hide Pi shelf"></button></td><td class="c-item"><span class="nm">Pi shelf</span><span class="pt">54 mm wide, keyed to its ledges</span><span class="note">same part as on the custom frame</span></td><td class="num c-qty">1</td><td class="c-dims"><span>54 × 88 × 1.6 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>7.58 g</span><span class="unit">7.58 g</span></td></tr>
+<tr class="line" data-bom="tray"><td class="c-eye"><button type="button" class="eye" data-bom="tray" aria-pressed="true" aria-label="Show or hide Battery tray"></button></td><td class="c-item"><span class="nm">Battery tray</span><span class="pt">60 mm wide with front end stop and rear XT60 holder</span><span class="note">same part as on the custom frame</span></td><td class="num c-qty">1</td><td class="c-dims"><span>60 × 102 × 8.1 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>10.74 g</span><span class="unit">10.74 g</span></td></tr>
+<tr class="line" data-bom="bumper"><td class="c-eye"><button type="button" class="eye" data-bom="bumper" aria-pressed="true" aria-label="Show or hide Nose bumper"></button></td><td class="c-item"><span class="nm">Nose bumper</span><span class="pt">Protects the Mightycam window; marks the front</span><span class="note">same part as on the custom frame</span></td><td class="num c-qty">1</td><td class="c-dims"><span>35 × 4.5 × 39 mm</span><span class="mat">TPU 95A, orange</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.49 g</span><span class="unit">1.49 g</span></td></tr>
+<tr class="line" data-bom="uwbhat"><td class="c-eye"><button type="button" class="eye" data-bom="uwbhat" aria-pressed="true" aria-label="Show or hide UWB hat"></button></td><td class="c-item"><span class="nm">UWB hat</span><span class="pt">Low spine on the canopy roof: carries the UWB board above the battery</span><span class="note">Two M2.5 screws up through the roof; two cable ties hold the board; same part as on the custom frame</span></td><td class="num c-qty">1</td><td class="c-dims"><span>29 × 81 × 6 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>4.51 g</span><span class="unit">4.51 g</span></td></tr>
+<tr class="line" data-bom="clbridge"><td class="c-eye"><button type="button" class="eye" data-bom="clbridge" aria-pressed="true" aria-label="Show or hide H-Flow bridge"></button></td><td class="c-item"><span class="nm">H-Flow bridge</span><span class="pt">Spans the arm plate&#x27;s front prongs; the H-Flow looks down between the front rings</span><span class="note">Front lip guards the board edge</span></td><td class="num c-qty">1</td><td class="c-dims"><span>48 × 29 × 9 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.88 g</span><span class="unit">2.88 g</span></td></tr>
+<tr class="line" data-bom="clpylon"><td class="c-eye"><button type="button" class="eye" data-bom="clpylon" aria-pressed="true" aria-label="Show or hide Pylon"></button></td><td class="c-item"><span class="nm">Pylon</span><span class="pt">Short pylon on the ESC stack: M3 inserts, cable channel, the pod&#x27;s four screws</span><span class="note">Holds the pod 30 mm lower than the custom frame&#x27;s spine</span></td><td class="num c-qty">1</td><td class="c-dims"><span>35.3 × 39.6 × 11.7 mm</span><span class="mat">SLS PA12</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>4.10 g</span><span class="unit">4.1 g</span></td></tr>
+<tr class="line" data-bom="clfoot"><td class="c-eye"><button type="button" class="eye" data-bom="clfoot" aria-pressed="true" aria-label="Show or hide Skid foot"></button></td><td class="c-item"><span class="nm">Skid foot</span><span class="pt">TPU foot under each guard corner; lowest point of the drone</span><span class="note">One kit M2 screw up into the guard&#x27;s corner boss</span></td><td class="num c-qty">4</td><td class="c-dims"><span>8 × 8 × 7.3 mm</span><span class="mat">TPU 95A</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://3dprint-uk.co.uk/3d-printing-services/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.21 g</span><span class="unit">0.3 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Propulsion</th><td class="num">102.8 g</td></tr>
+<tr class="line" data-bom="motor"><td class="c-eye"><button type="button" class="eye" data-bom="motor" aria-pressed="true" aria-label="Show or hide Motor"></button></td><td class="c-item"><span class="nm">Motor</span><span class="pt">GEPRC SPEEDX2 2105.5 3450KV (3–4S), 12×12 M2, 1.5 mm shaft</span><span class="note">Mass includes leads. Supplied with M2×6 and M2×7 screws. Use 3450KV: the 2150/2650KV versions are 6S motors</span></td><td class="num c-qty">4</td><td class="c-dims"><span>Ø25.65 × 15.7 mm; leads 22 AWG × 150 mm</span><span class="mat">—</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://uk.banggood.com/en/GEPRC-SPEEDX2-2105_5-2650KV-or-3450KV-3-4S-Brushless-Motor-for-FPV-Racing-RC-Drone-p-1949985.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>84.00 g</span><span class="unit">21.0 g</span></td></tr>
+<tr class="line" data-bom="prop"><td class="c-eye"><button type="button" class="eye" data-bom="prop" aria-pressed="true" aria-label="Show or hide Propeller"></button></td><td class="c-item"><span class="nm">Propeller</span><span class="pt">Gemfan D90S 3-blade, 90 mm, 3&quot; pitch, 1.5 mm T-mount</span><span class="note">2 CW + 2 CCW. Hub diameter modelled at 9 mm (not published)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>Ø90 × 5.5 mm hub</span><span class="mat">Polycarbonate</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://www.getfpv.com/gemfan-d90s-90mm-3-5-ducted-3-blade-cinewhoop-propeller-1-5mm-shaft-set-of-4.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>9.20 g</span><span class="unit">2.3 g</span></td></tr>
+<tr class="line" data-bom="esc"><td class="c-eye"><button type="button" class="eye" data-bom="esc" aria-pressed="true" aria-label="Show or hide 4-in-1 ESC"></button></td><td class="c-item"><span class="nm">4-in-1 ESC</span><span class="pt">SpeedyBee BLS 35A Mini V2, 20×20, 3–6S, 35 A ×4 (45 A 5 s)</span><span class="note">BLHeli_S, DShot300/600; current sensor scale 250, offset −500. Mounted rotated 45° between the ducts</span></td><td class="num c-qty">1</td><td class="c-dims"><span>35 × 35 × 5.5 mm</span><span class="mat">—</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://nextfpv.com/products/speedybee-bls-35a-mini-v2-20x20-4-in-1-esc" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>7.20 g</span><span class="unit">7.2 g</span></td></tr>
+<tr class="line" data-bom="cap"><td class="c-eye"><button type="button" class="eye" data-bom="cap" aria-pressed="true" aria-label="Show or hide ESC capacitor"></button></td><td class="c-item"><span class="nm">ESC capacitor</span><span class="pt">100 µF 35 V low-ESR electrolytic (Panasonic FR series), 4 fitted = 400 µF</span><span class="note">A single Ø10 mm 470 µF (EEU-FR1V471, RS 708-3825) does not fit between the ducts; four small ones sit on the axes just outside the ESC</span></td><td class="num c-qty">4</td><td class="c-dims"><span>Ø6.3 × 11.2 mm (est.)</span><span class="mat">—</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://uk.rs-online.com/web/c/?searchTerm=panasonic%20EEU-FR1V101" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.40 g</span><span class="unit">0.6 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Power</th><td class="num">182.2 g</td></tr>
+<tr class="line" data-bom="battery"><td class="c-eye"><button type="button" class="eye" data-bom="battery" aria-pressed="true" aria-label="Show or hide Battery"></button></td><td class="c-item"><span class="nm">Battery</span><span class="pt">GNB GNB11004S140A, 4S 1100 mAh 140C, XT60</span><span class="note">Figures as cited in the AVA v2 README; the shop blocks automated reading, so check the listing</span></td><td class="num c-qty">1</td><td class="c-dims"><span>82 × 39 × 25 mm</span><span class="mat">LiPo</span></td><td class="c-src"><span class="src src-maker">Maker</span><a href="https://www.gaoneng.shop/products/gaoneng-gnb-4s-14.8v-1100mah-140c-xt60-lipo-battery" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>141.00 g</span><span class="unit">141.0 g</span></td></tr>
+<tr class="line" data-bom="pm02"><td class="c-eye"><button type="button" class="eye" data-bom="pm02" aria-pressed="true" aria-label="Show or hide Power module"></button></td><td class="c-item"><span class="nm">Power module</span><span class="pt">Holybro PM02 V3, analog, 5.2 V 3 A to the Pixhawk</span><span class="note">Size from an OpenELab listing; Holybro does not publish it. XT60s removed, leads soldered. Its XT60/12 AWG are rated 30 A continuous, 60 A burst: cap PX4 thrust so total current stays under 60 A</span></td><td class="num c-qty">1</td><td class="c-dims"><span>25 × 25 × 10 mm</span><span class="mat">—</span></td><td class="c-src"><span class="src src-maker">Maker</span><a href="https://docs.px4.io/main/en/power_module/holybro_pm02" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>20.00 g</span><span class="unit">20.0 g</span></td></tr>
+<tr class="line" data-bom="bec"><td class="c-eye"><button type="button" class="eye" data-bom="bec" aria-pressed="true" aria-label="Show or hide 5 V regulator"></button></td><td class="c-item"><span class="nm">5 V regulator</span><span class="pt">Pololu D36V50F5, 5 V 5.5 A, 5.5–50 V in</span><span class="note">Feeds the Pi 5 through GPIO 5 V; set usb_max_current_enable=1</span></td><td class="num c-qty">1</td><td class="c-dims"><span>25.4 × 25.4 × 9.5 mm</span><span class="mat">—</span></td><td class="c-src"><span class="src src-maker">Maker</span><a href="https://www.pololu.com/product/4091/specs" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>7.00 g</span><span class="unit">7.0 g</span></td></tr>
+<tr class="line" data-bom="xt60f"><td class="c-eye"><button type="button" class="eye" data-bom="xt60f" aria-pressed="true" aria-label="Show or hide XT60H-F"></button></td><td class="c-item"><span class="nm">XT60H-F</span><span class="pt">Amass XT60H female with housing</span><span class="note">Main socket (behind the battery) and arming socket (tail). Datasheet: cdn.eicom.ru/media/PDF/XT60H-M.pdf</span></td><td class="num c-qty">2</td><td class="c-dims"><span>21.0 × 15.7 × 8.1 mm</span><span class="mat">Nylon / brass</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://ifuturetech.org/product/amass-xt60h-female-connector-with-housing/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>7.20 g</span><span class="unit">3.6 g</span></td></tr>
+<tr class="line" data-bom="xt60m"><td class="c-eye"><button type="button" class="eye" data-bom="xt60m" aria-pressed="true" aria-label="Show or hide XT60H-M arming key"></button></td><td class="c-item"><span class="nm">XT60H-M arming key</span><span class="pt">Amass XT60H male, pins bridged with 14 AWG, red pull tab</span><span class="note">Pull it and the battery is disconnected: the accessible physical kill</span></td><td class="num c-qty">1</td><td class="c-dims"><span>21 × 15.7 × 8.1 mm + loop</span><span class="mat">Nylon / brass / silicone</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://cdn.eicom.ru/media/PDF/XT60H-M.pdf" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>4.50 g</span><span class="unit">4.5 g</span></td></tr>
+<tr class="line" data-bom="strap"><td class="c-eye"><button type="button" class="eye" data-bom="strap" aria-pressed="true" aria-label="Show or hide Battery strap"></button></td><td class="c-item"><span class="nm">Battery strap</span><span class="pt">T-Hobby 15 × 200 mm battery strap</span></td><td class="num c-qty">1</td><td class="c-dims"><span>15 × 200 mm</span><span class="mat">Woven nylon</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.unmannedtechshop.co.uk/products/t-hobby-battery-straps-15x200mm-new" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.50 g</span><span class="unit">2.5 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Flight control</th><td class="num">41.9 g</td></tr>
+<tr class="line" data-bom="pixhawk"><td class="c-eye"><button type="button" class="eye" data-bom="pixhawk" aria-pressed="true" aria-label="Show or hide Flight controller"></button></td><td class="c-item"><span class="nm">Flight controller</span><span class="pt">Holybro Pixhawk 6C Mini (Model A), PX4</span><span class="note">Mass from PX4 docs. Motors on the FMU outputs (DShot). Cable set supplied: 6-pin GH ×5, 4-pin GH ×3, PWM ×2</span></td><td class="num c-qty">1</td><td class="c-dims"><span>54.3 × 39 × 17.5 mm</span><span class="mat">Aluminium case</span></td><td class="c-src"><span class="src src-maker">Maker</span><a href="https://docs.holybro.com/autopilot/pixhawk-6c-mini/dimensions" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>39.20 g</span><span class="unit">39.2 g</span></td></tr>
+<tr class="line" data-bom="foam"><td class="c-eye"><button type="button" class="eye" data-bom="foam" aria-pressed="true" aria-label="Show or hide Mounting foam"></button></td><td class="c-item"><span class="nm">Mounting foam</span><span class="pt">3M 4026 urethane foam tape, 1.6 mm (4 pads)</span><span class="note">Under the Pixhawk, PM02 and BEC</span></td><td class="num c-qty">1</td><td class="c-dims"><span>1.6 mm thick</span><span class="mat">Urethane foam</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://hoffmann-group.com/GB/en/houk/p/7000116032-" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.50 g</span><span class="unit">0.5 g</span></td></tr>
+<tr class="line" data-bom="elrs"><td class="c-eye"><button type="button" class="eye" data-bom="elrs" aria-pressed="true" aria-label="Show or hide ELRS receiver"></button></td><td class="c-item"><span class="nm">ELRS receiver</span><span class="pt">RadioMaster RP1 V2, 65 mm UFL T-antenna</span><span class="note">CRSF to Pixhawk TELEM1; kill switch only. Mass includes antenna</span></td><td class="num c-qty">1</td><td class="c-dims"><span>13 × 11 × 3 mm</span><span class="mat">—</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://www.getfpv.com/radiomaster-rp1-v2-expresslrs-2-4ghz-nano-receiver-w-65mm-ufl-t-antenna.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.20 g</span><span class="unit">2.2 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Companion compute</th><td class="num">75.4 g</td></tr>
+<tr class="line" data-bom="pi5"><td class="c-eye"><button type="button" class="eye" data-bom="pi5" aria-pressed="true" aria-label="Show or hide Raspberry Pi 5"></button></td><td class="c-item"><span class="nm">Raspberry Pi 5</span><span class="pt">Raspberry Pi 5, 2 GB</span><span class="note">Mass from retailer listings (45–46 g). Port heights from the Pi 4 equivalents</span></td><td class="num c-qty">1</td><td class="c-dims"><span>85 × 56 mm PCB; M2.5 holes on 58 × 49</span><span class="mat">—</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://datasheets.raspberrypi.com/rpi5/raspberry-pi-5-mechanical-drawing.pdf" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>46.00 g</span><span class="unit">46.0 g</span></td></tr>
+<tr class="line" data-bom="cooler"><td class="c-eye"><button type="button" class="eye" data-bom="cooler" aria-pressed="true" aria-label="Show or hide Active Cooler"></button></td><td class="c-item"><span class="nm">Active Cooler</span><span class="pt">Raspberry Pi Active Cooler for Pi 5</span></td><td class="num c-qty">1</td><td class="c-dims"><span>63.5 × 42.5 × 13.7 mm</span><span class="mat">Anodised aluminium</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://datasheets.raspberrypi.com/cooling/raspberry-pi-active-cooler-product-brief.pdf" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>29.00 g</span><span class="unit">29.0 g</span></td></tr>
+<tr class="line" data-bom="sd"><td class="c-eye"><button type="button" class="eye" data-bom="sd" aria-pressed="true" aria-label="Show or hide microSD"></button></td><td class="c-item"><span class="nm">microSD</span><span class="pt">High-endurance microSD, 32 GB</span><span class="note">Read-only root filesystem: the arming plug cuts power instantly</span></td><td class="num c-qty">1</td><td class="c-dims"><span>15 × 11 × 1 mm</span><span class="mat">—</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://uk.rs-online.com/web/c/?searchTerm=sandisk%20high%20endurance%20microsd%2032gb" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.40 g</span><span class="unit">0.4 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Sensors</th><td class="num">34.1 g</td></tr>
+<tr class="line" data-bom="camera"><td class="c-eye"><button type="button" class="eye" data-bom="camera" aria-pressed="true" aria-label="Show or hide Downward camera"></button></td><td class="c-item"><span class="nm">Downward camera</span><span class="pt">Arducam B0445, IMX296 colour global shutter, M12 mount</span><span class="note">14 g is the mono twin&#x27;s listed weight with its stock lens. Hole pattern to confirm on delivery</span></td><td class="num c-qty">1</td><td class="c-dims"><span>38 × 38 mm board; 13 mm holder</span><span class="mat">—</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.arducam.com/1-58mp-imx296-color-global-shutter-camera-module-with-m12-lens-for-raspberry-pi.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>14.00 g</span><span class="unit">14.0 g</span></td></tr>
+<tr class="line" data-bom="camfix"><td class="c-eye"><button type="button" class="eye" data-bom="camfix" aria-pressed="true" aria-label="Show or hide Camera fixings"></button></td><td class="c-item"><span class="nm">Camera fixings</span><span class="pt">M2 × 8 nylon screw + 2 mm nylon spacer, ×4 (hole pattern to confirm)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>Ø4 × 2 mm spacer</span><span class="mat">Nylon</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://uk.rs-online.com/web/c/?searchTerm=M2%20nylon%20spacer%202mm" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.60 g</span><span class="unit">0.15 g</span></td></tr>
+<tr class="line" data-bom="lens"><td class="c-eye"><button type="button" class="eye" data-bom="lens" aria-pressed="true" aria-label="Show or hide Wide lens"></button></td><td class="c-item"><span class="nm">Wide lens</span><span class="pt">Arducam M27210H08 (LN005), 2.1 mm M12, 120° HFOV on 1/2.9&quot;</span><span class="note">Buy one first and check focus in the B0445 holder</span></td><td class="num c-qty">1</td><td class="c-dims"><span>Ø14 × 16 mm (est.)</span><span class="mat">—</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.arducam.com/blog/product/m27210h08-2/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>5.00 g</span><span class="unit">5.0 g</span></td></tr>
+<tr class="line" data-bom="fpc"><td class="c-eye"><button type="button" class="eye" data-bom="fpc" aria-pressed="true" aria-label="Show or hide Camera ribbon"></button></td><td class="c-item"><span class="nm">Camera ribbon</span><span class="pt">22-pin 0.5 mm FPC, 200 mm (supplied 22-22 with the B0445; check length)</span></td><td class="num c-qty">1</td><td class="c-dims"><span>200 × 13 × 0.3 mm (est.)</span><span class="mat">Polyimide</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.arducam.com/1-58mp-imx296-color-global-shutter-camera-module-with-m12-lens-for-raspberry-pi.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.00 g</span><span class="unit">1.0 g</span></td></tr>
+<tr class="line" data-bom="hflow"><td class="c-eye"><button type="button" class="eye" data-bom="hflow" aria-pressed="true" aria-label="Show or hide Optical flow + range"></button></td><td class="c-item"><span class="nm">Optical flow + range</span><span class="pt">Holybro H-Flow (bare PCB), PAA3905 + AFBR-S50 + IMU, DroneCAN</span><span class="note">On the front bridge, looking down between the front rings</span></td><td class="num c-qty">1</td><td class="c-dims"><span>26 × 26 mm PCB; 20×20 M2 holes</span><span class="mat">—</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://docs.holybro.com/peripherals/h-flow-dronecan/dimensions" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.50 g</span><span class="unit">3.5 g</span></td></tr>
+<tr class="line" data-bom="mightycam"><td class="c-eye"><button type="button" class="eye" data-bom="mightycam" aria-pressed="true" aria-label="Show or hide Forward camera"></button></td><td class="c-item"><span class="nm">Forward camera</span><span class="pt">Mighty Camera V.1: 160°, VIO 60 Hz, USB 2.0</span><span class="note">Lens size modelled at Ø12 × 9 mm (not published)</span></td><td class="num c-qty">1</td><td class="c-dims"><span>33 × 30 mm PCB</span><span class="mat">—</span></td><td class="c-src"><span class="src src-maker">Maker</span><a href="https://mightycamera.com" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>10.00 g</span><span class="unit">10.0 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Comms</th><td class="num">25.0 g</td></tr>
+<tr class="line" data-bom="uwbboard"><td class="c-eye"><button type="button" class="eye" data-bom="uwbboard" aria-pressed="true" aria-label="Show or hide UWB board"></button></td><td class="c-item"><span class="nm">UWB board</span><span class="pt">Makerfabs ESP32 UWB DW3000: ESP32 + Qorvo DW3000, USB to the Pi</span><span class="note">Rides on the canopy hat, above every drone&#x27;s body; no carrier PCB to design. Check the DW3000 antenna&#x27;s orientation on the bench</span></td><td class="num c-qty">1</td><td class="c-dims"><span>72.0 × 32.6 mm board (Makerfabs board file); 6.3 mm deep</span><span class="mat">FR4</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.tindie.com/products/makingfab/esp32-uwb-dw3000/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>12.00 g</span><span class="unit">12.0 g</span></td></tr>
+<tr class="line" data-bom="usb"><td class="c-eye"><button type="button" class="eye" data-bom="usb" aria-pressed="true" aria-label="Show or hide Mightycam USB lead"></button></td><td class="c-item"><span class="nm">Mightycam USB lead</span><span class="pt">USB 2.0 lead, right-angle USB-A, about 150 mm</span><span class="note">Mightycam-side connector to confirm</span></td><td class="num c-qty">1</td><td class="c-dims"><span>Ø3.2 mm cable</span><span class="mat">—</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://uk.rs-online.com/web/c/?searchTerm=right%20angle%20usb%20a%20cable%20150mm" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>6.00 g</span><span class="unit">6.0 g</span></td></tr>
+<tr class="line" data-bom="usb2"><td class="c-eye"><button type="button" class="eye" data-bom="usb2" aria-pressed="true" aria-label="Show or hide UWB USB lead"></button></td><td class="c-item"><span class="nm">UWB USB lead</span><span class="pt">Micro-USB to right-angle USB-A, about 250 mm, down through the canopy roof</span><span class="note">Unplug at the board to lift the canopy off</span></td><td class="num c-qty">1</td><td class="c-dims"><span>Ø3.2 mm cable</span><span class="mat">—</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://uk.rs-online.com/web/c/?searchTerm=right%20angle%20usb%20a%20to%20micro%20usb%20cable" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>7.00 g</span><span class="unit">7.0 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Wiring</th><td class="num">24.1 g</td></tr>
+<tr class="line" data-bom="w14"><td class="c-eye"><button type="button" class="eye" data-bom="w14" aria-pressed="true" aria-label="Show or hide 14 AWG silicone wire"></button></td><td class="c-item"><span class="nm">14 AWG silicone wire</span><span class="pt">Red + black, battery to PM02 to ESC</span></td><td class="num c-qty">0.40 m</td><td class="c-dims"><span>Ø3.5 mm; 28.2 g/m per core</span><span class="mat">Copper / silicone</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://shop.pimoroni.com/en-eu/products/dual-silicone-wire-per-metre" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>11.17 g</span><span class="unit">28.2 g/m</span></td></tr>
+<tr class="line" data-bom="w20"><td class="c-eye"><button type="button" class="eye" data-bom="w20" aria-pressed="true" aria-label="Show or hide 20 AWG silicone wire"></button></td><td class="c-item"><span class="nm">20 AWG silicone wire</span><span class="pt">Red + black, PM02 to BEC to Pi</span></td><td class="num c-qty">0.21 m</td><td class="c-dims"><span>Ø1.8 mm; 7.1 g/m per core</span><span class="mat">Copper / silicone</span></td><td class="c-src"><span class="src src-retail">Retailer</span><a href="https://shop.pimoroni.com/en-eu/products/dual-silicone-wire-per-metre" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.51 g</span><span class="unit">7.1 g/m</span></td></tr>
+<tr class="line" data-bom="gh"><td class="c-eye"><button type="button" class="eye" data-bom="gh" aria-pressed="true" aria-label="Show or hide JST-GH signal leads"></button></td><td class="c-item"><span class="nm">JST-GH signal leads</span><span class="pt">TELEM1, TELEM2, POWER, CAN1 (from the Pixhawk/PM02/H-Flow sets, re-pinned)</span></td><td class="num c-qty">0.59 m</td><td class="c-dims"><span>Ø2.0–2.6 mm bundles; 15 g/m est.</span><span class="mat">Copper / PVC</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.worldronemarket.com/product/holybro-pixhawk-6c-mini-cable-set/" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>8.85 g</span><span class="unit">15.0 g/m</span></td></tr>
+<tr class="line" data-bom="shlead"><td class="c-eye"><button type="button" class="eye" data-bom="shlead" aria-pressed="true" aria-label="Show or hide ESC signal lead"></button></td><td class="c-item"><span class="nm">ESC signal lead</span><span class="pt">JST-SH 8-pin to Pixhawk PWM header (supplied with ESC)</span></td><td class="num c-qty">0.04 m</td><td class="c-dims"><span>Ø2.8 mm bundle; 15 g/m est.</span><span class="mat">Copper / PVC</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://nextfpv.com/products/speedybee-bls-35a-mini-v2-20x20-4-in-1-esc" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.62 g</span><span class="unit">15.0 g/m</span></td></tr>
+<tr class="line unmodelled" data-bom="heatshrink"><td class="c-eye"><span class="eye-off" title="Not modelled">–</span></td><td class="c-item"><span class="nm">Heat-shrink and cable ties</span><span class="pt">Assorted, 1.5–6 mm</span></td><td class="num c-qty">1</td><td class="c-dims"><span>—</span><span class="mat">Polyolefin / nylon</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://uk.rs-online.com/web/c/?searchTerm=heat%20shrink%20assortment" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>2.00 g</span><span class="unit">2.0 g</span></td></tr>
+<tr class="grp"><th colspan="5" scope="rowgroup">Fasteners &amp; inserts</th><td class="num">26.5 g</td></tr>
+<tr class="line" data-bom="m2x6"><td class="c-eye"><button type="button" class="eye" data-bom="m2x6" aria-pressed="true" aria-label="Show or hide M2 × 6 cap screw"></button></td><td class="c-item"><span class="nm">M2 × 6 cap screw</span><span class="pt">Motors to the pads from above (supplied with the motors); H-Flow and UWB boards into their inserts</span></td><td class="num c-qty">20</td><td class="c-dims"><span>M2 × 6, head Ø3.8 × 2</span><span class="mat">Steel</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.banggood.com/en/GEPRC-SPEEDX2-2105_5-2650KV-or-3450KV-3-4S-Brushless-Motor-for-FPV-Racing-RC-Drone-p-1949985.html" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>6.56 g</span><span class="unit">0.33 g</span></td></tr>
+<tr class="line" data-bom="m3x16"><td class="c-eye"><button type="button" class="eye" data-bom="m3x16" aria-pressed="true" aria-label="Show or hide M3 × 16 button head"></button></td><td class="c-item"><span class="nm">M3 × 16 button head</span><span class="pt">ESC stack: arm plate, grommets, ESC, spine inserts (ISO 7380 A2)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>M3 × 16, head Ø5.7 × 1.65</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/button-head-screws" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>4.90 g</span><span class="unit">1.23 g</span></td></tr>
+<tr class="line" data-bom="m25x6b"><td class="c-eye"><button type="button" class="eye" data-bom="m25x6b" aria-pressed="true" aria-label="Show or hide M2.5 × 6 button head"></button></td><td class="c-item"><span class="nm">M2.5 × 6 button head</span><span class="pt">Pod floor to spine cap, under the Pixhawk foam (ISO 7380 A2)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>M2.5 × 6, head Ø4.7 × 1.4</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/button-head-screws" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.70 g</span><span class="unit">0.42 g</span></td></tr>
+<tr class="line" data-bom="m25x6"><td class="c-eye"><button type="button" class="eye" data-bom="m25x6" aria-pressed="true" aria-label="Show or hide M2.5 × 6 cap screw"></button></td><td class="c-item"><span class="nm">M2.5 × 6 cap screw</span><span class="pt">Pi shelf and battery tray to their ledges; UWB hat through the canopy roof (DIN 912 A2)</span></td><td class="num c-qty">6</td><td class="c-dims"><span>M2.5 × 6, head Ø4.5 × 2.5</span><span class="mat">A2 stainless</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/metric-cap-head-screws" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.28 g</span><span class="unit">0.55 g</span></td></tr>
+<tr class="line" data-bom="pistand"><td class="c-eye"><button type="button" class="eye" data-bom="pistand" aria-pressed="true" aria-label="Show or hide M2.5 × 3 standoff"></button></td><td class="c-item"><span class="nm">M2.5 × 3 standoff</span><span class="pt">Pi 5 to shelf, F-F (nylon)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>5 AF × 3 mm</span><span class="mat">Nylon</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.rs-online.com/web/c/?searchTerm=M2.5%20female%20female%20standoff%203mm" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.30 g</span><span class="unit">0.07 g</span></td></tr>
+<tr class="line" data-bom="m25x6n"><td class="c-eye"><button type="button" class="eye" data-bom="m25x6n" aria-pressed="true" aria-label="Show or hide M2.5 × 6 nylon screw"></button></td><td class="c-item"><span class="nm">M2.5 × 6 nylon screw</span><span class="pt">Pi 5 to standoffs, standoffs to shelf</span></td><td class="num c-qty">8</td><td class="c-dims"><span>M2.5 × 6, head Ø4.5 × 2.5</span><span class="mat">Nylon</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.rs-online.com/web/c/?searchTerm=M2.5%20nylon%20screw%206mm" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.63 g</span><span class="unit">0.08 g</span></td></tr>
+<tr class="line" data-bom="thumb"><td class="c-eye"><button type="button" class="eye" data-bom="thumb" aria-pressed="true" aria-label="Show or hide M3 thumb screw"></button></td><td class="c-item"><span class="nm">M3 thumb screw</span><span class="pt">Canopy, into the four posts (nylon, knurled)</span></td><td class="num c-qty">4</td><td class="c-dims"><span>M3 × 8, head Ø8 × 4</span><span class="mat">Nylon</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://uk.rs-online.com/web/c/?searchTerm=M3%20nylon%20thumb%20screw" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.17 g</span><span class="unit">0.29 g</span></td></tr>
+<tr class="line" data-bom="ins3"><td class="c-eye"><button type="button" class="eye" data-bom="ins3" aria-pressed="true" aria-label="Show or hide M3 heat-set insert"></button></td><td class="c-item"><span class="nm">M3 heat-set insert</span><span class="pt">CNC Kitchen M3 standard: spine ESC bosses, canopy posts</span></td><td class="num c-qty">8</td><td class="c-dims"><span>4.6 × 5.7 mm; 4.0 mm hole</span><span class="mat">Brass</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.3djake.com/cnc-kitchen/threaded-inserts-m3-standard" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.20 g</span><span class="unit">0.4 g</span></td></tr>
+<tr class="line" data-bom="ins25"><td class="c-eye"><button type="button" class="eye" data-bom="ins25" aria-pressed="true" aria-label="Show or hide M2.5 heat-set insert"></button></td><td class="c-item"><span class="nm">M2.5 heat-set insert</span><span class="pt">CNC Kitchen M2.5: spine cap, shelf and tray ledges, UWB hat</span></td><td class="num c-qty">10</td><td class="c-dims"><span>4.6 × 4.0 mm; 4.0 mm hole</span><span class="mat">Brass</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.3djake.com/cnc-kitchen/threaded-inserts-m25-standard" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>3.00 g</span><span class="unit">0.3 g</span></td></tr>
+<tr class="line" data-bom="alspacer"><td class="c-eye"><button type="button" class="eye" data-bom="alspacer" aria-pressed="true" aria-label="Show or hide M3 aluminium spacer"></button></td><td class="c-item"><span class="nm">M3 aluminium spacer</span><span class="pt">Hard-mounts the ESC stack: 1 mm under the ESC, 4.4 mm over it (4 mm spacer + 0.4 mm shim)</span><span class="note">Replaces the ESC&#x27;s silicone grommets: on those the pod and battery would rock at an estimated 10–20 Hz</span></td><td class="num c-qty">8</td><td class="c-dims"><span>Ø6 × 1 mm and Ø6 × 4.4 mm, M3 clearance</span><span class="mat">Aluminium</span></td><td class="c-src"><span class="src src-cad">CAD</span><a href="https://accu-components.com/us/spacers/aluminium-spacers" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>1.18 g</span><span class="unit">0.15 g</span></td></tr>
+<tr class="line" data-bom="ins2"><td class="c-eye"><button type="button" class="eye" data-bom="ins2" aria-pressed="true" aria-label="Show or hide M2 heat-set insert"></button></td><td class="c-item"><span class="nm">M2 heat-set insert</span><span class="pt">CNC Kitchen M2: H-Flow bridge bosses</span></td><td class="num c-qty">4</td><td class="c-dims"><span>3.6 × 3.0 mm; 3.2 mm hole</span><span class="mat">Brass</span></td><td class="c-src"><span class="src src-est">Estimate</span><a href="https://www.3djake.com/cnc-kitchen/threaded-inserts-m2-standard" target="_blank" rel="noopener">source</a></td><td class="num c-mass"><span>0.60 g</span><span class="unit">0.15 g</span></td></tr>
+        </tbody>
+        <tfoot>
+          <tr data-build="t35"><td></td><td colspan="4">All up, every line</td><td class="num">730 g</td></tr>
+          <tr data-build="cl35" hidden><td></td><td colspan="4">All up, every line</td><td class="num">708 g</td></tr>
+        </tfoot>
       </table>
     </div>
   </section>
 </div>
 
+<section class="panel" aria-labelledby="h-compare">
+  <div class="sec-head"><span class="eyebrow">Two frames, one stack</span><h2 id="h-compare">Custom frame or CineLog35 V2</h2></div>
+  <p class="lead">Same pod, electronics, motors, props and battery on both. The custom frame has the better centre of mass and cleaner sensor placement; the CineLog is buyable now, crash-proven, narrower and lighter in roll and pitch. Bench thrust and a first flight decide between them.</p>
+  <div class="compare">
+<table><thead><tr><th scope="col"></th><th scope="col">Custom frame <span class="sub">r3</span></th><th scope="col">CineLog35 V2 <span class="sub">draft</span></th></tr></thead><tbody><tr><th scope="row">Status</th><td>r3, 13 of 13 pass</td><td>Draft r1, 12 of 12 pass; frame modelled from GEPRC&#x27;s figures and photos</td></tr><tr><th scope="row">Frame</th><td>SLS-printed ducts with shaped lips, 2.5 mm carbon plate</td><td>GEPRC kit: 3.5 mm carbon arm plate, moulded slotted guard (133.7 g kit)</td></tr><tr><th scope="row">Motors</th><td>Upright on the plate, props in the duct throat</td><td>Hung under the pads, props below them (stock CineLog layout)</td></tr><tr><th scope="row">Mass, all BOM lines</th><td>730 g</td><td>708 g</td></tr><tr><th scope="row">Thrust-to-weight (estimate)</th><td>3.6–4.9:1</td><td>3.7–5.1:1</td></tr><tr><th scope="row">Centre of mass above the props</th><td>41 mm</td><td>58 mm</td></tr><tr><th scope="row">Roll / pitch / yaw inertia (10⁻³ kg·m²)</th><td>2.68 / 2.37 / 2.05</td><td>2.13 / 1.66 / 1.67</td></tr><tr><th scope="row">Envelope</th><td>213 × 213 × 180 mm</td><td>204 × 207 × 152 mm</td></tr><tr><th scope="row">Tape margin, 900 mm corridor / 600 mm narrowing</th><td>158 / 43 mm</td><td>164 / 48 mm</td></tr><tr><th scope="row">Airflow blocked</th><td>8–13% of each exit: plate, pads and the H-Flow blister</td><td>12–21% of each inlet by the arm plate, 2% of each exit by the braces</td></tr><tr><th scope="row">Sensors below</th><td>Camera in a belly fairing, H-Flow under motor 2</td><td>Camera in the guard&#x27;s central bay, H-Flow on a front bridge</td></tr><tr><th scope="row">To make</th><td>Ducts, clips, spine, fairings, feet and the pod set in SLS; carbon plate cut to the DXF</td><td>Pod set, pylon, H-Flow bridge and feet in SLS; four holes drilled in the kit&#x27;s arm plate</td></tr></tbody></table>
+  </div>
+</section>
+
 <div class="cols">
   <section class="panel" aria-labelledby="h-checks">
     <h2 id="h-checks">Geometry checks</h2>
-    <ol class="checks">
+    <div data-build="t35">
+<ol class="checks">
 <li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Fits the 250 mm cube</span><span class="val">213.4 × 213.4 × 179.5</span></li>
 <li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Prop tip gap to the duct throat &gt;= 2.0 mm (swept circle)</span><span class="val">2.47 mm</span></li>
 <li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Every prop reaches its full 45 mm radius (&gt;= 44.5 mm)</span><span class="val">44.99 mm</span></li>
@@ -282,30 +392,59 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
 <li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Downward camera&#x27;s 127 deg diagonal view is unobstructed</span><span class="val">clear</span></li>
 <li class="ok"><span class="tick" aria-hidden="true">✓</span><span>H-Flow&#x27;s 42 deg view is unobstructed</span><span class="val">clear</span></li>
 <li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Feet are the lowest point, &gt;= 5 mm below both lenses</span><span class="val">6.0 mm</span></li>
-<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Camera fairing stays outside all four duct jets</span><span class="val">0 found</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Camera fairing stays outside all four duct jets</span><span class="val">clear</span></li>
 <li class="ok"><span class="tick" aria-hidden="true">✓</span><span>No cable crosses a duct inlet</span><span class="val">0 found</span></li>
-<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Pod electronics, battery and cables sit inside the streamlined skin</span><span class="val">55 parts</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Pod electronics, battery and cables sit inside the streamlined skin</span><span class="val">60 parts</span></li>
 <li class="ok"><span class="tick" aria-hidden="true">✓</span><span>No two pod component envelopes overlap</span><span class="val">0 found</span></li>
-<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Every printed and carbon part exports as a watertight mesh</span><span class="val">22 parts</span></li>
-    </ol>
-    <p style="font-size:0.85rem;color:var(--muted)">Duct exit blocked outside each motor's wake: 7.6% on motors 3 and 4, 12.8% on motors 1 and 2, which carry the sensor blisters. The pod shades 19–20% of each inlet from above, 17.7 mm over the lips.</p>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Every printed and carbon part exports as a watertight mesh</span><span class="val">21 parts</span></li>
+</ol>
+    <p class="checks-note">Duct exit blocked outside each motor&#x27;s wake: 7.6–7.9% on motors 1, 3 and 4; 12.8% on motor 2, which carries the H-Flow blister. The pod shades 19.3–20.0% of each inlet from above, 17.7 mm over the lips.</p>
+    </div>
+    <div data-build="cl35" hidden>
+<ol class="checks">
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Fits the 250 mm cube</span><span class="val">203.5 × 206.7 × 152</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Prop tip gap to the guard &gt;= 2.0 mm (swept circle)</span><span class="val">2.42 mm</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Every prop reaches its full 45 mm radius (&gt;= 44.5 mm)</span><span class="val">44.99 mm</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Swept prop discs clear of every other part, cables included, by &gt;= 1.0 mm</span><span class="val">1.95 mm</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Pod sits &gt;= 15 mm above the duct inlets</span><span class="val">22.2 mm</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Downward camera&#x27;s 127 deg diagonal view is unobstructed</span><span class="val">clear</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>H-Flow&#x27;s 42 deg view is unobstructed</span><span class="val">clear</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Feet are the lowest point, &gt;= 5 mm below both lenses</span><span class="val">7.0 mm</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Camera board clears the guard by &gt;= 1.0 mm</span><span class="val">3.72 mm</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>No cable crosses a duct inlet outside the plate&#x27;s shadow (motor leads follow their arm)</span><span class="val">0 found</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Pod electronics, battery and cables sit inside the streamlined skin</span><span class="val">60 parts</span></li>
+<li class="ok"><span class="tick" aria-hidden="true">✓</span><span>Every printed part and the drilled arm plate export as watertight meshes</span><span class="val">13 parts</span></li>
+</ol>
+    <p class="checks-note">With the motors inverted the arm plate sits upstream of each prop, covering 12.2–21.0% of the inlet (most on the front ducts, under the camera prongs). The guard&#x27;s braces cross 2.0–2.5% of each exit. The pod shades 17.9–19.0% of each inlet from 22 mm above the guard. The H-Flow bridge&#x27;s lip reaches 3.2 mm ahead of the guard.</p>
+    </div>
   </section>
   <section aria-labelledby="h-limits" class="panel">
     <div class="sec-head"><span class="eyebrow">Still open</span><h2 id="h-limits">What this does not prove</h2></div>
-    <ul>
-      <li>Thrust is estimated, not measured: 3.6–5.0:1 assumes 650–900 g per motor on 4S. Bench-test one motor, prop and ESC before buying the set.</li>
-      <li>Lines marked Estimate need checking on delivery. They include the lens, the camera board's weight and hole pattern, the UWB module's weight and the capacitor size.</li>
-      <li>The UWB module is modelled as a bare DWM3000 on a carrier PCB that is not designed yet. The Makerfabs ESP32 UWB DW3000 board would remove that PCB, but at 72 × 32.6 mm it needs a new mount.</li>
-      <li>Pi port heights come from the Pi 4. The PM02's size comes from a retailer, not Holybro.</li>
-      <li>Structural strength, vibration, thermals in the pod, and cable bend radii are not analysed.</li>
-    </ul>
+    <div data-build="t35">
+<ul>
+  <li>Thrust is estimated, not measured: 3.6–4.9:1 assumes 650–900 g per motor on 4S. Bench-test one motor, prop and ESC before buying the set.</li>
+  <li>Lines marked Estimate need checking on delivery. They include the lens, the camera board&#x27;s weight and hole pattern, the UWB board&#x27;s mass and the capacitor size.</li>
+  <li>The UWB board&#x27;s antenna orientation on the hat needs a bench check: Qorvo&#x27;s modules range most evenly with the antenna upright.</li>
+  <li>Pi port heights come from the Pi 4. The PM02&#x27;s size comes from a retailer, not Holybro.</li>
+  <li>Structural strength, vibration modes, thermals in the pod and cable bend radii are not analysed. The ESC stack is now hard-mounted: on its silicone grommets the pod and battery would have rocked at an estimated 10–20 Hz.</li>
+</ul>
+    </div>
+    <div data-build="cl35" hidden>
+<ul>
+  <li>GEPRC publishes no drawing of the V2. The arm plate&#x27;s outline and the guard&#x27;s height (24 mm, ±3) are read off its photos: measure a kit before printing the pylon, bridge and feet.</li>
+  <li>Thrust is estimated as on the custom frame (3.7–5.1:1). The guard is a slotted bumper rather than a shaped duct, so expect no thrust gain from it.</li>
+  <li>The arm plate needs four Ø3.2 mm holes drilled for the ESC and pylon: the stock 25.5 mm pattern doesn&#x27;t take the 20×20 ESC.</li>
+  <li>Inverted motors take the CW props on the CCW positions: a prop turned upside down spins the other way.</li>
+  <li>The H-Flow bridge&#x27;s lip is the first thing to touch a wall head-on, 3.2 mm ahead of the guard.</li>
+  <li>Shared with the custom frame: the estimated lines, the UWB antenna&#x27;s orientation, Pi port heights, the PM02&#x27;s size, and the unanalysed structure and thermals.</li>
+</ul>
+    </div>
   </section>
 </div>
 
 <footer class="site-foot">
-  <span>Themis 35 r2 · 28 Oct 2026 · checked in CAD, not yet built or flown</span>
-  <a href="themis35-cad.zip" download>CAD files: STEP, print STLs, plate DXF (4.8 MB)</a>
-  <a href="themis35-bom.csv" download>BOM as CSV</a>
+  <span data-build="t35">Custom frame r3 · 28 Oct 2026 · <a href="themis35-cad.zip" download>CAD files: STEP, print STLs, plate DXF (5.0 MB)</a> <a href="themis35-bom.csv" download>BOM as CSV</a></span>
+  <span data-build="cl35" hidden>CineLog35 V2 draft · 28 Oct 2026 · <a href="themis35-cl35-cad.zip" download>CAD files: STEP, print STLs, plate DXF (3.1 MB)</a> <a href="themis35-cl35-bom.csv" download>BOM as CSV</a></span>
   <a href="history.html">Earlier designs</a>
 </footer>
 </div>
@@ -314,7 +453,10 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
 (function () {
+  const BUILDS = {"t35": {"label": "Custom frame", "geometry": "t35-geometry.json?v=1de4fa9096", "cgText": "Centre of mass \u00b7 41 mm above the props"}, "cl35": {"label": "CineLog35 V2", "geometry": "cl35-geometry.json?v=3d295e16a5", "cgText": "Centre of mass \u00b7 58 mm above the props"}};
+  const KEYS = Object.keys(BUILDS), HOME = KEYS[0];
   const S = 50.205;
+  const REF_Z = 57.75;   // view presets are written about the custom frame's assembled centre
   const IDLE = 'Nose points at the orange bumper';
   const host = document.getElementById('bench');
   const status = document.getElementById('bench-status');
@@ -322,9 +464,8 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
   const cgLabel = document.getElementById('cg-label');
   const explodeIn = document.getElementById('explode');
   const explodeOut = document.getElementById('explode-val');
-  const rows = Array.from(document.querySelectorAll('tr.line'));
-  const rowByBom = new Map(rows.map(function (r) { return [r.dataset.bom, r]; }));
-  const nameByBom = new Map(rows.map(function (r) { return [r.dataset.bom, r.querySelector('.nm').textContent]; }));
+  const tabs = Array.from(document.querySelectorAll('.frames button[data-frame]'));
+  const blocks = Array.from(document.querySelectorAll('[data-build]'));
   if (!window.THREE || !THREE.OrbitControls) { status.textContent = 'The 3D view could not load its library. The BOM still applies.'; return; }
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -336,24 +477,29 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
   scene.add(new THREE.HemisphereLight(0xeef4ff, 0x4c5a66, 1.05));
   [[300, -260, 380, 0.95], [-280, 200, 240, 0.5], [140, -90, -280, 0.35]].forEach(function (a) { const l = new THREE.DirectionalLight(0xffffff, a[3]); l.position.set(a[0], a[1], a[2]); scene.add(l); });
   const grid = new THREE.GridHelper(420, 21, 0x303a43, 0x1b2228); grid.rotation.x = Math.PI / 2; grid.position.z = -32.2; scene.add(grid);
-  const meshes = [];
-  const byBom = new Map();
-  const cables = [];
-  const state = { canopy: true, payload: true, wiring: true, hardware: true, battery: true, props: true, cg: false, cut: null, hidden: new Set(), sel: null, t: 0 };
+  const state = { canopy: true, payload: true, wiring: true, hardware: true, battery: true, props: true, cg: false, cut: null, t: 0, build: null };
+  // Per frame: its BOM rows, its meshes once loaded, and its own hidden/selected lines.
+  const B = {};
+  KEYS.forEach(function (k) {
+    const rows = Array.from(document.querySelectorAll('tbody[data-build="' + k + '"] tr.line'));
+    const cg = new THREE.Group(); cg.visible = false;
+    B[k] = { rows: rows, rowByBom: new Map(rows.map(function (r) { return [r.dataset.bom, r]; })),
+      nameByBom: new Map(rows.map(function (r) { return [r.dataset.bom, r.querySelector('.nm').textContent]; })),
+      meshes: [], byBom: new Map(), cables: [], frame: null, cg: cg, cgPoint: new THREE.Vector3(), hidden: new Set(), sel: null, loading: null };
+  });
+  function cur() { return B[state.build]; }
   const planes = { duct: new THREE.Plane(new THREE.Vector3(0, 1, 0), S), centre: new THREE.Plane(new THREE.Vector3(1, 0, 0), 0) };
-  // Centre of mass (assembled): a marker on top of everything, a stem down to the prop plane, and the plane itself.
-  const cgGroup = new THREE.Group(); cgGroup.visible = false; scene.add(cgGroup);
-  const cgPoint = new THREE.Vector3();
   // Bounding boxes of the assembly, assembled and fully exploded; framing interpolates between them.
-  let frame = null;
   function frameAt(t) {
-    if (!frame) return { c: new THREE.Vector3(0, 0, 50), r: 1, lo: -32 };
-    const lo = frame[0].clone().lerp(frame[2], t), hi = frame[1].clone().lerp(frame[3], t);
+    const f = state.build && cur().frame;
+    if (!f) return { c: new THREE.Vector3(0, 0, 50), r: 1, lo: -32 };
+    const lo = f[0].clone().lerp(f[2], t), hi = f[1].clone().lerp(f[3], t);
     return { c: lo.clone().add(hi).multiplyScalar(0.5), r: hi.distanceTo(lo) / 2, lo: lo.z };
   }
   function placeCgLabel() {
-    if (!cgGroup.visible) { cgLabel.hidden = true; return; }
-    const v = cgPoint.clone().project(camera);
+    const c = state.build && cur();
+    if (!c || !c.cg.visible) { cgLabel.hidden = true; return; }
+    const v = c.cgPoint.clone().project(camera);
     cgLabel.hidden = v.z > 1;
     cgLabel.style.transform = 'translate(' + Math.round((v.x + 1) / 2 * host.clientWidth + 12) + 'px,' + Math.round((1 - v.y) / 2 * host.clientHeight - 11) + 'px)';
   }
@@ -369,16 +515,18 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
     // an exploded assembly is taller: move the target with its centre and back off in proportion to its size
     const f0 = frameAt(0), ft = frameAt(state.t);
     const d = 600 * p[2] * Math.max(1, 1.2 / aspect) * (ft.r / f0.r); const dir = new THREE.Vector3(p[0][0], p[0][1], p[0][2]).normalize();
-    controls.target.set(p[1][0], p[1][1], p[1][2]).add(ft.c.clone().sub(f0.c)); camera.position.copy(controls.target).addScaledVector(dir, d); controls.update(); render();
+    controls.target.set(p[1][0], p[1][1], p[1][2] - REF_Z).add(ft.c); camera.position.copy(controls.target).addScaledVector(dir, d); controls.update(); render();
   }
   const groupKey = { 't35-shell': 'canopy', 't35-payload': 'payload', 't35-wiring': 'wiring', 't35-hardware': 'hardware', 't35-battery': 'battery', 't35-prop': 'props' };
   function apply() {
+    const c = state.build && cur();
+    if (!c) return;
     const plane = state.cut ? planes[state.cut] : null;
-    meshes.forEach(function (m) {
+    c.meshes.forEach(function (m) {
       const g = groupKey[m.userData.group];
-      const vis = (g ? state[g] : true) && !state.hidden.has(m.userData.bom);
-      const selActive = state.sel !== null;
-      const isSel = selActive && m.userData.bom === state.sel;
+      const vis = (g ? state[g] : true) && !c.hidden.has(m.userData.bom);
+      const selActive = c.sel !== null;
+      const isSel = selActive && m.userData.bom === c.sel;
       m.visible = vis || isSel;
       const mat = m.material;
       mat.clippingPlanes = plane ? [plane] : [];
@@ -387,19 +535,22 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
       mat.emissive.setHex(isSel ? 0x6a3410 : 0x000000);
       mat.needsUpdate = true;
     });
-    cgGroup.visible = state.cg && state.t < 0.005;
+    c.cg.visible = state.cg && state.t < 0.005;
     render();
   }
   // Exploded view: solid parts translate by their offset, cables blend their per-vertex offsets so they stay connected.
   function setExplode(t, keepFrame) {
     const before = frameAt(state.t), after = frameAt(t);
     state.t = t;
-    meshes.forEach(function (m) { if (m.userData.ex) m.position.copy(m.userData.ex).multiplyScalar(t); });
-    cables.forEach(function (c) {
-      const p = c.attr.array, b = c.base, o = c.off;
-      for (let i = 0; i < p.length; i++) p[i] = b[i] + o[i] * t;
-      c.attr.needsUpdate = true; c.geo.computeVertexNormals(); c.geo.computeBoundingSphere();
-    });
+    const c = state.build && cur();
+    if (c) {
+      c.meshes.forEach(function (m) { if (m.userData.ex) m.position.copy(m.userData.ex).multiplyScalar(t); });
+      c.cables.forEach(function (cb) {
+        const p = cb.attr.array, b = cb.base, o = cb.off;
+        for (let i = 0; i < p.length; i++) p[i] = b[i] + o[i] * t;
+        cb.attr.needsUpdate = true; cb.geo.computeVertexNormals(); cb.geo.computeBoundingSphere();
+      });
+    }
     grid.position.z = after.lo - 0.2;
     if (!keepFrame) {
       const off = camera.position.clone().sub(controls.target).multiplyScalar(after.r / before.r);
@@ -411,50 +562,93 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
   }
   function bytes(s) { const bin = atob(s), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u.buffer; }
   function v3(a) { return new THREE.Vector3(a[0], a[1], a[2]); }
-  function buildCg(cg, propZ) {
-    cgPoint.copy(v3(cg));
+  function buildCg(c, cg, propZ) {
+    c.cgPoint.copy(v3(cg));
     const hot = 0xffd2ae;
     const dot = new THREE.Mesh(new THREE.SphereGeometry(3.2, 20, 14), new THREE.MeshBasicMaterial({ color: hot, depthTest: false }));
-    dot.position.copy(cgPoint); dot.renderOrder = 10; cgGroup.add(dot);
-    const stem = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(cg[0], cg[1], propZ), cgPoint.clone()]), new THREE.LineBasicMaterial({ color: hot, depthTest: false }));
-    stem.renderOrder = 10; cgGroup.add(stem);
+    dot.position.copy(c.cgPoint); dot.renderOrder = 10; c.cg.add(dot);
+    const stem = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(cg[0], cg[1], propZ), c.cgPoint.clone()]), new THREE.LineBasicMaterial({ color: hot, depthTest: false }));
+    stem.renderOrder = 10; c.cg.add(stem);
     const disc = new THREE.Mesh(new THREE.CircleGeometry(118, 72), new THREE.MeshBasicMaterial({ color: 0xf08a3c, transparent: true, opacity: 0.16, side: THREE.DoubleSide, depthWrite: false }));
-    disc.position.z = propZ; cgGroup.add(disc);
-    const rim = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(Array.from({ length: 96 }, function (_, i) { const a = i / 96 * Math.PI * 2; return new THREE.Vector3(118 * Math.cos(a), 118 * Math.sin(a), propZ); })), new THREE.LineBasicMaterial({ color: 0xb8622a }));
-    cgGroup.add(rim);
+    disc.position.z = propZ; c.cg.add(disc);
+    c.cg.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(Array.from({ length: 96 }, function (_, i) { const a = i / 96 * Math.PI * 2; return new THREE.Vector3(118 * Math.cos(a), 118 * Math.sin(a), propZ); })), new THREE.LineBasicMaterial({ color: 0xb8622a })));
   }
-  fetch('t35-geometry.json?v=87629de33d').then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (data) {
-    const lo = data.box[0], span = data.box[1];
-    frame = data.frame.map(v3);
-    data.parts.forEach(function (p) {
-      const q = new Uint16Array(bytes(p.pos)), pos = new Float32Array(q.length);
-      for (let i = 0; i < q.length; i += 3) { pos[i] = lo[0] + q[i] * span[0]; pos[i + 1] = lo[1] + q[i + 1] * span[1]; pos[i + 2] = lo[2] + q[i + 2] * span[2]; }
-      const g = new THREE.BufferGeometry();
-      const attr = new THREE.BufferAttribute(pos, 3);
-      g.setAttribute('position', attr);
-      g.setIndex(new THREE.BufferAttribute(p.i32 ? new Uint32Array(bytes(p.idx)) : new Uint16Array(bytes(p.idx)), 1)); g.computeVertexNormals();
-      const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: new THREE.Color(p.color[0], p.color[1], p.color[2]), roughness: 0.58, metalness: 0.08 }));
-      m.userData = { id: p.id, group: p.group, bom: p.bom };
-      if (p.ex) m.userData.ex = v3(p.ex);
-      if (p.exv) {
-        const o16 = new Int16Array(bytes(p.exv)), off = new Float32Array(o16.length);
-        for (let i = 0; i < o16.length; i++) off[i] = o16[i] * 0.1;
-        attr.setUsage(THREE.DynamicDrawUsage);
-        cables.push({ geo: g, attr: attr, base: pos.slice(), off: off });
-      }
-      scene.add(m); meshes.push(m);
-      if (!byBom.has(p.bom)) byBom.set(p.bom, []); byBom.get(p.bom).push(m);
+  function load(k) {
+    const c = B[k];
+    if (c.loading) return c.loading;
+    c.loading = fetch(BUILDS[k].geometry).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (data) {
+      const lo = data.box[0], span = data.box[1];
+      c.frame = data.frame.map(v3);
+      data.parts.forEach(function (p) {
+        const q = new Uint16Array(bytes(p.pos)), pos = new Float32Array(q.length);
+        for (let i = 0; i < q.length; i += 3) { pos[i] = lo[0] + q[i] * span[0]; pos[i + 1] = lo[1] + q[i + 1] * span[1]; pos[i + 2] = lo[2] + q[i + 2] * span[2]; }
+        const g = new THREE.BufferGeometry();
+        const attr = new THREE.BufferAttribute(pos, 3);
+        g.setAttribute('position', attr);
+        g.setIndex(new THREE.BufferAttribute(p.i32 ? new Uint32Array(bytes(p.idx)) : new Uint16Array(bytes(p.idx)), 1)); g.computeVertexNormals();
+        const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: new THREE.Color(p.color[0], p.color[1], p.color[2]), roughness: 0.58, metalness: 0.08 }));
+        m.userData = { id: p.id, group: p.group, bom: p.bom };
+        if (p.ex) m.userData.ex = v3(p.ex);
+        if (p.exv) {
+          const o16 = new Int16Array(bytes(p.exv)), off = new Float32Array(o16.length);
+          for (let i = 0; i < o16.length; i++) off[i] = o16[i] * 0.1;
+          attr.setUsage(THREE.DynamicDrawUsage);
+          c.cables.push({ geo: g, attr: attr, base: pos.slice(), off: off });
+        }
+        c.meshes.push(m);
+        if (!c.byBom.has(p.bom)) c.byBom.set(p.bom, []); c.byBom.get(p.bom).push(m);
+      });
+      buildCg(c, data.cg, data.propZ);
     });
-    buildCg(data.cg, data.propZ);
-    status.hidden = true; apply(); view('iso');
-    // a link to a part (#pixhawk) selects it and scrolls the BOM list to it, not the page
-    const want = decodeURIComponent(location.hash.slice(1));
-    if (want && byBom.has(want)) {
-      select(want, false);
-      const r = rowByBom.get(want), box = r.closest('.scroll');
-      if (box.scrollHeight > box.clientHeight) box.scrollTop += r.getBoundingClientRect().top - box.getBoundingClientRect().top - box.clientHeight / 3;
-    }
-  }).catch(function (e) { status.textContent = 'Could not load the model (' + e.message + '). Reload the page to try again.'; });
+    return c.loading;
+  }
+  function pickedText() {
+    const c = cur();
+    if (c.sel) return (c.nameByBom.get(c.sel) || c.sel) + ' · ' + (c.byBom.get(c.sel) || []).length + ' part(s)';
+    return state.cg ? cgLabel.textContent : IDLE;
+  }
+  function writeHash() {
+    const c = cur(); let h = state.build === HOME ? '' : state.build;
+    if (c.sel) h += (h ? ':' : '') + c.sel;
+    try { history.replaceState(null, '', location.pathname + location.search + (h ? '#' + h : '')); } catch (err) { /* sandboxed */ }
+  }
+  function revealRow(bom) {   // scroll the BOM list to a line without moving the page
+    const r = cur().rowByBom.get(bom), box = r && r.closest('.scroll');
+    if (box && box.scrollHeight > box.clientHeight) box.scrollTop += r.getBoundingClientRect().top - box.getBoundingClientRect().top - box.clientHeight / 3;
+  }
+  function setSel(bom, fromModel) {
+    const c = cur();
+    c.sel = bom;
+    c.rows.forEach(function (r) { r.classList.toggle('sel', r.dataset.bom === c.sel); });
+    picked.textContent = pickedText();
+    if (c.sel && fromModel) { const r = c.rowByBom.get(c.sel); if (r) r.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+    writeHash(); apply();
+  }
+  function select(bom, fromModel) { setSel(cur().sel === bom ? null : bom, fromModel); }
+  function setBuild(k, part) {
+    const prev = state.build;
+    if (prev === k) { if (part && cur().byBom.has(part)) { setSel(part, false); revealRow(part); } return; }
+    const oldC = prev ? frameAt(state.t).c : null;
+    if (prev) { B[prev].meshes.forEach(function (m) { scene.remove(m); }); scene.remove(B[prev].cg); }
+    state.build = k;
+    tabs.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.frame === k)); });
+    blocks.forEach(function (el) { el.hidden = el.dataset.build !== k; });
+    cgLabel.textContent = BUILDS[k].cgText;
+    status.hidden = false; status.textContent = 'Loading the ' + BUILDS[k].label + ' model…';
+    load(k).then(function () {
+      if (state.build !== k) return;
+      B[k].meshes.forEach(function (m) { scene.add(m); }); scene.add(B[k].cg);
+      status.hidden = true;
+      if (oldC) {   // keep the viewer's angle and zoom; follow the model's centre
+        const dc = frameAt(state.t).c.sub(oldC);
+        controls.target.add(dc); camera.position.add(dc); controls.update();
+      }
+      setExplode(state.t, true);
+      if (!prev) view('iso');
+      if (part && B[k].byBom.has(part)) { setSel(part, false); revealRow(part); } else { picked.textContent = pickedText(); writeHash(); }
+    }).catch(function (e) { if (state.build === k) status.textContent = 'Could not load the model (' + e.message + '). Reload the page to try again.'; });
+  }
+  tabs.forEach(function (b) { b.addEventListener('click', function () { setBuild(b.dataset.frame); }); });
   function bindToggle(id, key) { const b = document.getElementById(id); b.addEventListener('click', function () { state[key] = !state[key]; b.setAttribute('aria-pressed', String(state[key])); apply(); }); }
   [['t-canopy', 'canopy'], ['t-payload', 'payload'], ['t-wiring', 'wiring'], ['t-hardware', 'hardware'], ['t-battery', 'battery'], ['t-props', 'props']].forEach(function (a) { bindToggle(a[0], a[1]); });
   document.getElementById('t-cg').addEventListener('click', function (e) {
@@ -471,48 +665,42 @@ ol.checks .val { font-family: var(--f-mono); font-size: 0.78rem; color: var(--mu
     document.getElementById('s-centre').setAttribute('aria-pressed', String(state.cut === 'centre'));
     apply(); view(state.cut || 'iso'); }); });
   ['iso', 'top', 'front', 'side', 'under'].forEach(function (k) { document.getElementById('v-' + k).addEventListener('click', function () { view(k); }); });
-  function pickedText() {
-    if (state.sel) return (nameByBom.get(state.sel) || state.sel) + ' · ' + (byBom.get(state.sel) || []).length + ' part(s)';
-    return state.cg ? cgLabel.textContent : IDLE;
-  }
-  function select(bom, fromModel) {
-    state.sel = (state.sel === bom) ? null : bom;
-    rows.forEach(function (r) { r.classList.toggle('sel', r.dataset.bom === state.sel); });
-    picked.textContent = pickedText();
-    if (state.sel && fromModel) { const r = rowByBom.get(state.sel); if (r) r.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
-    try { history.replaceState(null, '', location.pathname + location.search + (state.sel ? '#' + state.sel : '')); } catch (err) { /* sandboxed */ }
-    apply();
-  }
-  rows.forEach(function (r) {
+  document.querySelectorAll('tr.line').forEach(function (r) {
     if (r.classList.contains('unmodelled')) return;
     r.addEventListener('click', function (e) { if (e.target.closest('a, .eye')) return; select(r.dataset.bom, false); });
   });
   document.querySelectorAll('.eye').forEach(function (b) {
     b.addEventListener('click', function () {
-      const k = b.dataset.bom; const on = b.getAttribute('aria-pressed') !== 'false';
-      b.setAttribute('aria-pressed', String(!on)); if (on) state.hidden.add(k); else state.hidden.delete(k);
-      rowByBom.get(k).classList.toggle('hidden-line', on); apply();
+      const k = b.closest('tbody').dataset.build, c = B[k], bom = b.dataset.bom; const on = b.getAttribute('aria-pressed') !== 'false';
+      b.setAttribute('aria-pressed', String(!on)); if (on) c.hidden.add(bom); else c.hidden.delete(bom);
+      c.rowByBom.get(bom).classList.toggle('hidden-line', on); apply();
     });
   });
-  document.getElementById('bom-clear').addEventListener('click', function () { if (state.sel !== null) select(state.sel, false); });
+  document.getElementById('bom-clear').addEventListener('click', function () { if (cur().sel !== null) setSel(null, false); });
   document.getElementById('bom-showall').addEventListener('click', function () {
-    state.hidden.clear(); document.querySelectorAll('.eye').forEach(function (b) { b.setAttribute('aria-pressed', 'true'); });
-    rows.forEach(function (r) { r.classList.remove('hidden-line'); }); apply(); });
+    const c = cur(); c.hidden.clear();
+    c.rows.forEach(function (r) { r.classList.remove('hidden-line'); const e = r.querySelector('.eye'); if (e) e.setAttribute('aria-pressed', 'true'); });
+    apply(); });
   document.getElementById('bom-filter').addEventListener('input', function (e) {
     const q = e.target.value.trim().toLowerCase();
-    rows.forEach(function (r) { r.hidden = q !== '' && !r.textContent.toLowerCase().includes(q); });
+    document.querySelectorAll('tr.line').forEach(function (r) { r.hidden = q !== '' && !r.textContent.toLowerCase().includes(q); });
   });
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(); let down = null;
   renderer.domElement.addEventListener('pointerdown', function (e) { down = [e.clientX, e.clientY]; });
   renderer.domElement.addEventListener('pointerup', function (e) {
-    if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4) return;
+    if (!down || !state.build || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4) return;
     const r = renderer.domElement.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(ndc, camera);
     const plane = state.cut ? planes[state.cut] : null;
-    const hit = ray.intersectObjects(meshes.filter(function (m) { return m.visible && !(m.material.transparent); }), false)
+    const hit = ray.intersectObjects(cur().meshes.filter(function (m) { return m.visible && !(m.material.transparent); }), false)
       .find(function (h) { return !plane || plane.distanceToPoint(h.point) >= 0; });
     if (hit) select(hit.object.userData.bom, true);
   });
+  // #cl35 opens the CineLog; #pixhawk or #cl35:pixhawk also selects a part
+  const h = decodeURIComponent(location.hash.slice(1)), i = h.indexOf(':');
+  if (i > 0 && BUILDS[h.slice(0, i)]) setBuild(h.slice(0, i), h.slice(i + 1) || null);
+  else if (BUILDS[h]) setBuild(h, null);
+  else setBuild(HOME, h || null);
 })();
 </script>
 </body>
