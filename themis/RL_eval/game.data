@@ -400,6 +400,22 @@ tape_in = 0.0
 # Assumed 0.5 (more than half the body over the line, i.e. its centre past it): the
 # organisers are expected to be lenient. 0 counts any part crossing. Judging only.
 tape_over = 0.5
+# The formation counts as tight while its RMS shape error is within this (m). The judged
+# formation points (th_score) grade the share of box time it is tight.
+form_tol = 0.10
+# Lateral sensing. 0: the planner reads its offset from the centre line and the tape's
+# heading exactly. 1: a downward camera's report, 40 ms late, with pixel noise (m), a
+# per-drone attitude bias (rad, 0.009 = 0.5 deg) and height scale error, heading noise
+# (rad), and noise multiplied by cam_corner at a 90-degree corner.
+cam_model = 0
+cam_noise = 0.01
+cam_att_sd = 0.009
+cam_scale_sd = 0.02
+cam_head_noise = 0.01
+cam_corner = 3.0
+# How far past the front-most drone the swarm can see the course (m); 0 = all of it, as
+# with a map. Without a map, speed limits and single file come only from what is in view.
+see_range = 0
 # 1: hold each drone's nose along the tape; 0: point it at its pursuit target
 yaw_track = 0
 # Controller. 0: centroid and slots (the virtual structure). 1: local references, no
@@ -491,6 +507,9 @@ eval = 1
 prog_est = 1
 uwb_ranges = 1
 slide_90 = 0
+# a downward camera's lateral reports, and no map: the swarm sees 1.5 m past its front drone
+cam_model = 1
+see_range = 1.5
 THMS   ;   Q   @°E  ≈C  НA  ─? ≥©        fff? ≥≥?ы▌ю╤С╣@╕╦╡?fff? ≥≥?/╣юТЩT©  A▐бя@    9╢х=╝G>√>╝г>#шЫ>?ы.?·ОG?%a?#шy?уx┴?TЦ∙?≤n╒?шЫ╝?Zd╩?·Ог?Аzт?`ЕЮ?╓pМ?#шЫ?33@ ≥	@  @ff@мл@33#@ ≥)@  0@ff6@мл<@33C@ ≥I@  P@ffV@мл\@33c@ ≥i@  p@ffv@мл|@ ≥│@мл└@  ┬@33▀@ff▌@ ≥▒@мл■@  ≤@33⌡@ff·@ ≥║@мл╓@  ╗@33╚@ff╝@ ≥╠@мл╢@  ╦@33╩@ff╬@ ≥а@млд@  х@33к@ffн@ ≥я@млт@  ь@33ш@ffч@ ≥А@млД@  Х@33К@╒EН@XЯ@jТ@┘В@█≈З@Э╘Щ@5^ AmГA╓pAТЩA+┤AbA ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A ≥	A  AffAмлA33A ≥A   AмлЭ@ ≥Ы@ffЖ@33С@  П@млЛ@ ≥И@ffФ@33Ц@  Ю@млэ@ ≥ы@ffж@33с@  п@млл@ ≥и@ffф@33ц@  ю@мл╪@ ≥╧@ff╤@33Ё@  ╟@мл╛@ ≥╘@ff╕@33ё@  ═@мл°@ ≥≥@ff√@33⌠@  ░@мл▄@ ≥┴@ff├@33┐@  ─@ ≥y@33s@млl@fff@  `@ ≥Y@33S@млL@ffF@  @@ ≥9@333@мл,@ff&@   @ ≥@33@мл@ff@   @33С?ffФ? ≥ы?млл?  ю?33Ё?ff╕?ГШ≥?h▒█?И&│?уxi?вёP?ын7?шЫ?щ$?╛з>╟r╗>h▒m>q=
 >Ц╔=Э╘q╫w╬╬7┴│╬33Ё╬ffФ╬мл©ff&©  @© ≥Y©33s©ff├©33⌠©  ═©мл╛© ≥╧©ffф©33с©  Ю©млЛ© ≥Ы©33ю┴AюъOюсMю)\юjюуx!юиv&ю┘+юu⌠0юк║5ю╬÷:ю╝?юj╪DюVFю;ъGюуxIюoKю╕⌡Lю?5NюынOюshQю╙ЯRюD▀Tющ$Vю╨I\юЗ~bювёhюыnюVuю33{ю9╢─ю╗ф┐юHА├юГШ┴юV█юЖ(░юd;⌠юV√ю╓p≥ю┐°ю╝⌡юы юJ юL7≥юNb≤юP█≈юR╦√юTЦ∙юV∙юX9■юZd⌠ю█≈▓ю▐б▒ю▒М░ю╒E▓ю╡²⌠юТЩ■юV√ю╝≈ю%≥юff юw╬⌡ю┤²ю≤n·юын÷ю√C÷юR╦·ю-·юк║²ю┤²юD▀°ю  °ю╪t⌡юyИ ю5^ юРр≥ю╝G≥ю9╢≤юЖ(≤ю╡²≈юo≈ю+┤√юГШ∙ю╓p∙ю`Е■юZ■юын⌠ю√C⌠юR╦▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю-▓ю                                                                                                                                                                                                                        млL╫млл╫ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬ ≥╬млл╫млL╫                                                        П╖ф=П╖F>ТЩ■>П╖ф>ЛQЬ>ТЩ?Рр-?П╖F?w╬_?u⌠x?9╢┬?╦∙?7┴║?╤С╜?5^╨?╢хф?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?млл?ffф?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?  ю?ffф?млл?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?33с?Ж(л?╦е?{╬?yИ╤?;ъ╞?Чт╗?ай║?┐ю ?F╤⌠?D▀▄?│┘?▒М|?ыn?гKW?w╬??·О'?Nb?Э╘Я>\▐б>╪t⌠>╝G>╙Яр=X94<TЦ╔╫╝Ga╫h▒М╪o┐╩X9╢<╕⌡D=P█≈=млл=%>Ц╔>╒E6>`ЕP>З~j>\▐┌>;ъ▐>/²>З~╙>Ж(э>П╖?Н|?b8?`ЕP?уxi?И&│?h▒█?#ш≥?╒E╕?\▐╡?шЫ╬?Zdк?╝в?ЬSЦ?ыН?З~З?o@Чт@П╖@Аz@q=@b @TЦ%@Ц╔+@#ш1@  8@?5>@ZD@\▐J@9╢P@yИV@V]@√Cc@shi@╡²o@▐бu@оВ{@V│@Ж(└@d;┤@V┼@sh█@┐░@│∙⌠@!╟√@▐б≥@/щ°@·О÷@=
 ё@=
