@@ -9,7 +9,7 @@
         /* The renderer draws at a fixed 3:2, so the stage is the largest 3:2 box that fits. */
         #stage { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
                  width: min(100vw, 150vh); height: min(100vh, 66.667vw); }
-        canvas.emscripten { display: block; width: 100%; height: 100%; background: #08090c; outline: none; }
+        canvas.emscripten { display: block; width: 100% !important; height: 100% !important; background: #08090c; outline: none; }
         #loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px;
                    color: #777; font: 12px ui-monospace, Menlo, monospace; background: #08090c; }
         #spin { width: 28px; height: 28px; border: 2px solid rgba(255,255,255,0.1); border-top-color: #4aa829; border-radius: 50%; animation: s .8s linear infinite; }

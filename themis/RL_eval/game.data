@@ -398,6 +398,13 @@ drone_half_h = 0.091
 tape_in = 0.0
 # 1: hold each drone's nose along the tape; 0: point it at its pursuit target
 yaw_track = 0
+# Controller. 0: centroid and slots (the virtual structure). 1: local references, no
+# centroid: lanes from the tape, along-track spacing by a chain of UWB ranges behind the
+# front-right drone, which sets the speed; 90-degree turns flown as a slide. 2: the same
+# on true distances.
+local_form = 0
+# local references: slide a compact box through 90-degree turns (0: follow the lanes round)
+slide_90 = 1
 
 # --- domain randomisation ---
 dr = 0.15
