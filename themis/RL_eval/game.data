@@ -255,38 +255,41 @@ rl_bound_speed = 0.5
 rl_bound_lat = 0.3
 rl_bound_z = 0.3
 
-# --- classical speed profile (baseline) ---
-v_cruise = 2.5
+# --- classical speed profile (CMA-ES default, 2026-10-30) ---
+v_cruise = 2.085068
 # At v_bend45 1.5 each 25-50 degree kink cost 0.4-0.5 tape contacts on the realistic
-# setup (camera lateral, 1.5 m sight); 0.9 / 0.65 scored best in the 2026-10-29 sweep.
-v_turn90 = 0.65
-v_bend45 = 0.9
-v_narrow = 1.5
+# setup (camera lateral, 1.5 m sight); 0.9 / 0.65 was the 2026-10-29 sweep. CMA-ES
+# moved to 0.596 / 0.879 on 2026-10-30 (training/RUNS.md).
+v_turn90 = 0.87875235
+v_bend45 = 0.59557227
+v_narrow = 1.4207435
 v_hurdle = 1.5
 v_finish = 0.8
 a_profile = 2.5
 
 # --- formation (tape frame) ---
-form_long = 0.45
+form_long = 0.57835957
 # Lateral spacing: equal gaps tape-drone-drone-tape for the CAD drone width
 # (th_box_half_at), clamped to the brief's suggested 300-600 mm centre to centre.
 # In a 900 mm corridor that is 371 mm for the 213 mm Themis 35, with 158 mm gaps.
 # The same rule gave the fixed 383 mm used for the old 250 mm assumption; at 450 mm
-# the tape margin was only 100 mm, which is where the contacts were.
-form_lat_max = 0.6
+# the tape margin was only 100 mm, which is where the contacts were. The 2026-10-30
+# CMA-ES default is 655 mm centre-to-centre (0.6 m was the 2026-10-29 value); the
+# wider box improved tightness and drone contacts on the paired held-out set.
+form_lat_max = 0.65492598
 form_lat_min = 0.30
 # lateral margin below which a 2-wide box is not flyable -> deviate to single file
-line_enter_margin = 0.06
+line_enter_margin = 0.10381787
 # single file forms 0.6 m plus this many seconds at the current speed before the narrowing
-line_lead_s = 0.8
+line_lead_s = 0.61223236
 # 1: no drone flies faster than the profile over its own stretch ahead, even when
 # catching up to its slot. Off, followers took kinks up to 35% + 0.3 m/s over the cap.
 cap_local = 1
 # slot-offset blend rate during a mode change (m/s of offset)
-blend_rate = 1.6
+blend_rate = 1.2071985
 lat_margin = 0.025
-k_slot_s = 1.5
-k_slot_lat = 1.5
+k_slot_s = 1.2214581
+k_slot_lat = 1.0173178
 k_z = 2.0
 speed_lead_s = 0.5
 # outer-loop integrators (conditional anti-windup); removes the standing offset a
@@ -299,16 +302,16 @@ i_limit = 0.35
 apf_damp = 0.8
 apf_v_rep = 1.2
 # imminent-contact band above physical contact (2 x 125 mm)
-sep_margin = 0.15
+sep_margin = 0.16533769
 # abreast conflict: how hard the drone ahead of its slot yields
-sep_yield = 0.6
+sep_yield = 0.28969044
 # formation reference hold-back for a lagging drone. The floor is load-bearing:
 # a hard stall is a positive feedback loop (drone yields -> reference waits ->
 # swarm crawls -> run times out).
 # the centroid is pulled toward the swarm’s own mean progress at this rate (1/s)
-k_ref = 1.0
+k_ref = 0.95399738
 ref_lag_start = 0.3
-ref_lag_band = 0.8
+ref_lag_band = 0.64222622
 ref_lag_floor = 0.25
 # Formation reference. 0: the integrator above, fed every drone's true progress
 # (the original env). 1: the mean of the drones' slot-corrected progress, which
@@ -362,7 +365,7 @@ line_gap = 0.30
 # follow-gap hold to the drone ahead in the lane (UWB range hold)
 gap_k = 2.0
 # lane compression through corners
-corner_lat_scale = 0.9
+corner_lat_scale = 0.76149594
 # lateral safety prediction horizon (s) ~ plant response time
 safety_T = 0.5
 
