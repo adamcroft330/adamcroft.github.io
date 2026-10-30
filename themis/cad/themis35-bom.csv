@@ -1,10 +1,10 @@
 Group,Item,Part,Qty,Unit,Unit mass (g),Line mass (g),Mass source,Size,Size source,Material,Link,Notes
-Airframe (printed),Duct,"Themis 35 duct, quadrant-trimmed bellmouth",4,each,18.13,72.51,cad,106.7 × 106.7 × 31 mm,cad,"SLS PA12, 1.2 mm wall; 2 dyed orange (front), 2 black",https://3dprint-uk.co.uk/3d-printing-services/,One STL printed four times; front pair dyed orange
+Airframe (printed),Duct,"Themis 35 duct, quadrant-trimmed bellmouth",4,each,18.2,72.82,cad,106.7 × 106.7 × 31 mm,cad,"SLS PA12, 1.2 mm wall; 2 dyed orange (front), 2 black",https://3dprint-uk.co.uk/3d-printing-services/,One STL printed four times; front pair dyed orange
 Airframe (printed),Crest clip,Joins neighbouring ducts over the shared crest,4,each,0.16,0.63,cad,27 × Ø2.7 mm,cad,SLS PA12,https://3dprint-uk.co.uk/3d-printing-services/,
 Airframe (printed),Spine,"Cruciform pylon with harness conduit, ESC bosses and cable windows",1,each,12.97,12.97,cad,41 × 41 × 42 mm,cad,SLS PA12,https://3dprint-uk.co.uk/3d-printing-services/,
 Airframe (printed),Camera fairing,"Belly fairing for the downward camera, lens window",1,each,4.9,4.9,cad,43 × 43 × 23.5 mm,cad,SLS PA12,https://3dprint-uk.co.uk/3d-printing-services/,
 Airframe (printed),Sensor blister,Fairing under motor 2's pad for the H-Flow,1,each,1.89,1.89,cad,33 × 33 × 11.5 mm,cad,SLS PA12,https://3dprint-uk.co.uk/3d-printing-services/,
-Airframe (printed),Pod lower,"Streamlined pod: floor, ledges, canopy posts, vents, spine slot",1,each,36.72,36.72,cad,68 × 134 × 46 mm,cad,"SLS PA12, 1.6 mm skin",https://3dprint-uk.co.uk/3d-printing-services/,
+Airframe (printed),Pod lower,"Streamlined pod: floor, ledges, canopy posts, vents, spine slot",1,each,36.8,36.8,cad,68 × 134 × 46 mm,cad,"SLS PA12, 1.6 mm skin",https://3dprint-uk.co.uk/3d-printing-services/,
 Airframe (printed),Canopy,Removable top shell with moulded front arrow,1,each,22.54,22.54,cad,68 × 134 × 34 mm,cad,"SLS PA12, 1.6 mm skin",https://3dprint-uk.co.uk/3d-printing-services/,
 Airframe (printed),Pi shelf,"54 mm wide, keyed to its ledges",1,each,7.58,7.58,cad,54 × 88 × 1.6 mm,cad,SLS PA12,https://3dprint-uk.co.uk/3d-printing-services/,
 Airframe (printed),Battery tray,60 mm wide with front end stop and rear XT60 holder,1,each,10.74,10.74,cad,60 × 102 × 8.1 mm,cad,SLS PA12,https://3dprint-uk.co.uk/3d-printing-services/,
@@ -58,4 +58,4 @@ Fasteners & inserts,M3 heat-set insert,"CNC Kitchen M3 standard: spine ESC bosse
 Fasteners & inserts,M2.5 heat-set insert,"CNC Kitchen M2.5: spine cap, shelf and tray ledges, UWB hat",10,each,0.3,3.0,est,4.6 × 4.0 mm; 4.0 mm hole,retail,Brass,https://www.3djake.com/cnc-kitchen/threaded-inserts-m25-standard,
 Fasteners & inserts,M3 aluminium spacer,"Hard-mounts the ESC stack: 1 mm under the ESC, 4.4 mm over it (4 mm spacer + 0.4 mm shim)",8,each,0.15,1.18,cad,"Ø6 × 1 mm and Ø6 × 4.4 mm, M3 clearance",est,Aluminium,https://accu-components.com/us/spacers/aluminium-spacers,Replaces the ESC's silicone grommets: on those the pod and battery would rock at an estimated 10–20 Hz
 Finishing,Decal set,"Motor numbers, rotation arrows (PX4 Quad X), FRONT arrow",1,each,0.3,0.3,est,—,—,Vinyl,CAD/themis35/build_t35.py,Artwork follows the rotation marks in the CAD
-,"All up, every line",,,,,730.5,,,,,,
+,"All up, every line",,,,,730.9,,,,,,
