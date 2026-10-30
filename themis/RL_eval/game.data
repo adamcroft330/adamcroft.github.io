@@ -449,6 +449,15 @@ yaw_track = 0
 local_form = 1
 # local references: slide a compact box through 90-degree turns (0: follow the lanes round)
 slide_90 = 0
+# how far either side of the box centre (m) a slide starts and ends
+slide_a = 0.55
+# local references: 0 the front-right slot holder leads; 1 elect the front-most drone
+leader_mode = 0
+# leader_mode 1: elect only from the front pair (0: any slot)
+leader_front_only = 1
+# election hysteresis (m) and minimum dwell (s) when leader_mode = 1
+leader_margin = 0.15
+leader_dwell_s = 1.0
 
 # --- domain randomisation ---
 dr = 0.15
