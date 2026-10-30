@@ -422,8 +422,23 @@ cam_corner = 3.0
 # with a map. Without a map, speed limits and single file come only from what is in view.
 # 3 m: the forward camera, tilted 20 degrees down, keeps 0.5-4 m of floor in frame with the
 # tape ~7 px wide at 3 m (the downward camera alone sees ~1.5 m). Worth ~1 point and 3 s a
-# lap to the classical controller on the mixed courses.
+# lap to the classical controller on the mixed courses. With cam_fwd 1 it is only the
+# nominal sight: each run draws its own (below).
 see_range = 3
+# The forward camera's tape detection, modelled (1) or perfect out to see_range (0). Past
+# the downward camera's reach (fwd_near) every feature (a turn, a narrowing, the hurdle,
+# the finish) comes from the forward camera: placed fwd_range_sd off (m, 1 sd: 0.5 deg of
+# attitude error is ~9 cm at 3 m, plus a pixel), each turn's angle fwd_angle_sd off (rad,
+# ~3 deg), or missed with fwd_miss until the downward camera reaches it. How far it reliably
+# sees is drawn per run in [fwd_sight_min, fwd_sight_max]: its sensor is monochrome, so the
+# tape's contrast with an unknown floor decides it.
+cam_fwd = 1
+fwd_sight_min = 2.0
+fwd_sight_max = 3.5
+fwd_near = 1.5
+fwd_range_sd = 0.10
+fwd_angle_sd = 0.05
+fwd_miss = 0.1
 # 1: hold each drone's nose along the tape; 0: point it at its pursuit target
 yaw_track = 0
 # Controller. 0: centroid and slots (the virtual structure). 1: local references, no
@@ -467,6 +482,10 @@ disturbance = 0.5
 # about the 6-point spread the race awards for finishing order
 alpha_time = 0.3
 t_target = 26.0
+# Above 0, the free time is t_pace seconds per metre of the course instead: 26 s suited the
+# old ~28 m courses, but on the mixed ones (29-44 m, the classical controller ~1.18 s/m)
+# it charges most of every run.
+t_pace = 0
 alpha_progress = 0.2
 # Formation, pointed at what the judges grade (contract 4): alpha_form charges the RMS
 # shape error about the swarm's own mean; alpha_tight credits every second the box is
