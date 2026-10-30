@@ -256,8 +256,10 @@ rl_bound_z = 0.3
 
 # --- classical speed profile (baseline) ---
 v_cruise = 2.5
-v_turn90 = 0.7
-v_bend45 = 1.5
+# At v_bend45 1.5 each 25-50 degree kink cost 0.4-0.5 tape contacts on the realistic
+# setup (camera lateral, 1.5 m sight); 0.9 / 0.65 scored best in the 2026-10-29 sweep.
+v_turn90 = 0.65
+v_bend45 = 0.9
 v_narrow = 1.5
 v_hurdle = 1.5
 v_finish = 0.8
@@ -277,8 +279,8 @@ line_enter_margin = 0.06
 # single file forms 0.6 m plus this many seconds at the current speed before the narrowing
 line_lead_s = 0.8
 # 1: no drone flies faster than the profile over its own stretch ahead, even when
-# catching up to its slot
-cap_local = 0
+# catching up to its slot. Off, followers took kinks up to 35% + 0.3 m/s over the cap.
+cap_local = 1
 # slot-offset blend rate during a mode change (m/s of offset)
 blend_rate = 1.6
 lat_margin = 0.025
