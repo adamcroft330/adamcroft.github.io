@@ -2,41 +2,203 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RL Eval | Themis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#08090c">
+    <title>RL Eval · Themis</title>
+    <meta name="description" content="Watch Themis, a four-drone racing swarm, fly a generated course in the browser. The classical controller and the learned residual policy run in the same environment.">
     <style>
-        html, body { margin: 0; height: 100%; background: #08090c; overflow: hidden; }
-        /* The renderer draws at a fixed 3:2, so the stage is the largest 3:2 box that fits. */
-        #stage { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-                 width: min(100vw, 150vh); height: min(100vh, 66.667vw); }
-        canvas.emscripten { display: block; width: 100% !important; height: 100% !important; background: #08090c; outline: none; }
-        #loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px;
-                   color: #777; font: 12px ui-monospace, Menlo, monospace; background: #08090c; }
-        #spin { width: 28px; height: 28px; border: 2px solid rgba(255,255,255,0.1); border-top-color: #4aa829; border-radius: 50%; animation: s .8s linear infinite; }
-        @keyframes s { to { transform: rotate(360deg); } }
-        #status { font-size: 11px; color: #555; min-height: 14px; }
-        #tag { position: absolute; right: 10px; bottom: 8px; font: 11px ui-monospace, Menlo, monospace; color: rgba(255,255,255,0.35); }
-        #tag a { color: inherit; text-decoration: none; }
-        #tag a:hover { color: rgba(255,255,255,0.85); }
+        :root {
+            color-scheme: dark;
+            --bg: #08090c;
+            --text: #e8ebef;
+            --muted: #9aa0a8;
+            --dim: #68707a;
+            --line: rgba(255, 255, 255, 0.09);
+            --line-accent: rgba(122, 214, 74, 0.3);
+            --accent: #7ad64a;
+            --accent-soft: rgba(122, 214, 74, 0.13);
+            --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        * { box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); overflow: hidden; overscroll-behavior: none; }
+        body { font-family: var(--sans); -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+
+        #stage { position: fixed; inset: 0; background: radial-gradient(120% 90% at 50% 0%, #0d1116 0%, #08090c 55%, #050608 100%); }
+        canvas.emscripten {
+            position: absolute; inset: 0; display: block;
+            width: 100% !important; height: 100% !important;
+            background: transparent; outline: none;
+            touch-action: none; user-select: none; -webkit-user-select: none;
+        }
+
+        #topbar {
+            position: fixed; inset: 0 0 auto 0; z-index: 10;
+            display: flex; align-items: center; gap: 14px;
+            min-height: 52px;
+            padding: calc(8px + var(--safe-top)) clamp(12px, 3vw, 22px) 8px;
+            background: linear-gradient(180deg, rgba(8, 9, 12, 0.94) 0%, rgba(8, 9, 12, 0.7) 65%, rgba(8, 9, 12, 0) 100%);
+            pointer-events: none;
+        }
+        #topbar a, #topbar .badge { pointer-events: auto; }
+        .brand { display: flex; align-items: center; gap: 10px; min-width: 0; color: inherit; text-decoration: none; }
+        .brand svg { width: 26px; height: 26px; flex: none; }
+        .brand .name { font: 600 15px/1 var(--sans); letter-spacing: 0.15em; }
+        .brand .tag { font: 500 10px/1 var(--mono); letter-spacing: 0.2em; color: var(--dim); }
+        .brand .sub { font: 12px/1.2 var(--sans); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .spacer { flex: 1; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px;
+            background: rgba(14, 17, 22, 0.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            font: 11px/1 var(--mono); color: var(--muted); white-space: nowrap;
+            max-width: 46vw; overflow: hidden; text-overflow: ellipsis;
+        }
+        .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px rgba(122, 214, 74, 0.7); flex: none; }
+        .badge.classical .dot { background: var(--dim); box-shadow: none; }
+        #back { color: var(--muted); text-decoration: none; font: 12px/1 var(--mono); padding: 8px 2px; white-space: nowrap; }
+        #back:hover { color: var(--text); }
+
+        #loading {
+            position: fixed; inset: 0; z-index: 20;
+            display: flex; align-items: center; justify-content: center; padding: 24px;
+            background: radial-gradient(80% 60% at 50% 45%, #0d1116 0%, #08090c 65%, #050608 100%);
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+        }
+        #loading.done { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loadcard {
+            width: min(420px, 100%); padding: 26px 24px 22px;
+            border: 1px solid var(--line); border-radius: 16px;
+            background: rgba(14, 17, 22, 0.74); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .loadcard .mark { width: 46px; height: 46px; margin: 0 auto 16px; display: grid; place-items: center; border: 1px solid var(--line-accent); border-radius: 13px; background: var(--accent-soft); }
+        .spinner { width: 22px; height: 22px; border: 2px solid rgba(255, 255, 255, 0.12); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loadcard h1 { margin: 0 0 6px; font: 600 16px/1.2 var(--sans); letter-spacing: 0.01em; }
+        .loadcard p { margin: 0; color: var(--muted); font: 12px/1.5 var(--mono); }
+        #status { margin-top: 10px; color: var(--dim); font: 11px/1.4 var(--mono); min-height: 15px; }
+
+        @media (max-width: 700px) {
+            #topbar { min-height: 44px; gap: 10px; padding: calc(6px + var(--safe-top)) 12px 6px; }
+            .brand svg { width: 22px; height: 22px; }
+            .brand .name { font-size: 13px; }
+            .brand .tag, .brand .sub, #back { display: none; }
+            .badge { max-width: 56vw; padding: 5px 8px; font-size: 10px; }
+        }
+        #safe-probe { position: fixed; left: 0; bottom: 0; width: 0; height: env(safe-area-inset-bottom, 0px); pointer-events: none; visibility: hidden; }
+        noscript div {
+            position: fixed; inset: 0; z-index: 30; display: grid; place-items: center;
+            background: var(--bg); color: var(--muted); font: 13px/1.6 var(--mono); padding: 24px; text-align: center;
+        }
     </style>
 </head>
 <body>
     <div id="stage">
-        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
-        <div id="loading"><div id="spin"></div><div>compiling environment…</div><div id="status"></div></div>
-        <div id="tag"><a href="/themis/">← Themis</a> · <span id="policy">policy: loading…</span></div>
+        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="0"
+                aria-label="Themis swarm racing simulation. Drag to orbit; use the on-screen buttons to control the run."></canvas>
     </div>
+    <div id="safe-probe" aria-hidden="true"></div>
+
+    <header id="topbar">
+        <a class="brand" href="/themis/" aria-label="Themis home">
+            <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                <circle cx="16" cy="16" r="3.2" fill="#7ad64a"/>
+                <circle cx="7" cy="7" r="3.4" stroke="#7ad64a" stroke-width="1.4"/>
+                <circle cx="25" cy="7" r="3.4" stroke="#7ad64a" stroke-width="1.4"/>
+                <circle cx="7" cy="25" r="3.4" stroke="#7ad64a" stroke-width="1.4"/>
+                <circle cx="25" cy="25" r="3.4" stroke="#7ad64a" stroke-width="1.4"/>
+                <path d="M9.4 9.4 13.8 13.8M22.6 9.4 18.2 13.8M9.4 22.6 13.8 18.2M22.6 22.6 18.2 18.2" stroke="#7ad64a" stroke-width="1.2" opacity=".55"/>
+            </svg>
+            <span class="name">THEMIS</span>
+            <span class="tag">RL EVAL</span>
+            <span class="sub">four-drone racing swarm</span>
+        </a>
+        <span class="spacer"></span>
+        <span id="policy" class="badge" title="policy"><span class="dot"></span><span id="policy-text">loading policy…</span></span>
+        <a id="back" href="/themis/">← Themis</a>
+    </header>
+
+    <div id="loading">
+        <div class="loadcard">
+            <div class="mark"><div class="spinner"></div></div>
+            <h1>Loading the race</h1>
+            <p>compiling the environment and policy</p>
+            <div id="status">starting…</div>
+        </div>
+    </div>
+
+    <noscript><div>This viewer runs the environment in WebAssembly and needs JavaScript enabled.</div></noscript>
+
     <script>
-        fetch('POLICY.txt').then(r => r.ok ? r.text() : 'policy: unknown').then(t => { document.getElementById('policy').textContent = t.trim(); }).catch(() => {});
-        var statusEl = document.getElementById('status');
-        var Module = {
-            canvas: document.getElementById('canvas'),
-            print: function (text) { if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' '); console.log(text); },
-            printErr: function (text) { console.warn(text); },
-            setStatus: function (t) { if (t) statusEl.textContent = t; },
-            onRuntimeInitialized: function () { var l = document.getElementById('loading'); if (l) l.remove(); Module.canvas.focus(); }
-        };
-        document.getElementById('canvas').addEventListener('keydown', function (e) { if ([' ', 'ArrowUp', 'ArrowDown'].includes(e.key)) e.preventDefault(); });
+        (function () {
+            var badge = document.getElementById('policy');
+            var policyText = document.getElementById('policy-text');
+            fetch('POLICY.txt').then(function (r) { return r.ok ? r.text() : ''; }).then(function (t) {
+                t = (t || '').trim();
+                if (!t) return;
+                var short = t.replace(/^policy:\s*/i, '').split(/,\s*packed/i)[0];
+                if (/classical baseline/i.test(t)) short = 'classical baseline';
+                else {
+                    var run = t.match(/run\s+([^,)]+)/i);
+                    if (run) short = 'run ' + run[1].trim();
+                }
+                badge.title = t;
+                badge.classList.toggle('classical', /classical|none/i.test(t));
+                policyText.textContent = short;
+            }).catch(function () {
+                policyText.textContent = 'policy: unknown';
+                badge.classList.add('classical');
+            });
+
+            var statusEl = document.getElementById('status');
+            var loadingEl = document.getElementById('loading');
+            var canvas = document.getElementById('canvas');
+            var finished = false;
+
+            function done() {
+                if (finished) return;
+                finished = true;
+                document.title = 'RL Eval · Themis';
+                // raylib sets the window title when main() starts, just after this hook
+                window.setTimeout(function () { document.title = 'RL Eval · Themis'; }, 0);
+                loadingEl.classList.add('done');
+                window.setTimeout(function () { if (loadingEl.parentNode) loadingEl.remove(); }, 600);
+            }
+
+            if (!window.WebGL2RenderingContext) {
+                statusEl.textContent = 'This browser does not support WebGL2.';
+                return;
+            }
+
+            window.Module = {
+                canvas: canvas,
+                print: function (text) {
+                    if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+                    console.log(text);
+                },
+                printErr: function (text) { console.warn(text); },
+                setStatus: function (t) { if (t) statusEl.textContent = t; },
+                onAbort: function (what) {
+                    statusEl.textContent = 'could not start: ' + (what || 'unknown error');
+                },
+                onRuntimeInitialized: function () {
+                    done();
+                    canvas.focus();
+                }
+            };
+
+            canvas.addEventListener('pointerdown', function () { canvas.focus(); });
+            canvas.addEventListener('keydown', function (e) {
+                if ([' ', 'ArrowUp', 'ArrowDown'].indexOf(e.key) !== -1) e.preventDefault();
+            });
+            window.addEventListener('error', function (e) {
+                if (!finished) statusEl.textContent = 'could not start: ' + (e.message || 'script error');
+            });
+        })();
     </script>
     <script async src="game.js"></script>
 </body>
